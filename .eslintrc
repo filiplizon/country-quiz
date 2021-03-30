@@ -6,7 +6,16 @@
       {
         "extensions": [".js"]
       }
-    ]
+    ],
+    "react/prop-types": "off",
+    "react/jsx-curly-brace-presence": 0,
+    "react/jsx-props-no-spreading": [
+      1,
+      {
+        "custom": "ignore"
+      }
+    ],
+    "react/state-in-constructor": [1, "never"]
   },
   "env": {
     "jest": true
