@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const BurgerButton = () => (
-  <StyledBurger>
+const BurgerButton = ({ open, toggleMenuStateFn }) => (
+  <StyledBurger open={open} onClick={toggleMenuStateFn}>
     <span />
     <span />
     <span />
