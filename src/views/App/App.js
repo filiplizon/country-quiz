@@ -1,14 +1,11 @@
 import React from 'react';
-import GlobalStyle from 'theme/GlobalStyle';
+import MainTemplate from 'templates/MainTemplate';
 import Header from 'components/Header/Header';
 
-// import BurgerButton from 'components/BurgerButton/BurgerButton';
-
 const App = () => (
-  <div id="App">
-    <GlobalStyle />
+  <MainTemplate>
     <Header className="header" />
-  </div>
+  </MainTemplate>
 );
 
 export default App;
