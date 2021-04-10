@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Button = ({ children }) => <StyledButton>{children}</StyledButton>;
 
 const StyledButton = styled.button`
-  width: 100%;
+  width: 95px;
   background-color: ${({ theme }) => theme.primary};
   color: white;
   border: none;
