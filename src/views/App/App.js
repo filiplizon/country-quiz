@@ -1,14 +1,55 @@
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import MainTemplate from 'templates/MainTemplate';
 import Header from 'components/Header/Header';
 import CardWrapper from 'components/CardWrapper/CardWrapper';
-// import Card from 'components/Card/Card';
 
-const App = () => (
-  <MainTemplate>
-    <Header className="header" />
-    <CardWrapper />
-  </MainTemplate>
-);
+class App extends Component {
+  state = {
+    menuOpen: false,
+    countries: [],
+    filteredCountries: [],
+  };
+
+  componentDidMount() {
+    axios
+      .get('https://restcountries.eu/rest/v2/all')
+
+      .then((response) => {
+        this.setState({ countries: [...response.data] });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  searchCountry(e) {
+    const { countries } = this.state;
+    const filteredCountriesArray = countries.filter((country) =>
+      country.name.toLowerCase().includes(e.target.value.toLowerCase()),
+    );
+    this.setState(() => ({ filteredCountries: filteredCountriesArray }));
+  }
+
+  toggleMenuState() {
+    this.setState((state) => ({ menuOpen: !state.menuOpen }));
+  }
+
+  render() {
+    const { menuOpen, countries, filteredCountries } = this.state;
+
+    return (
+      <MainTemplate>
+        <Header
+          className="header"
+          toggleMenuStateFn={() => this.toggleMenuState()}
+          menuOpen={menuOpen}
+          searchCountryFn={(e) => this.searchCountry(e)}
+        />
+        <CardWrapper countries={filteredCountries.length ? filteredCountries : countries} />
+      </MainTemplate>
+    );
+  }
+}
 
 export default App;
