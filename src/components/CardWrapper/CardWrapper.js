@@ -1,37 +1,6 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react';
 import styled from 'styled-components';
 import Card from 'components/Card/Card';
-
-class CardWrapper extends Component {
-  state = {
-    countries: [],
-  };
-
-  componentDidMount() {
-    axios
-      .get('https://restcountries.eu/rest/v2/all')
-
-      .then((response) => {
-        this.setState({ countries: [...response.data] });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  render() {
-    const { countries } = this.state;
-
-    return (
-      <StyledCardWrapper>
-        {countries.length
-          ? countries.map((country) => <Card name={country.name} flag={country.flag} />)
-          : null}
-      </StyledCardWrapper>
-    );
-  }
-}
 
 const StyledCardWrapper = styled.div`
   width: 100%;
@@ -39,5 +8,26 @@ const StyledCardWrapper = styled.div`
   grid-template-columns: 1fr;
   padding: 15vh 3% 0;
 `;
+
+const CardWrapper = ({ countries, open }) => (
+  <StyledCardWrapper open={open}>
+    {countries.length
+      ? countries.map((country) => (
+          <Card
+            key={country.alpha3Code}
+            name={country.name}
+            flag={country.flag}
+            capital={country.capital}
+            currency={country.currencies[0].name}
+            language={country.languages[0].name}
+            population={country.population.toLocaleString()}
+            region={country.region}
+            subregion={country.subregion}
+            timezone={country.timezones[0]}
+          />
+        ))
+      : null}
+  </StyledCardWrapper>
+);
 
 export default CardWrapper;

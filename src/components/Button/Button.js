@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children }) => <StyledButton>{children}</StyledButton>;
+const Button = ({ children, toggleInfoVisibilityFn }) => (
+  <StyledButton onClick={toggleInfoVisibilityFn}>{children}</StyledButton>
+);
 
 const StyledButton = styled.button`
   width: 95px;
