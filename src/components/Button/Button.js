@@ -21,6 +21,20 @@ const StyledButton = styled.button`
     background-color: ${({ theme }) => theme.secondary};
   }
 
+  @media (min-width: 500px) and (orientation: landscape) {
+    width: 70px;
+    padding: 5px 0;
+  }
+
+  @media (min-width: 768px) {
+    width: 120px;
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 800px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
   @media (min-width: 1200px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }

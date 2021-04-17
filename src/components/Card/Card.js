@@ -8,10 +8,28 @@ const StyledWrapper = styled.div`
   width: 95vw;
   display: grid;
   grid-template-rows: 0.7fr 0.15fr 0.25fr;
-  justify-items: center;
   background-color: white;
   margin-bottom: 20px;
   box-shadow: 0 10px 30px -10px hsla(0, 0%, 0%, 0.1);
+
+  @media (min-width: 500px) and (orientation: landscape) {
+    width: 80vw;
+    min-height: 85vh;
+  }
+
+  @media (min-width: 768px) {
+    width: 80vw;
+    min-height: 40vh;
+  }
+
+  @media (min-width: 800px) and (orientation: landscape) {
+    width: 80vw;
+    min-height: 85vh;
+  }
+
+  @media (min-width: 1024px) {
+    width: 30vw;
+  }
 `;
 
 const InnerWrapper = styled.div`
@@ -30,11 +48,19 @@ const StyledCountryName = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.m};
   line-height: 2;
   text-align: center;
+
+  @media (min-width: 1200px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
 `;
 
 const StyledPararaph = styled.p`
   display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'block')};
   margin: 0 0 10px;
+
+  @media (min-width: 1200px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 
   :last-child {
     padding-bottom: 25px;

@@ -17,8 +17,12 @@ const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  font-size: 2.5rem;
+  font-size: ${({ theme }) => theme.fontSize.l};
   transform: translateX(-50%);
+
+  @media (min-width: 500px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 
   @media (min-width: 768px) {
     width: 300px;
@@ -26,13 +30,17 @@ const StyledWrapper = styled.div`
 
   @media (min-width: 1024px) {
     width: 350px;
-    font-size: 3.5rem;
+    font-size: ${({ theme }) => theme.fontSize.xl};
   }
 
   @media (min-width: 1200px) {
     width: 250px;
     left: 20%;
-    font-size: 2.5rem;
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (min-width: 1200px) and (orientation: landscape) {
+    margin-left: 80px;
   }
 `;
 
@@ -45,15 +53,23 @@ const StyledInput = styled.input`
   background-color: transparent;
 
   @media (min-width: 360px) {
-    font-size: 2rem;
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 500px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 
   @media (min-width: 768px) {
-    font-size: 3rem;
+    font-size: ${({ theme }) => theme.fontSize.xl};
   }
 
-  @media (min-width: 1200px) {
-    font-size: 2.5rem;
+  @media (min-width: 800px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 1024px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.l};
   }
 `;
 

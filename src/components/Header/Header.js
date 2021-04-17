@@ -21,7 +21,12 @@ const StyledHeader = styled.header`
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: ${({ theme }) => theme.grey100};
+  background-color: white;
+  box-shadow: ${({ menuOpen }) => (menuOpen ? 'none' : '0 10px 30px -10px hsla(0, 0%, 0%, 0.1)')};
+
+  @media (min-width: 500px) {
+    padding-left: 3vw;
+  }
 `;
 
 export default Header;

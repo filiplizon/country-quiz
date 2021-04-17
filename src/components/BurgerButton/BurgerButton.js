@@ -25,6 +25,12 @@ const StyledBurger = styled.button`
     height: 3rem;
     width: 3rem;
   }
+
+  @media (min-width: 800px) and (orientation: landscape) {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
   @media (min-width: 1024px) {
     height: 4rem;
     width: 4rem;
@@ -38,7 +44,7 @@ const StyledBurger = styled.button`
     height: 2px;
     position: relative;
     border-radius: 10px;
-    background-color: #000000;
+    background-color: ${({ theme }) => theme.black};
     transition: all 0.3s linear;
 
     @media (min-width: 768px) {
