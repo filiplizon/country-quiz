@@ -8,7 +8,6 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledFlag = styled.img`
-  width: 100%;
   height: 100%;
   border: 1px solid ${({ theme }) => theme.grey200};
 `;
