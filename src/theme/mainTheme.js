@@ -13,4 +13,5 @@ export const theme = {
     xl: '3rem',
     xxl: '3.5rem',
   },
+  boxShadow: '0 10px 30px -10px hsla(0, 0%, 0%, 0.1)',
 };
