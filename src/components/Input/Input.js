@@ -10,7 +10,7 @@ const Input = ({ className, onChange }) => (
 );
 
 const StyledWrapper = styled.div`
-  width: 180px;
+  width: 150px;
   position: absolute;
   left: 50%;
   margin-left: 20px;
