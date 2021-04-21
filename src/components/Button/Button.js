@@ -1,16 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, toggleInfoVisibilityFn }) => (
-  <StyledButton onClick={toggleInfoVisibilityFn}>{children}</StyledButton>
+const Button = ({ children, onClick, secondary }) => (
+  <StyledButton secondary={secondary} onClick={onClick}>
+    {children}
+  </StyledButton>
 );
 
 const StyledButton = styled.button`
   width: 95px;
-  background-color: ${({ theme }) => theme.primary};
+  height: ${({ secondary }) => (secondary ? '70px' : '40px')};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  background-color: ${({ theme, secondary }) => (secondary ? theme.secondary : theme.primary)};
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   padding: 10px 0;
   text-align: center;
   transition: background-color 0.2s ease;
@@ -19,6 +27,7 @@ const StyledButton = styled.button`
 
   :hover {
     background-color: ${({ theme }) => theme.secondary};
+    transform: ${({ secondary }) => secondary && 'scale(1.02)'};
   }
 
   @media (min-width: 500px) and (orientation: landscape) {
@@ -29,6 +38,7 @@ const StyledButton = styled.button`
   @media (min-width: 768px) {
     width: 120px;
     font-size: ${({ theme }) => theme.fontSize.m};
+    padding: ${({ secondary }) => secondary && '10px 0'};
   }
 
   @media (min-width: 800px) and (orientation: landscape) {
@@ -37,6 +47,7 @@ const StyledButton = styled.button`
 
   @media (min-width: 1200px) {
     font-size: ${({ theme }) => theme.fontSize.m};
+    padding: ${({ secondary }) => secondary && '20px 0'};
   }
 `;
 
