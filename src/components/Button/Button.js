@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, onClick, secondary }) => (
-  <StyledButton secondary={secondary} onClick={onClick}>
+const Button = ({ children, onClick, secondary, big }) => (
+  <StyledButton big={big} secondary={secondary} onClick={onClick}>
     {children}
   </StyledButton>
 );
 
 const StyledButton = styled.button`
   width: 95px;
-  height: ${({ secondary }) => (secondary ? '70px' : '40px')};
+  height: ${({ big }) => (big ? '70px' : '40px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +24,7 @@ const StyledButton = styled.button`
   transition: background-color 0.2s ease;
   cursor: pointer;
   outline-color: ${({ theme }) => theme.secondary};
+  z-index: 2;
 
   :hover {
     background-color: ${({ theme }) => theme.secondary};
@@ -43,6 +44,11 @@ const StyledButton = styled.button`
 
   @media (min-width: 800px) and (orientation: landscape) {
     font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1024px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+    padding: ${({ secondary }) => secondary && '30px 80px'};
   }
 
   @media (min-width: 1200px) {
