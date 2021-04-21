@@ -5,6 +5,14 @@ const StyledLogo = styled.img`
   height: 100%;
 `;
 
-const Logo = ({ src, alt }) => <StyledLogo src={src} alt={alt} />;
+const StyledWrapper = styled.div`
+  height: 15vh;
+`;
+
+const Logo = ({ src, alt }) => (
+  <StyledWrapper>
+    <StyledLogo src={src} alt={alt} />
+  </StyledWrapper>
+);
 
 export default Logo;
