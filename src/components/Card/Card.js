@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from 'components/Button/Button';
 import Flag from 'components/Flag/Flag';
+import Paragraph from 'components/Paragraph/Paragraph';
 
 const StyledWrapper = styled.div`
   min-height: 55vh;
@@ -10,7 +11,7 @@ const StyledWrapper = styled.div`
   grid-template-rows: 0.7fr 0.15fr 0.25fr;
   background-color: white;
   margin-bottom: 20px;
-  box-shadow: 0 10px 30px -10px hsla(0, 0%, 0%, 0.1);
+  box-shadow: ${({ theme }) => theme.boxShadow};
 
   @media (min-width: 500px) and (orientation: landscape) {
     width: 80vw;
@@ -38,7 +39,7 @@ const InnerWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${({ color, theme }) => (color ? theme.primary : null)};
+  background-color: ${({ theme, color }) => color && theme.primary};
   color: white;
 `;
 
@@ -54,7 +55,7 @@ const StyledCountryName = styled.h2`
   }
 `;
 
-const StyledPararaph = styled.p`
+const StyledPararaph = styled(Paragraph)`
   display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'block')};
   margin: 0 0 10px;
 
@@ -66,7 +67,6 @@ const StyledPararaph = styled.p`
     padding-bottom: 25px;
   }
 `;
-
 class Card extends Component {
   state = {
     hiddenInfo: true,
@@ -96,7 +96,7 @@ class Card extends Component {
         <InnerWrapper>
           <Flag flag={flag} name={name} />
         </InnerWrapper>
-        <InnerWrapper color="true">
+        <InnerWrapper color>
           <StyledCountryName>{name}</StyledCountryName>
           <InnerWrapper>
             <StyledPararaph hiddenInfo={hiddenInfo}>Capital: {capital}</StyledPararaph>
@@ -110,7 +110,9 @@ class Card extends Component {
         </InnerWrapper>
         <InnerWrapper>
           <Button
-            toggleInfoVisibilityFn={() => this.toggleInfoVisibility()}
+            onClick={() => {
+              this.toggleInfoVisibility();
+            }}
             hiddenInfo={hiddenInfo}
           >
             {hiddenInfo ? 'Show info' : 'Hide info'}
