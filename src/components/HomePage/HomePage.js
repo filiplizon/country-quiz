@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import styled from 'styled-components';
 import Header from 'components/Header/Header';
 import CardWrapper from 'components/CardWrapper/CardWrapper';
 
-class HomePageTemplate extends Component {
+class HomePage extends Component {
   state = {
     menuOpen: false,
     countries: [],
@@ -52,4 +51,4 @@ class HomePageTemplate extends Component {
   }
 }
 
-export default HomePageTemplate;
+export default HomePage;
