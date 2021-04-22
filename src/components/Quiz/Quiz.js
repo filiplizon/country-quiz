@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import axios from 'axios';
 import Link from 'components/Link/Link';
 import bqQuiz from 'assets/images/bgQuiz.png';
 import illustration from 'assets/images/illustration.png';
@@ -11,6 +12,7 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
 import Flag from 'components/Flag/Flag';
 import Input from 'components/Input/Input';
+import _ from 'lodash';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -115,6 +117,7 @@ const StyledIllustration = styled.div`
   background-position: 45% 50%;
   background-size: cover;
   transition: opacity 0.2s;
+  z-index: -1;
 
   &.fade-out {
     opacity: 0.3;
@@ -170,6 +173,7 @@ const StyledBox = styled.div`
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }
+
   @media (min-width: 1024px) {
     font-size: ${({ theme }) => theme.fontSize.l};
   }
@@ -181,11 +185,6 @@ const StyledBox = styled.div`
     background-color: #fff;
     z-index: 1000;
   }
-`;
-
-const StyledButton = styled(Button)`
-  animation: ${grow} 0.2s linear both;
-  animation-delay: ${({ delay }) => delay};
 `;
 
 const QuestionWrapper = styled.div`
@@ -221,6 +220,36 @@ const QuestionWrapper = styled.div`
   }
 `;
 
+const StyledMessage = styled(Paragraph)`
+  opacity: ${({ hidden }) => hidden && 0};
+  color: ${({ correctAnswer }) => (correctAnswer ? 'green' : 'red')};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
+  font-size: 1.3rem;
+
+  @media (min-width: 360px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 500px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (min-width: 800px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 1024px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+  @media (min-width: 1200px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+`;
+
 class Quiz extends Component {
   state = {
     typeChoosen: false,
@@ -229,7 +258,90 @@ class Quiz extends Component {
     quizLevel: '',
     points: 0,
     questionsLength: 10,
+    counter: 0,
+    allCountries: [],
+    countriesToGuess: [],
+    countriesByLevel: {
+      easy: [
+        'POL',
+        'RUS',
+        'MEX',
+        'ARG',
+        'AUS',
+        'CHN',
+        'CZE',
+        'BRA',
+        'CAN',
+        'FRA',
+        'DEU',
+        'IND',
+        'ISR',
+        'PRT',
+        'USA',
+        'ESP',
+        'ITA',
+        'BEL',
+        'GRC',
+      ],
+      medium: [
+        'AFG',
+        'ALB',
+        'ARM',
+        'BGR',
+        'CMR',
+        'CHL',
+        'COL',
+        'HRV',
+        'CUB',
+        'EGY',
+        'EST',
+        'GEO',
+        'HUN',
+        'JPN',
+        'KEN',
+        'MNE',
+        'MAR',
+        'PAK',
+        'SRB',
+      ],
+      hard: [
+        'TUV',
+        'VNM',
+        'ZMB',
+        'SOM',
+        'SYC',
+        'SMR',
+        'WSM',
+        'RWA',
+        'QAT',
+        'PNG',
+        'PAN',
+        'PLW',
+        'OMN',
+        'NER',
+        'NIC',
+        'NPL',
+        'NRU',
+        'MOZ',
+        'HTI',
+      ],
+    },
+    checked: false,
+    correctAnswer: false,
+    input: '',
   };
+
+  componentDidMount() {
+    axios
+      .get('https://restcountries.eu/rest/v2/all')
+
+      .then((response) => {
+        this.setState({ allCountries: [...response.data] });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   handleTypeChange(type) {
     this.setState((state) => ({ typeChoosen: !state.typeChoosen }));
@@ -241,8 +353,75 @@ class Quiz extends Component {
     this.state.quizLevel = level;
   }
 
+  handleAnswearCheck() {
+    const { input, countriesToGuess, counter, quizType } = this.state;
+    let isAnswerCorrect;
+    if (input) {
+      switch (quizType) {
+        case 'flags':
+          isAnswerCorrect = input.toLowerCase() === countriesToGuess[counter].name.toLowerCase();
+          break;
+        case 'capitals':
+          isAnswerCorrect = input.toLowerCase() === countriesToGuess[counter].capital.toLowerCase();
+          break;
+        default:
+          return;
+      }
+      isAnswerCorrect && this.setState((state) => ({ points: state.points + 1 })); // eslint-disable-line
+      this.setState((state) => ({ checked: !state.checked }));
+      this.setState(() => ({ correctAnswer: isAnswerCorrect }));
+    }
+  }
+
+  handleInputChange(e) {
+    this.setState(() => ({ input: e.target.value }));
+  }
+
+  handleQuestionChange() {
+    const { input } = this.state;
+    input && this.setState((state) => ({ counter: state.counter + 1 })); // eslint-disable-line
+    this.setState((state) => ({ checked: !state.checked }));
+    this.setState(() => ({ input: '' }));
+  }
+
+  setQuestions() {
+    let countries;
+    const { allCountries, quizLevel, countriesByLevel } = this.state;
+    switch (quizLevel) {
+      case 'easy':
+        countries = allCountries.filter(({ alpha3Code }) =>
+          countriesByLevel.easy.includes(alpha3Code),
+        );
+        break;
+      case 'medium':
+        countries = allCountries.filter(({ alpha3Code }) =>
+          countriesByLevel.medium.includes(alpha3Code),
+        );
+        break;
+      case 'hard':
+        countries = allCountries.filter(({ alpha3Code }) =>
+          countriesByLevel.hard.includes(alpha3Code),
+        );
+        break;
+      default:
+        return;
+    }
+    this.state.countriesToGuess = _.sampleSize(countries, 10);
+  }
+
   render() {
-    const { typeChoosen, levelChoosen, points, questionsLength } = this.state;
+    const {
+      typeChoosen,
+      levelChoosen,
+      points,
+      questionsLength,
+      counter,
+      countriesToGuess,
+      checked,
+      input,
+      correctAnswer,
+      quizType,
+    } = this.state;
 
     return (
       <StyledWrapper>
@@ -252,20 +431,54 @@ class Quiz extends Component {
         {levelChoosen && (
           <StyledBox>
             <Paragraph>
-              Question: {} / {questionsLength}
+              Question: {counter + 1} / {questionsLength}
             </Paragraph>
             <Paragraph>
               Points: {points} / {questionsLength}
             </Paragraph>
           </StyledBox>
         )}
-
         {levelChoosen ? (
           <QuestionWrapper>
-            <Paragraph>Guess what country the flag is:</Paragraph>
-            <Flag />
-            <Input placeholder="Country" />
-            <Button secondary>Check</Button>
+            <Paragraph>
+              {quizType === 'flags'
+                ? 'Guess what country the flag is:'
+                : 'What is capital of this country?'}
+            </Paragraph>
+            {quizType === 'capitals' ? (
+              <Flag
+                flag={countriesToGuess[counter].flag}
+                name={countriesToGuess[counter].name}
+                quiz="true"
+              />
+            ) : (
+              <Flag flag={countriesToGuess[counter].flag} />
+            )}
+            <Input
+              value={input}
+              placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
+              onChange={(e) => this.handleInputChange(e)}
+              correctAnswer={correctAnswer}
+            />
+            {checked && (
+              <StyledMessage correctAnswer={correctAnswer}>
+                {correctAnswer
+                  ? 'Good!'
+                  : `You're wrong. It's ${
+                      quizType === 'flags'
+                        ? countriesToGuess[counter].name
+                        : countriesToGuess[counter].capital
+                    }.`}
+              </StyledMessage>
+            )}
+            <Button
+              secondary
+              onClick={() => {
+                checked ? this.handleQuestionChange() : this.handleAnswearCheck(); // eslint-disable-line
+              }}
+            >
+              {checked ? 'Next' : 'Check'}
+            </Button>
           </QuestionWrapper>
         ) : (
           <InnerWrapper column>
@@ -273,19 +486,35 @@ class Quiz extends Component {
             <StyledParagraph>Choose {typeChoosen ? 'level' : 'type'} of the quiz:</StyledParagraph>
             {typeChoosen ? (
               <InnerWrapper>
-                <StyledButton secondary onClick={() => this.handleLevelChange('easy')}>
+                <Button
+                  secondary
+                  onClick={() => {
+                    this.handleLevelChange('easy');
+                    this.setQuestions();
+                  }}
+                >
                   Easy
-                </StyledButton>
-                <StyledButton
+                </Button>
+                <Button
                   secondary
                   delay=".5s"
-                  onClick={() => this.handleLevelChange('medium')}
+                  onClick={() => {
+                    this.handleLevelChange('medium');
+                    this.setQuestions();
+                  }}
                 >
                   Medium
-                </StyledButton>
-                <StyledButton secondary delay="1s" onClick={() => this.handleLevelChange('hard')}>
+                </Button>
+                <Button
+                  secondary
+                  delay="1s"
+                  onClick={() => {
+                    this.handleLevelChange('hard');
+                    this.setQuestions();
+                  }}
+                >
                   Hard
-                </StyledButton>
+                </Button>
               </InnerWrapper>
             ) : (
               <InnerWrapper>
