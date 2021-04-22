@@ -5,6 +5,9 @@ const StyledWrapper = styled.div`
   width: 140px;
   height: 100px;
   background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledFlag = styled.img`
