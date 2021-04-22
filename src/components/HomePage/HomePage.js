@@ -38,7 +38,7 @@ class HomePage extends Component {
     const { menuOpen, countries, filteredCountries } = this.state;
 
     return (
-      <div>
+      <>
         <Header
           className="header"
           toggleMenuStateFn={() => this.toggleMenuState()}
@@ -46,7 +46,7 @@ class HomePage extends Component {
           searchCountryFn={(e) => this.searchCountry(e)}
         />
         <CardWrapper countries={filteredCountries.length ? filteredCountries : countries} />
-      </div>
+      </>
     );
   }
 }
