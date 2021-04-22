@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Input = ({ className, onChange, placeholder, children }) => (
+const Input = ({ className, onChange, placeholder, children, value }) => (
   <StyledWrapper className={className}>
-    <StyledInput placeholder={placeholder} type="text" onChange={onChange} />
+    <StyledInput value={value} placeholder={placeholder} type="text" onChange={onChange} />
     {children}
   </StyledWrapper>
 );
