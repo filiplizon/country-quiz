@@ -1,0 +1,3 @@
+const FETCH_COUNTRIES = 'FETCH_COUNTRIES';
+
+export default { FETCH_COUNTRIES };
