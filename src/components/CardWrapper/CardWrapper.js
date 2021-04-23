@@ -20,8 +20,8 @@ const StyledCardWrapper = styled.div`
   }
 `;
 
-const CardWrapper = ({ countries, open }) => (
-  <StyledCardWrapper open={open}>
+const CardWrapper = ({ countries }) => (
+  <StyledCardWrapper>
     {countries.length
       ? countries.map((country) => (
           <Card
