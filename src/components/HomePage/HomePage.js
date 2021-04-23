@@ -1,54 +1,47 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Header from 'components/Header/Header';
 import CardWrapper from 'components/CardWrapper/CardWrapper';
+import { getAllCountries as getAllCountriesAction } from 'operations/operations';
 
 class HomePage extends Component {
   state = {
-    menuOpen: false,
-    countries: [],
     filteredCountries: [],
   };
 
   componentDidMount() {
-    axios
-      .get('https://restcountries.eu/rest/v2/all')
-
-      .then((response) => {
-        this.setState({ countries: [...response.data] });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const { getAllCountries } = this.props;
+    getAllCountries();
   }
 
-  searchCountry(e) {
-    const { countries } = this.state;
-    const filteredCountriesArray = countries.filter((country) =>
+  findCountry(e) {
+    const { countries } = this.props;
+    const filteredCountries = countries.filter((country) =>
       country.name.toLowerCase().includes(e.target.value.toLowerCase()),
     );
-    this.setState(() => ({ filteredCountries: filteredCountriesArray }));
-  }
-
-  toggleMenuState() {
-    this.setState((state) => ({ menuOpen: !state.menuOpen }));
+    this.setState({ filteredCountries });
   }
 
   render() {
-    const { menuOpen, countries, filteredCountries } = this.state;
+    const { filteredCountries } = this.state;
+    const { countries } = this.props;
 
     return (
       <>
-        <Header
-          className="header"
-          toggleMenuStateFn={() => this.toggleMenuState()}
-          menuOpen={menuOpen}
-          searchCountryFn={(e) => this.searchCountry(e)}
-        />
+        <Header searchCountryFn={(e) => this.findCountry(e)} />
         <CardWrapper countries={filteredCountries.length ? filteredCountries : countries} />
       </>
     );
   }
 }
 
-export default HomePage;
+const mapDispatchToProps = (dispatch) => ({
+  getAllCountries: () => dispatch(getAllCountriesAction()),
+});
+
+const mapStateToProps = (state) => {
+  const { countries } = state;
+  return { countries };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
