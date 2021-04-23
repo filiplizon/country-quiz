@@ -6,8 +6,8 @@ import Input from 'components/Input/Input';
 import Link from 'components/Link/Link';
 import { FiSearch as SearchIcon } from 'react-icons/fi';
 
-const Header = ({ className, searchCountryFn }) => (
-  <StyledHeader className={className}>
+const Header = ({ searchCountryFn }) => (
+  <StyledHeader>
     <Logo src={LogoImage} alt="CountryInfo logo" />
     <Input className="Input" placeholder="Search" onChange={(e) => searchCountryFn(e)}>
       <SearchIcon />
