@@ -11,9 +11,10 @@ const StyledWrapper = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-rows: 0.6fr 0.4fr;
+  justify-items: center;
+  align-content: center;
 
   @media (min-width: 1200px) {
     align-items: flex-start;
@@ -47,7 +48,18 @@ const StyledArrowIcon = styled(ArrowIcon)`
   font-size: ${({ theme }) => theme.fontSize.m};
 `;
 
-const InnerWrapper = styled.div``;
+const InnerWrapper = styled.div`
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 1200px) {
+    position: absolute;
+    top: 15%;
+    left: -5%;
+  }
+`;
 
 const StyledIllustration = styled.div`
   width: 100%;
@@ -64,10 +76,6 @@ const StyledIllustration = styled.div`
     opacity: 0.3;
   }
 
-  @media (min-width: 768px) {
-    height: 60vh;
-  }
-
   @media (min-width: 1024px) and (orientation: landscape) {
     width: 55%;
   }
@@ -75,17 +83,17 @@ const StyledIllustration = styled.div`
   @media (min-width: 1200px) {
     height: 47vh;
     width: 32%;
-    margin-left: 40px;
+    left: 0%;
   }
 `;
 
-const QuizTemplate = ({ children, levelChoosen }) => (
+const QuizTemplate = ({ children, level }) => (
   <StyledWrapper>
     <StyledLink to="/">
       <StyledArrowIcon /> go back
     </StyledLink>
     <InnerWrapper>{children}</InnerWrapper>
-    {levelChoosen ? <StyledIllustration className="fade-out" /> : <StyledIllustration />}
+    {level ? <StyledIllustration className="fade-out" /> : <StyledIllustration />}
   </StyledWrapper>
 );
 
@@ -93,4 +101,9 @@ const mapDispatchToProps = (dispatch) => ({
   finishQuiz: () => dispatch(actions.finishQuiz()),
 });
 
-export default connect(null, mapDispatchToProps)(QuizTemplate);
+const mapStateToProps = (state) => {
+  const { level } = state;
+  return { level };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);
