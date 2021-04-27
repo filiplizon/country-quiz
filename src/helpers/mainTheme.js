@@ -3,6 +3,7 @@ export const theme = {
   secondary: 'hsl(204, 57%, 49%)',
   grey100: 'hsl(0, 0%, 96%)',
   grey200: 'hsl(0, 0%, 94%)',
+  grey300: 'hsl(0, 0%, 64%)',
   black: 'hsl(0, 0%, 0%)',
   fontWeight: { light: 300, bold: 600 },
   fontSize: {

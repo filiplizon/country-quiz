@@ -21,7 +21,7 @@ const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   font-size: ${({ theme }) => theme.fontSize.l};
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.black};
 
   @media (min-width: 500px) and (orientation: landscape) {
     font-size: ${({ theme }) => theme.fontSize.m};
@@ -47,12 +47,12 @@ const StyledInput = styled.input`
   width: 100%;
   margin-right: 5px;
   border: none;
-  border-bottom: 1px solid ${({ theme }) => theme.secondary};
+  border-bottom: 1px solid ${({ theme }) => theme.black};
   font-size: 1.6rem;
   background-color: transparent;
 
   &::placeholder {
-    color: ${({ theme }) => theme.secondary};
+    color: ${({ theme }) => theme.grey300};
   }
   @media (min-width: 360px) {
     font-size: ${({ theme }) => theme.fontSize.m};
