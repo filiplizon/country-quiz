@@ -79,7 +79,7 @@ const initialState = {
   quizLength: 10,
   start: false,
   isAnswerCorrect: false,
-  checked: false,
+  isChecked: false,
   answer: '',
 };
 
@@ -132,14 +132,14 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isAnswerCorrect: isAnswerCorrect(state),
-        checked: !state.checked,
+        isChecked: !state.isChecked,
         points: isAnswerCorrect(state) ? state.points + 1 : state.points,
       };
     case types.CHANGE_QUESTION:
       return {
         ...state,
         answer: '',
-        checked: !state.checked,
+        isChecked: !state.isChecked,
         counter: state.counter + 1,
         isAnswerCorrect: false,
       };
