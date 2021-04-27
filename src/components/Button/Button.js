@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, onClick, secondary, big }) => (
-  <StyledButton big={big} secondary={secondary} onClick={onClick}>
+const Button = ({ children, onClick, secondary, big, animation, animationDelay }) => (
+  <StyledButton
+    animation={animation}
+    animationDelay={animationDelay}
+    big={big}
+    secondary={secondary}
+    onClick={onClick}
+  >
     {children}
   </StyledButton>
 );
 
 const StyledButton = styled.button`
-  width: 95px;
+  width: 105px;
   height: ${({ big }) => (big ? '70px' : '40px')};
   display: flex;
   flex-direction: column;
@@ -19,12 +25,13 @@ const StyledButton = styled.button`
   color: white;
   border: none;
   border-radius: 15px;
-  padding: 10px 0;
+  padding: 25px 0;
   text-align: center;
   transition: background-color 0.2s ease;
   cursor: pointer;
   outline-color: ${({ theme }) => theme.secondary};
   z-index: 2;
+  animation: ${({ animation }) => animation} 0.3s both ${({ animationDelay }) => animationDelay};
 
   :hover {
     background-color: ${({ theme }) => theme.secondary};
@@ -37,9 +44,9 @@ const StyledButton = styled.button`
   }
 
   @media (min-width: 768px) {
-    width: 120px;
+    width: 130px;
     font-size: ${({ theme }) => theme.fontSize.m};
-    padding: ${({ secondary }) => secondary && '10px 0'};
+    padding: ${({ big }) => big && '10px 0'};
   }
 
   @media (min-width: 800px) and (orientation: landscape) {
@@ -48,12 +55,13 @@ const StyledButton = styled.button`
 
   @media (min-width: 1024px) {
     font-size: ${({ theme }) => theme.fontSize.l};
-    padding: ${({ secondary }) => secondary && '30px 80px'};
+    padding: ${({ big }) => big && '30px 80px'};
+    width: 150px;
   }
 
   @media (min-width: 1200px) {
     font-size: ${({ theme }) => theme.fontSize.m};
-    padding: ${({ secondary }) => secondary && '20px 0'};
+    padding: ${({ big }) => big && '20px 0'};
   }
 `;
 
