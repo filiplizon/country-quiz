@@ -1,7 +1,8 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
+import { grow } from 'helpers/animations';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
 import Input from 'components/Input/Input';
@@ -34,15 +35,12 @@ const StyledWrapper = styled.div`
   @media (min-width: 1200px) {
     height: 50vh;
     margin: 0;
-    position: absolute;
-    top: 15%;
-    left: 25%;
   }
 `;
 
 const StyledMessage = styled(Paragraph)`
   opacity: ${({ hidden }) => hidden && 0};
-  color: ${({ isAnswerCorrect }) => (isAnswerCorrect ? 'green' : 'red')};
+  color: ${({ isAnswerCorrect }) => (isAnswerCorrect ? '#3BC14A' : 'red')};
   font-weight: ${({ theme }) => theme.fontWeight.light};
   font-size: 1.3rem;
 
@@ -67,18 +65,6 @@ const StyledMessage = styled(Paragraph)`
   }
   @media (min-width: 1200px) {
     font-size: ${({ theme }) => theme.fontSize.m};
-  }
-`;
-
-const grow = keyframes`
-  from {
-   transform:scale(0);
-   opacity: 0;
-  }
-
-  to {
-   opacity:1;
-   transform:scale(1)
   }
 `;
 
@@ -115,7 +101,7 @@ const QuestionWrapper = ({
   quizLength,
   points,
   isAnswerCorrect,
-  checked,
+  isChecked,
   setAnswer,
   answer,
   checkAnswer,
@@ -149,9 +135,15 @@ const QuestionWrapper = ({
       <Input
         value={answer}
         placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
-        onChange={(e) => setAnswer(e.target.value)}
+        onChange={(e) => {
+          setAnswer(e.target.value);
+        }}
+        onKeyPress={(e) => {
+          e.key === 'Enter' && answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
+          isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
+        }}
       />
-      {checked && (
+      {isChecked && (
         <StyledMessage isAnswerCorrect={isAnswerCorrect}>
           {isAnswerCorrect
             ? 'Good!'
@@ -165,11 +157,11 @@ const QuestionWrapper = ({
       <Button
         secondary
         onClick={() => {
-          answer !== '' && !checked && checkAnswer(answer); // eslint-disable-line
-          checked && counter < 10 && changeQuestion(); // eslint-disable-line
+          answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
+          isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
         }}
       >
-        {checked ? 'Next' : 'Check'}
+        {isChecked ? 'Next' : 'Check'}
       </Button>
     </StyledWrapper>
   </>
@@ -184,7 +176,7 @@ const mapStateToProps = (state) => {
     quizType,
     countriesForQuiz,
     answer,
-    checked,
+    isChecked,
     isAnswerCorrect,
   } = state;
   return {
@@ -195,7 +187,7 @@ const mapStateToProps = (state) => {
     quizType,
     countriesForQuiz,
     answer,
-    checked,
+    isChecked,
     isAnswerCorrect,
   };
 };
