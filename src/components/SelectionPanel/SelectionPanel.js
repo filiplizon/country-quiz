@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import actions from 'actions/actions';
+import { grow } from 'helpers/animations';
 import Heading from 'components/Heading/Heading';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
 import { FaFlagUsa as FlagIcon } from 'react-icons/fa';
 import { GiCapitol as CapitolIcon } from 'react-icons/gi';
-import { connect } from 'react-redux';
-import actions from 'actions/actions';
 
 const StyledHeading = styled(Heading)`
   font-size: ${({ theme }) => theme.fontSize.l};
   color: ${({ theme }) => theme.secondary};
-  margin: 85px 0 10px;
+  margin-bottom: 10px;
 
   @media (min-width: 768px) {
-    margin: 165px 0 10px;
     font-size: ${({ theme }) => theme.fontSize.xl};
   }
 
@@ -23,7 +23,6 @@ const StyledHeading = styled(Heading)`
   }
 
   @media (min-width: 1024px) and (orientation: landscape) {
-    margin: 65px 0 10px;
     font-size: 4rem;
   }
 `;
@@ -53,12 +52,10 @@ const InnerWrapper = styled.div`
 
   @media (min-width: 768px) {
     width: 70%;
-    margin-bottom: 110px;
   }
 
   @media (min-width: 1200px) {
     width: 60%;
-    margin: ${({ column }) => column && '75px 0 0px 150px'};
   }
 `;
 
@@ -87,6 +84,7 @@ const SelectionPanel = ({
     {quizType ? (
       <InnerWrapper>
         <Button
+          animation={grow}
           secondary
           onClick={() => {
             chooseLevel('easy');
@@ -96,6 +94,8 @@ const SelectionPanel = ({
           Easy
         </Button>
         <Button
+          animation={grow}
+          animationDelay=".5s"
           secondary
           onClick={() => {
             chooseLevel('medium');
@@ -105,6 +105,8 @@ const SelectionPanel = ({
           Medium
         </Button>
         <Button
+          animation={grow}
+          animationDelay="1s"
           secondary
           onClick={() => {
             chooseLevel('hard');
