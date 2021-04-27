@@ -14,12 +14,11 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin: 85px 0 10px;
+
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
   @media (min-width: 768px) {
     height: 40vh;
-    margin: 75px 0 10px;
     font-size: ${({ theme }) => theme.fontSize.l};
   }
 

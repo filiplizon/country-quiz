@@ -12,12 +12,12 @@ const StyledWrapper = styled.div`
   height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: 0.6fr 0.4fr;
+  grid-template-rows: 0.6fr 0.25fr;
   justify-items: center;
   align-content: center;
 
-  @media (min-width: 1200px) {
-    align-items: flex-start;
+  @media (min-width: 768px) {
+    grid-template-rows: 0.6fr 0.35fr;
   }
 
   ::after {
