@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 const initialState = {
   countries: [],
-
   countriesByLevel: { easy: [], medium: [], hard: [] },
   countryCodes: {
     easy: [
@@ -74,6 +73,11 @@ const initialState = {
   countriesForQuiz: [],
   quizType: '',
   level: '',
+  levels: {
+    easy: { name: 'easy', next: 'medium' },
+    medium: { name: 'medium', next: 'hard' },
+    hard: { name: 'hard', next: '' },
+  },
   points: 0,
   counter: 0,
   quizLength: 10,
@@ -98,8 +102,9 @@ const rootReducer = (state = initialState, action) => {
     case types.CHOOSE_LEVEL:
       return {
         ...state,
-        level: action.level,
+        level: state.levels[action.level].name,
       };
+
     case types.SET_COUNTRIES_LEVEL:
       return {
         ...state,
@@ -119,8 +124,7 @@ const rootReducer = (state = initialState, action) => {
     case types.SET_QUIZ_QUESTOINS:
       return {
         ...state,
-        countriesForQuiz: _.sampleSize(action.countries[action.level], 10),
-        start: true,
+        countriesForQuiz: _.sampleSize(state.countriesByLevel[action.level], 10),
       };
     case types.SET_ANSWER:
       return {
@@ -143,6 +147,26 @@ const rootReducer = (state = initialState, action) => {
         counter: state.counter + 1,
         isAnswerCorrect: false,
       };
+    case types.RESET_LEVEL:
+      return {
+        ...state,
+        level: action.level ? action.level : initialState.level,
+        counter: initialState.counter,
+        points: initialState.points,
+        answer: initialState.answer,
+        isChecked: initialState.isChecked,
+      };
+    case types.RESET_TYPE:
+      return {
+        ...state,
+        quizType: '',
+      };
+    case types.SET_NEXT_LEVEL:
+      return {
+        ...state,
+        level: state.levels[action.level].next,
+      };
+
     // case types.FINISH_QUIZ:
     //   return {
     //     initialState,

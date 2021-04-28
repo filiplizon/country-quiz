@@ -87,11 +87,26 @@ const StyledIllustration = styled.div`
   }
 `;
 
-const QuizTemplate = ({ children, level }) => (
+const QuizTemplate = ({ children, level, quizType, resetLevel, resetType }) => (
   <StyledWrapper>
-    <StyledLink to="/">
-      <StyledArrowIcon /> go back
-    </StyledLink>
+    {!quizType && (
+      <StyledLink to="/">
+        <StyledArrowIcon /> home
+      </StyledLink>
+    )}
+
+    {quizType && (
+      <StyledLink onClick={() => resetType()} to="/quiz-select">
+        <StyledArrowIcon /> go back
+      </StyledLink>
+    )}
+
+    {level && (
+      <StyledLink onClick={() => resetLevel()} to="/quiz-level">
+        <StyledArrowIcon /> go back
+      </StyledLink>
+    )}
+
     <InnerWrapper>{children}</InnerWrapper>
     {level ? <StyledIllustration className="fade-out" /> : <StyledIllustration />}
   </StyledWrapper>
@@ -99,11 +114,13 @@ const QuizTemplate = ({ children, level }) => (
 
 const mapDispatchToProps = (dispatch) => ({
   finishQuiz: () => dispatch(actions.finishQuiz()),
+  resetLevel: () => dispatch(actions.resetLevel()),
+  resetType: () => dispatch(actions.resetType()),
 });
 
 const mapStateToProps = (state) => {
-  const { level } = state;
-  return { level };
+  const { level, quizType } = state;
+  return { level, quizType };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);

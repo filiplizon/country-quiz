@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import illustration from 'assets/images/Location.svg';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
+import actions from 'actions/actions';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -63,29 +64,68 @@ const StyledParagraph = styled(Paragraph)`
   }
 `;
 
-const Summary = ({ points, quizLength }) => (
+const Summary = ({ points, quizLength, resetLevel, resetType, level, setNextLevel }) => (
   <StyledWrapper>
     <StyledImage src={illustration} alt="" />
     <StyledParagraph>
       You answered correctly to {points} / {quizLength} questions.
     </StyledParagraph>
-    {points >= 5 ? (
+    {level !== 'hard' ? (
       <StyledWrapper row>
-        <Button secondary>Quiz menu</Button>
-        <Button secondary>Next level</Button>
+        <Button
+          secondary
+          onClick={() => {
+            resetLevel();
+            resetType();
+          }}
+        >
+          Quiz menu
+        </Button>
+        {points >= 5 ? (
+          <Button
+            onClick={() => {
+              resetLevel();
+              setNextLevel(level);
+            }}
+            secondary
+          >
+            Next level
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              resetLevel(level);
+            }}
+            secondary
+          >
+            Try again
+          </Button>
+        )}
       </StyledWrapper>
     ) : (
-      <StyledWrapper row>
-        <Button secondary>Quiz menu</Button>
-        <Button secondary>Try again</Button>
-      </StyledWrapper>
+      <Button
+        secondary
+        onClick={() => {
+          resetLevel();
+          resetType();
+        }}
+      >
+        Quiz menu
+      </Button>
     )}
   </StyledWrapper>
 );
 
 const mapStateToProps = (state) => {
-  const { points, quizLength } = state;
-  return { points, quizLength };
+  const { points, quizLength, level, levels } = state;
+  return { points, quizLength, level, levels };
 };
 
-export default connect(mapStateToProps)(Summary);
+const mapDispatchToProps = (dispatch) => ({
+  resetLevel: (level) => dispatch(actions.resetLevel(level)),
+  resetType: () => dispatch(actions.resetType()),
+  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
+  setNextLevel: (level) => dispatch(actions.setNextLevel(level)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Summary);

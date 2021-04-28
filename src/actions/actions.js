@@ -19,9 +19,8 @@ const chooseLevel = (level) => ({
   level,
 });
 
-const setQuizQuestions = (countries, level) => ({
+const setQuizQuestions = (level) => ({
   type: types.SET_QUIZ_QUESTOINS,
-  countries,
   level,
 });
 
@@ -40,6 +39,20 @@ const changeQuestion = () => ({
   type: types.CHANGE_QUESTION,
 });
 
+const resetLevel = (level) => ({
+  type: types.RESET_LEVEL,
+  level,
+});
+
+const resetType = () => ({
+  type: types.RESET_TYPE,
+});
+
+const setNextLevel = (level) => ({
+  type: types.SET_NEXT_LEVEL,
+  level,
+});
+
 const finishQuiz = () => ({
   type: types.FINISH_QUIZ,
 });
@@ -53,5 +66,8 @@ export default {
   setAnswer,
   checkAnswer,
   changeQuestion,
+  resetLevel,
+  resetType,
+  setNextLevel,
   finishQuiz,
 };
