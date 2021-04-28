@@ -6,7 +6,7 @@ import QuestionWrapper from 'components/QuestionWrapper/QuestionWrapper';
 import QuizTemplate from 'templates/QuizTemplate';
 import Summary from 'components/Summary/Summary';
 
-const Quiz = ({ setCountriesLevel, start, counter, isChecked }) => {
+const Quiz = ({ setCountriesLevel, level, counter, isChecked }) => {
   useEffect(() => {
     setCountriesLevel();
   }, []);
@@ -16,7 +16,7 @@ const Quiz = ({ setCountriesLevel, start, counter, isChecked }) => {
       {counter === 9 && isChecked ? (
         <Summary />
       ) : (
-        <> {start ? <QuestionWrapper /> : <SelectionPanel />}</>
+        <> {level ? <QuestionWrapper /> : <SelectionPanel />}</>
       )}
     </QuizTemplate>
   );
@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { start, counter, isChecked } = state;
-  return { start, counter, isChecked };
+  const { level, counter, isChecked } = state;
+  return { level, counter, isChecked };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
