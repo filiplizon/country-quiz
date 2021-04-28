@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
@@ -105,66 +105,73 @@ const QuestionWrapper = ({
   answer,
   checkAnswer,
   changeQuestion,
-}) => (
-  <>
-    <StyledBox>
-      <Paragraph>Level: {level}</Paragraph>
-      <Paragraph>
-        Question: {counter + 1} / {quizLength}
-      </Paragraph>
-      <Paragraph>
-        Points: {points} / {quizLength}
-      </Paragraph>
-    </StyledBox>
-    <StyledWrapper>
-      <Paragraph>
-        {quizType === 'flags'
-          ? 'Guess what country the flag is:'
-          : 'What is capital of this country?'}
-      </Paragraph>
-      {quizType === 'capitals' ? (
-        <Flag
-          flag={countriesForQuiz[counter].flag}
-          name={countriesForQuiz[counter].name}
-          quiz="true"
+  setQuizQuestions,
+}) => {
+  useEffect(() => {
+    setQuizQuestions(level);
+  }, []);
+
+  return (
+    <>
+      <StyledBox>
+        <Paragraph>Level: {level}</Paragraph>
+        <Paragraph>
+          Question: {counter + 1} / {quizLength}
+        </Paragraph>
+        <Paragraph>
+          Points: {points} / {quizLength}
+        </Paragraph>
+      </StyledBox>
+      <StyledWrapper>
+        <Paragraph>
+          {quizType === 'flags'
+            ? 'Guess what country the flag is:'
+            : 'What is capital of this country?'}
+        </Paragraph>
+        {quizType === 'capitals' ? (
+          <Flag
+            flag={countriesForQuiz[counter].flag}
+            name={countriesForQuiz[counter].name}
+            quiz="true"
+          />
+        ) : (
+          <Flag flag={countriesForQuiz[counter].flag} />
+        )}
+        <Input
+          value={answer}
+          placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
+          onChange={(e) => {
+            setAnswer(e.target.value);
+          }}
+          onKeyPress={(e) => {
+            e.key === 'Enter' && answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
+            isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
+          }}
         />
-      ) : (
-        <Flag flag={countriesForQuiz[counter].flag} />
-      )}
-      <Input
-        value={answer}
-        placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
-        onChange={(e) => {
-          setAnswer(e.target.value);
-        }}
-        onKeyPress={(e) => {
-          e.key === 'Enter' && answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
-          isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
-        }}
-      />
-      {isChecked && (
-        <StyledMessage isAnswerCorrect={isAnswerCorrect}>
-          {isAnswerCorrect
-            ? 'Good!'
-            : `You're wrong. It's ${
-                quizType === 'flags'
-                  ? countriesForQuiz[counter].name
-                  : countriesForQuiz[counter].capital
-              }.`}
-        </StyledMessage>
-      )}
-      <Button
-        secondary
-        onClick={() => {
-          answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
-          isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
-        }}
-      >
-        {isChecked ? 'Next' : 'Check'}
-      </Button>
-    </StyledWrapper>
-  </>
-);
+        {isChecked && (
+          <StyledMessage isAnswerCorrect={isAnswerCorrect}>
+            {isAnswerCorrect
+              ? 'Good!'
+              : `You're wrong. It's ${
+                  quizType === 'flags'
+                    ? countriesForQuiz[counter].name
+                    : countriesForQuiz[counter].capital
+                }.`}
+          </StyledMessage>
+        )}
+        <Button
+          secondary
+          onClick={() => {
+            answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
+            isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
+          }}
+        >
+          {isChecked ? 'Next' : 'Check'}
+        </Button>
+      </StyledWrapper>
+    </>
+  );
+};
 
 const mapStateToProps = (state) => {
   const {
@@ -195,6 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
   setAnswer: (answer) => dispatch(actions.setAnswer(answer)),
   checkAnswer: (answer, correctAnswer) => dispatch(actions.checkAnswer(answer, correctAnswer)),
   changeQuestion: () => dispatch(actions.changeQuestion()),
+  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionWrapper);
