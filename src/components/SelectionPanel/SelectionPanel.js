@@ -71,13 +71,7 @@ const StyledIcon = styled.div`
   }
 `;
 
-const SelectionPanel = ({
-  quizType,
-  chooseLevel,
-  chooseType,
-  setQuizQuestions,
-  countriesByLevel,
-}) => (
+const SelectionPanel = ({ quizType, chooseLevel, chooseType, setQuizQuestions }) => (
   <InnerWrapper column>
     <StyledHeading>Welcome to the quiz!</StyledHeading>
     <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
@@ -88,7 +82,7 @@ const SelectionPanel = ({
           secondary
           onClick={() => {
             chooseLevel('easy');
-            setQuizQuestions(countriesByLevel, 'easy');
+            setQuizQuestions('easy');
           }}
         >
           Easy
@@ -99,7 +93,7 @@ const SelectionPanel = ({
           secondary
           onClick={() => {
             chooseLevel('medium');
-            setQuizQuestions(countriesByLevel, 'medium');
+            setQuizQuestions('medium');
           }}
         >
           Medium
@@ -110,7 +104,7 @@ const SelectionPanel = ({
           secondary
           onClick={() => {
             chooseLevel('hard');
-            setQuizQuestions(countriesByLevel, 'hard');
+            setQuizQuestions('hard');
           }}
         >
           Hard
@@ -138,7 +132,7 @@ const SelectionPanel = ({
 const mapDispatchToProps = (dispatch) => ({
   chooseType: (quizType) => dispatch(actions.chooseType(quizType)),
   chooseLevel: (level) => dispatch(actions.chooseLevel(level)),
-  setQuizQuestions: (countries, level) => dispatch(actions.setQuizQuestions(countries, level)),
+  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
 });
 
 const mapStateToProps = (state) => {
