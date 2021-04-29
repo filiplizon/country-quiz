@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
-import { grow } from 'helpers/animations';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
+import PointBox from 'components/PointBox/PointBox';
 
 const StyledWrapper = styled.div`
   height: 45vh;
@@ -67,31 +67,6 @@ const StyledMessage = styled(Paragraph)`
   }
 `;
 
-const StyledBox = styled.div`
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  color: ${({ theme }) => theme.secondary};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  animation: ${grow} 0.2s linear both;
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (min-width: 1024px) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
-  @media (min-width: 1200px) {
-    top: 5%;
-    right: 20%;
-    font-size: ${({ theme }) => theme.fontSize.m};
-    background-color: #fff;
-    z-index: 1000;
-  }
-`;
-
 const QuestionWrapper = ({
   level,
   quizType,
@@ -113,7 +88,7 @@ const QuestionWrapper = ({
 
   return (
     <>
-      <StyledBox>
+      <PointBox>
         <Paragraph>Level: {level}</Paragraph>
         <Paragraph>
           Question: {counter + 1} / {quizLength}
@@ -121,7 +96,7 @@ const QuestionWrapper = ({
         <Paragraph>
           Points: {points} / {quizLength}
         </Paragraph>
-      </StyledBox>
+      </PointBox>
       <StyledWrapper>
         <Paragraph>
           {quizType === 'flags'
