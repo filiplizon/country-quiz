@@ -103,15 +103,39 @@ const Summary = ({ points, quizLength, resetLevel, resetType, level, setNextLeve
         )}
       </StyledWrapper>
     ) : (
-      <Button
-        secondary
-        onClick={() => {
-          resetLevel();
-          resetType();
-        }}
-      >
-        Quiz menu
-      </Button>
+      <StyledWrapper row>
+        {points >= 5 ? (
+          <Button
+            secondary
+            onClick={() => {
+              resetLevel();
+              resetType();
+            }}
+          >
+            Quiz menu
+          </Button>
+        ) : (
+          <>
+            <Button
+              secondary
+              onClick={() => {
+                resetLevel();
+                resetType();
+              }}
+            >
+              Quiz menu
+            </Button>
+            <Button
+              onClick={() => {
+                resetLevel(level);
+              }}
+              secondary
+            >
+              Try again
+            </Button>
+          </>
+        )}
+      </StyledWrapper>
     )}
   </StyledWrapper>
 );
