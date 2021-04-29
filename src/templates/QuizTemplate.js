@@ -96,13 +96,13 @@ const QuizTemplate = ({ children, level, quizType, resetLevel, resetType }) => (
     )}
 
     {quizType && (
-      <StyledLink onClick={() => resetType()} to="/quiz-select">
+      <StyledLink onClick={() => resetType()} to="/quiz">
         <StyledArrowIcon /> go back
       </StyledLink>
     )}
 
     {level && (
-      <StyledLink onClick={() => resetLevel()} to="/quiz-level">
+      <StyledLink onClick={() => resetLevel()} to="/quiz">
         <StyledArrowIcon /> go back
       </StyledLink>
     )}
