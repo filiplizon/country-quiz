@@ -6,6 +6,7 @@ import { grow } from 'helpers/animations';
 import Heading from 'components/Heading/Heading';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
+import PointBox from 'components/PointBox/PointBox';
 import { FaFlagUsa as FlagIcon } from 'react-icons/fa';
 import { GiCapitol as CapitolIcon } from 'react-icons/gi';
 
@@ -51,7 +52,7 @@ const InnerWrapper = styled.div`
   align-items: center;
 
   @media (min-width: 768px) {
-    width: 70%;
+    width: 90%;
   }
 
   @media (min-width: 1200px) {
@@ -60,84 +61,122 @@ const InnerWrapper = styled.div`
 `;
 
 const StyledIcon = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.m};
+  margin-left: 5px;
 
   @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
-  @media (min-width: 1024px) and (orientation: landscape) {
-    height: 90px;
+    margin-left: 10px;
+    font-size: ${({ theme }) => theme.fontSize.xl};
   }
 `;
 
-const SelectionPanel = ({ quizType, chooseLevel, chooseType, setQuizQuestions }) => (
-  <InnerWrapper column>
-    <StyledHeading>Welcome to the quiz!</StyledHeading>
-    <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
-    {quizType ? (
-      <InnerWrapper>
-        <Button
-          animation={grow}
-          secondary
-          onClick={() => {
-            chooseLevel('easy');
-            setQuizQuestions('easy');
-          }}
-        >
-          Easy
-        </Button>
-        <Button
-          animation={grow}
-          animationDelay=".5s"
-          secondary
-          onClick={() => {
-            chooseLevel('medium');
-            setQuizQuestions('medium');
-          }}
-        >
-          Medium
-        </Button>
-        <Button
-          animation={grow}
-          animationDelay="1s"
-          secondary
-          onClick={() => {
-            chooseLevel('hard');
-            setQuizQuestions('hard');
-          }}
-        >
-          Hard
-        </Button>
-      </InnerWrapper>
-    ) : (
-      <InnerWrapper>
-        <Button secondary big onClick={() => chooseType('flags')}>
-          <StyledIcon>
-            <FlagIcon />
-          </StyledIcon>
-          Flags
-        </Button>
-        <Button secondary big onClick={() => chooseType('capitals')}>
-          <StyledIcon>
-            <CapitolIcon />
-          </StyledIcon>
-          Capitals
-        </Button>
-      </InnerWrapper>
+const SelectionPanel = ({
+  quizType,
+  chooseLevel,
+  chooseType,
+  setQuizQuestions,
+  quizLength,
+  bestScore,
+  setCountriesLevel,
+}) => (
+  <>
+    {quizType && (
+      <PointBox>
+        <Paragraph>Your best scores:</Paragraph>
+        {quizType === 'flags' ? (
+          <>
+            <Paragraph>
+              easy: {bestScore.flags.easy} / {quizLength}
+            </Paragraph>
+            <Paragraph>
+              medium: {bestScore.flags.medium} / {quizLength}
+            </Paragraph>
+            <Paragraph>
+              hard: {bestScore.flags.hard} / {quizLength}
+            </Paragraph>
+          </>
+        ) : (
+          <>
+            <Paragraph>
+              easy: {bestScore.capitals.easy} / {quizLength}
+            </Paragraph>
+            <Paragraph>
+              medium: {bestScore.capitals.medium} / {quizLength}
+            </Paragraph>
+            <Paragraph>
+              hard: {bestScore.capitals.hard} / {quizLength}
+            </Paragraph>
+          </>
+        )}
+      </PointBox>
     )}
-  </InnerWrapper>
+    <InnerWrapper column onClick={() => setCountriesLevel()}>
+      <StyledHeading>Welcome to the quiz!</StyledHeading>
+      <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
+      {quizType ? (
+        <InnerWrapper>
+          <Button
+            animation={grow}
+            secondary
+            onClick={() => {
+              chooseLevel('easy');
+              setQuizQuestions('easy');
+            }}
+          >
+            Easy
+          </Button>
+          <Button
+            animation={grow}
+            animationDelay=".5s"
+            secondary
+            onClick={() => {
+              chooseLevel('medium');
+              setQuizQuestions('medium');
+            }}
+          >
+            Medium
+          </Button>
+          <Button
+            animation={grow}
+            animationDelay="1s"
+            secondary
+            onClick={() => {
+              chooseLevel('hard');
+              setQuizQuestions('hard');
+            }}
+          >
+            Hard
+          </Button>
+        </InnerWrapper>
+      ) : (
+        <InnerWrapper>
+          <Button secondary onClick={() => chooseType('flags')}>
+            Flags
+            <StyledIcon>
+              <FlagIcon />
+            </StyledIcon>
+          </Button>
+          <Button secondary onClick={() => chooseType('capitals')}>
+            Capitals
+            <StyledIcon>
+              <CapitolIcon />
+            </StyledIcon>
+          </Button>
+        </InnerWrapper>
+      )}
+    </InnerWrapper>
+  </>
 );
 
 const mapDispatchToProps = (dispatch) => ({
   chooseType: (quizType) => dispatch(actions.chooseType(quizType)),
   chooseLevel: (level) => dispatch(actions.chooseLevel(level)),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
+  setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
 });
 
 const mapStateToProps = (state) => {
-  const { quizType, countries, countriesByLevel } = state;
-  return { quizType, countries, countriesByLevel };
+  const { quizType, countries, countriesByLevel, quizLength, bestScore } = state;
+  return { quizType, countries, countriesByLevel, quizLength, bestScore };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectionPanel);
