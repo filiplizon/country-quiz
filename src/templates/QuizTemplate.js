@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import actions from 'actions/actions';
 import Link from 'components/Link/Link';
 import bqQuiz from 'assets/images/bgQuiz.png';
 import illustration from 'assets/images/illustration.png';
 import { VscArrowLeft as ArrowIcon } from 'react-icons/vsc';
-import { connect } from 'react-redux';
-import actions from 'actions/actions';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -54,9 +54,10 @@ const InnerWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   @media (min-width: 1200px) {
     position: absolute;
-    top: 15%;
+    top: 20%;
     left: -5%;
   }
 `;
