@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import illustration from 'assets/images/Location.svg';
@@ -64,47 +64,27 @@ const StyledParagraph = styled(Paragraph)`
   }
 `;
 
-const Summary = ({ points, quizLength, resetLevel, resetType, level, setNextLevel }) => (
-  <StyledWrapper>
-    <StyledImage src={illustration} alt="" />
-    <StyledParagraph>
-      You answered correctly to {points} / {quizLength} questions.
-    </StyledParagraph>
-    {level !== 'hard' ? (
-      <StyledWrapper row>
-        <Button
-          secondary
-          onClick={() => {
-            resetLevel();
-            resetType();
-          }}
-        >
-          Quiz menu
-        </Button>
-        {points >= 5 ? (
-          <Button
-            onClick={() => {
-              resetLevel();
-              setNextLevel(level);
-            }}
-            secondary
-          >
-            Next level
-          </Button>
-        ) : (
-          <Button
-            onClick={() => {
-              resetLevel(level);
-            }}
-            secondary
-          >
-            Try again
-          </Button>
-        )}
-      </StyledWrapper>
-    ) : (
-      <StyledWrapper row>
-        {points >= 5 ? (
+const Summary = ({
+  points,
+  quizLength,
+  resetLevel,
+  resetType,
+  level,
+  setNextLevel,
+  setBestScore,
+  quizType,
+}) => {
+  useEffect(() => {
+    setBestScore(points, level, quizType);
+  }, []);
+  return (
+    <StyledWrapper>
+      <StyledImage src={illustration} alt="" />
+      <StyledParagraph>
+        You answered correctly to {points} / {quizLength} questions.
+      </StyledParagraph>
+      {level !== 'hard' ? (
+        <StyledWrapper row>
           <Button
             secondary
             onClick={() => {
@@ -114,17 +94,17 @@ const Summary = ({ points, quizLength, resetLevel, resetType, level, setNextLeve
           >
             Quiz menu
           </Button>
-        ) : (
-          <>
+          {points >= 5 ? (
             <Button
-              secondary
               onClick={() => {
                 resetLevel();
-                resetType();
+                setNextLevel(level);
               }}
+              secondary
             >
-              Quiz menu
+              Next level
             </Button>
+          ) : (
             <Button
               onClick={() => {
                 resetLevel(level);
@@ -133,23 +113,43 @@ const Summary = ({ points, quizLength, resetLevel, resetType, level, setNextLeve
             >
               Try again
             </Button>
-          </>
-        )}
-      </StyledWrapper>
-    )}
-  </StyledWrapper>
-);
+          )}
+        </StyledWrapper>
+      ) : (
+        <StyledWrapper row>
+          <Button
+            secondary
+            onClick={() => {
+              resetLevel();
+              resetType();
+            }}
+          >
+            Quiz menu
+          </Button>
+          <Button
+            onClick={() => {
+              resetLevel(level);
+            }}
+            secondary
+          >
+            Try again
+          </Button>
+        </StyledWrapper>
+      )}
+    </StyledWrapper>
+  );
+};
 
 const mapStateToProps = (state) => {
-  const { points, quizLength, level, levels } = state;
-  return { points, quizLength, level, levels };
+  const { points, quizLength, level, levels, quizType } = state;
+  return { points, quizLength, level, levels, quizType };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   resetLevel: (level) => dispatch(actions.resetLevel(level)),
   resetType: () => dispatch(actions.resetType()),
-  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   setNextLevel: (level) => dispatch(actions.setNextLevel(level)),
+  setBestScore: (score, level, quizType) => dispatch(actions.setBestScore(score, level, quizType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);
