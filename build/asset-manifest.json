@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.js": "/country-info/static/js/main.7df9acc1.chunk.js",
+    "main.js.map": "/country-info/static/js/main.7df9acc1.chunk.js.map",
+    "runtime-main.js": "/country-info/static/js/runtime-main.f13bb00b.js",
+    "runtime-main.js.map": "/country-info/static/js/runtime-main.f13bb00b.js.map",
+    "static/js/2.89e2a3e5.chunk.js": "/country-info/static/js/2.89e2a3e5.chunk.js",
+    "static/js/2.89e2a3e5.chunk.js.map": "/country-info/static/js/2.89e2a3e5.chunk.js.map",
+    "index.html": "/country-info/index.html",
+    "static/js/2.89e2a3e5.chunk.js.LICENSE.txt": "/country-info/static/js/2.89e2a3e5.chunk.js.LICENSE.txt",
+    "static/media/Location.dd8c7afc.svg": "/country-info/static/media/Location.dd8c7afc.svg",
+    "static/media/bgQuiz.a506a389.png": "/country-info/static/media/bgQuiz.a506a389.png",
+    "static/media/illustration.79db61ac.png": "/country-info/static/media/illustration.79db61ac.png",
+    "static/media/logo.7c42f9aa.png": "/country-info/static/media/logo.7c42f9aa.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f13bb00b.js",
+    "static/js/2.89e2a3e5.chunk.js",
+    "static/js/main.7df9acc1.chunk.js"
+  ]
+}

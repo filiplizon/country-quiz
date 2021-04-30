@@ -1,0 +1,8 @@
+{
+  "short_name": "CountryInfo",
+  "name": "CountryInfo - gain the knowledge about countries",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
