@@ -7,7 +7,7 @@ const StyledPointBox = styled.div`
   top: 20px;
   right: 20px;
   color: ${({ theme }) => theme.secondary};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-weight: ${({ theme }) => theme.fontWeight.light};
   animation: ${grow} 0.2s linear both;
 
   @media (min-width: 768px) {
@@ -27,8 +27,6 @@ const StyledPointBox = styled.div`
   }
 `;
 
-const PointBox = ({ children }) => {
-  <StyledPointBox>{children}</StyledPointBox>;
-};
+const PointBox = ({ children }) => <StyledPointBox>{children}</StyledPointBox>;
 
 export default PointBox;
