@@ -96,7 +96,7 @@ class Card extends Component {
         <InnerWrapper>
           <Flag flag={flag} name={name} />
         </InnerWrapper>
-        <InnerWrapper color>
+        <InnerWrapper color="true">
           <StyledCountryName>{name}</StyledCountryName>
           <InnerWrapper>
             <StyledPararaph hiddenInfo={hiddenInfo}>Capital: {capital}</StyledPararaph>
