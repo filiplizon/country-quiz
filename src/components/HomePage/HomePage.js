@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from 'components/Header/Header';
 import CardWrapper from 'components/CardWrapper/CardWrapper';
-import { getAllCountries as getAllCountriesAction } from 'operations/operations';
 
 class HomePage extends Component {
   state = {
     filteredCountries: [],
   };
-
-  componentDidMount() {
-    const { getAllCountries } = this.props;
-    getAllCountries();
-  }
 
   findCountry(e) {
     const { countries } = this.props;
@@ -35,13 +29,9 @@ class HomePage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getAllCountries: () => dispatch(getAllCountriesAction()),
-});
-
 const mapStateToProps = (state) => {
   const { countries } = state;
   return { countries };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps)(HomePage);
