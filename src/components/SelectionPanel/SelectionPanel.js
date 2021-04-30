@@ -65,7 +65,15 @@ const StyledIcon = styled.div`
 
   @media (min-width: 768px) {
     margin-left: 10px;
-    font-size: ${({ theme }) => theme.fontSize.xl};
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 1024px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (min-width: 1200px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 
