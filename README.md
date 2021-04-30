@@ -1,7 +1,7 @@
 Application in development.
 ## Live Preview 
 
-*  https://filiplizon.github.io/country-info/
+*  https://angry-newton-914cfc.netlify.app/
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
