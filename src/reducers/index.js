@@ -79,6 +79,18 @@ const initialState = {
     hard: { name: 'hard', next: '' },
   },
   points: 0,
+  bestScore: {
+    flags: {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    },
+    capitals: {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    },
+  },
   counter: 0,
   quizLength: 10,
   start: false,
@@ -156,22 +168,34 @@ const rootReducer = (state = initialState, action) => {
         answer: initialState.answer,
         isChecked: initialState.isChecked,
       };
+
     case types.RESET_TYPE:
       return {
         ...state,
         quizType: '',
       };
+
     case types.SET_NEXT_LEVEL:
       return {
         ...state,
         level: state.levels[action.level].next,
       };
 
-    // case types.FINISH_QUIZ:
-    //   return {
-    //     initialState,
-    //     countries:
-    //   };
+    case types.SET_BEST_SCORE:
+      return {
+        ...state,
+        bestScore: {
+          ...state.bestScore,
+          [action.quizType]: {
+            ...state.bestScore[action.quizType],
+            [action.level]:
+              action.score > state.bestScore[action.quizType][action.level]
+                ? action.score
+                : state.bestScore[action.quizType][action.level],
+          },
+        },
+      };
+
     default:
       return state;
   }

@@ -53,8 +53,11 @@ const setNextLevel = (level) => ({
   level,
 });
 
-const finishQuiz = () => ({
-  type: types.FINISH_QUIZ,
+const setBestScore = (score, level, quizType) => ({
+  type: types.SET_BEST_SCORE,
+  score,
+  level,
+  quizType,
 });
 
 export default {
@@ -69,5 +72,5 @@ export default {
   resetLevel,
   resetType,
   setNextLevel,
-  finishQuiz,
+  setBestScore,
 };
