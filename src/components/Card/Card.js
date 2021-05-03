@@ -34,8 +34,8 @@ const StyledWrapper = styled.li`
 `;
 
 const InnerWrapper = styled.div`
+  display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'flex')};
   width: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -56,7 +56,6 @@ const StyledCountryName = styled.h2`
 `;
 
 const StyledPararaph = styled(Paragraph)`
-  display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'block')};
   margin: 0 0 10px;
 
   @media (min-width: 1200px) {
@@ -99,14 +98,14 @@ class Card extends Component {
         </InnerWrapper>
         <InnerWrapper color="true">
           <StyledCountryName>{name}</StyledCountryName>
-          <InnerWrapper>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Capital: {capital}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Currency: {currency}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Language: {language}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Population: {population}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Region: {region}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Subregion: {subregion}</StyledPararaph>
-            <StyledPararaph hiddenInfo={hiddenInfo}>Timezone: {timezone}</StyledPararaph>
+          <InnerWrapper hiddenInfo={hiddenInfo}>
+            <StyledPararaph>Capital: {capital}</StyledPararaph>
+            <StyledPararaph>Currency: {currency}</StyledPararaph>
+            <StyledPararaph>Language: {language}</StyledPararaph>
+            <StyledPararaph>Population: {population}</StyledPararaph>
+            <StyledPararaph>Region: {region}</StyledPararaph>
+            <StyledPararaph>Subregion: {subregion}</StyledPararaph>
+            <StyledPararaph>Timezone: {timezone}</StyledPararaph>
           </InnerWrapper>
         </InnerWrapper>
         <InnerWrapper>
