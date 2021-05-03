@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import LazyLoad from 'react-lazy-load';
 import Card from 'components/Card/Card';
 
 const StyledCardWrapper = styled.div`
@@ -22,8 +23,9 @@ const StyledCardWrapper = styled.div`
 
 const CardWrapper = ({ countries }) => (
   <StyledCardWrapper>
-    {countries.length
-      ? countries.map((country) => (
+    {countries.length &&
+      countries.map((country) => (
+        <LazyLoad offsetVertical={300}>
           <Card
             key={country.alpha3Code}
             name={country.name}
@@ -36,8 +38,8 @@ const CardWrapper = ({ countries }) => (
             subregion={country.subregion}
             timezone={country.timezones[0]}
           />
-        ))
-      : null}
+        </LazyLoad>
+      ))}
   </StyledCardWrapper>
 );
 
