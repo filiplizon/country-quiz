@@ -96,7 +96,7 @@ const QuizTemplate = ({ children, level, quizType, resetLevel, resetType }) => (
       </StyledLink>
     )}
 
-    {quizType && (
+    {quizType && level === '' && (
       <StyledLink onClick={() => resetType()} to="/quiz">
         <StyledArrowIcon /> go back
       </StyledLink>
