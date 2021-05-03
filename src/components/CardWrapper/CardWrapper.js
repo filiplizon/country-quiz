@@ -24,23 +24,24 @@ const StyledCardWrapper = styled.ul`
 
 const CardWrapper = ({ countries }) => (
   <StyledCardWrapper>
-    {countries.length &&
-      countries.map((country) => (
-        <LazyLoad key={country.alpha3Code} offsetVertical={300}>
-          <Card
-            id={country.alpha3Code}
-            name={country.name}
-            flag={country.flag}
-            capital={country.capital}
-            currency={country.currencies[0].name}
-            language={country.languages[0].name}
-            population={country.population.toLocaleString()}
-            region={country.region}
-            subregion={country.subregion}
-            timezone={country.timezones[0]}
-          />
-        </LazyLoad>
-      ))}
+    {countries.length
+      ? countries.map((country) => (
+          <LazyLoad key={country.alpha3Code} offsetVertical={300}>
+            <Card
+              id={country.alpha3Code}
+              name={country.name}
+              flag={country.flag}
+              capital={country.capital}
+              currency={country.currencies[0].name}
+              language={country.languages[0].name}
+              population={country.population.toLocaleString()}
+              region={country.region}
+              subregion={country.subregion}
+              timezone={country.timezones[0]}
+            />
+          </LazyLoad>
+        ))
+      : null}
   </StyledCardWrapper>
 );
 
