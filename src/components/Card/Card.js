@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import Flag from 'components/Flag/Flag';
 import Paragraph from 'components/Paragraph/Paragraph';
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.li`
   min-height: 55vh;
   width: 95vw;
   display: grid;
@@ -78,6 +78,7 @@ class Card extends Component {
 
   render() {
     const {
+      id,
       name,
       flag,
       capital,
@@ -92,7 +93,7 @@ class Card extends Component {
     const { hiddenInfo } = this.state;
 
     return (
-      <StyledWrapper>
+      <StyledWrapper key={id}>
         <InnerWrapper>
           <Flag flag={flag} name={name} />
         </InnerWrapper>

@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import LazyLoad from 'react-lazy-load';
 import Card from 'components/Card/Card';
 
-const StyledCardWrapper = styled.div`
+const StyledCardWrapper = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
+  margin: 0;
   padding: 15vh 3% 0;
 
   @media (min-width: 500px) and (orientation: landscape) {
@@ -25,9 +26,9 @@ const CardWrapper = ({ countries }) => (
   <StyledCardWrapper>
     {countries.length &&
       countries.map((country) => (
-        <LazyLoad offsetVertical={300}>
+        <LazyLoad key={country.alpha3Code} offsetVertical={300}>
           <Card
-            key={country.alpha3Code}
+            id={country.alpha3Code}
             name={country.name}
             flag={country.flag}
             capital={country.capital}
