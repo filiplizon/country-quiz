@@ -114,7 +114,6 @@ const QuizTemplate = ({ children, level, quizType, resetLevel, resetType }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  finishQuiz: () => dispatch(actions.finishQuiz()),
   resetLevel: () => dispatch(actions.resetLevel()),
   resetType: () => dispatch(actions.resetType()),
 });
