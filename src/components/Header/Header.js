@@ -6,9 +6,16 @@ import Input from 'components/Input/Input';
 import Link from 'components/Link/Link';
 import { FiSearch as SearchIcon } from 'react-icons/fi';
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 const Header = ({ searchCountryFn }) => (
   <StyledHeader>
-    <Logo src={LogoImage} alt="CountryInfo logo" />
+    <Logo src={LogoImage} alt="CountryInfo logo" onClick={() => scrollToTop()} />
     <Input className="Input" placeholder="Search" onChange={(e) => searchCountryFn(e)}>
       <SearchIcon />
     </Input>

@@ -7,10 +7,11 @@ const StyledLogo = styled.img`
 
 const StyledWrapper = styled.div`
   height: 15vh;
+  cursor: pointer;
 `;
 
-const Logo = ({ src, alt }) => (
-  <StyledWrapper>
+const Logo = ({ src, alt, onClick }) => (
+  <StyledWrapper onClick={onClick}>
     <StyledLogo src={src} alt={alt} />
   </StyledWrapper>
 );
