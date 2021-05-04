@@ -67,6 +67,10 @@ const StyledMessage = styled(Paragraph)`
   }
 `;
 
+const StyledInput = styled(Input)`
+  margin-left: 0;
+`;
+
 const QuestionWrapper = ({
   level,
   quizType,
@@ -112,7 +116,7 @@ const QuestionWrapper = ({
         ) : (
           <Flag flag={countriesForQuiz[counter].flag} />
         )}
-        <Input
+        <StyledInput
           value={answer}
           placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
           onChange={(e) => {

@@ -45,7 +45,6 @@ const StyledWrapper = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
-  margin-right: 5px;
   border: none;
   border-bottom: 1px solid ${({ theme }) => theme.black};
   font-size: 1.6rem;
