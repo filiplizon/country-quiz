@@ -10,6 +10,10 @@ const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-height: 500px) and (orientation: portrait) {
+    height: 70px;
+  }
 `;
 
 const StyledFlag = styled.img`

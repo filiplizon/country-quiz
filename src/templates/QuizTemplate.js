@@ -16,6 +16,10 @@ const StyledWrapper = styled.div`
   justify-items: center;
   align-content: center;
 
+  @media (max-height: 500px) and (orientation: portrait) {
+    grid-template-rows: 1.6fr 0.25fr;
+  }
+
   @media (min-width: 768px) {
     grid-template-rows: 0.6fr 0.35fr;
   }
