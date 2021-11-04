@@ -31,8 +31,8 @@ const CardWrapper = ({ countries }) => (
               id={country.alpha3Code}
               name={country.name}
               flag={country.flag}
-              capital={country.capital}
-              currency={country.currencies[0].name}
+              capital={country.capital ? country.capital : '-'}
+              currency={country.currencies ? country.currencies[0].name : '-'}
               language={country.languages[0].name}
               population={country.population.toLocaleString()}
               region={country.region}
