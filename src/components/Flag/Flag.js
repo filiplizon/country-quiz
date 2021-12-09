@@ -18,7 +18,8 @@ const StyledWrapper = styled.div`
 
 const StyledFlag = styled.img`
   height: 100%;
-  border: 1px solid ${({ theme }) => theme.grey200};
+
+  border: 1px solid ${({ theme, noBorder }) => (noBorder ? 'none' : `${theme.grey200}`)};
 `;
 
 const StyledParagraph = styled(Paragraph)`
@@ -48,9 +49,9 @@ const StyledParagraph = styled(Paragraph)`
   }
 `;
 
-const Flag = ({ flag, name, quiz }) => (
+const Flag = ({ flag, name, quiz, noBorder }) => (
   <StyledWrapper>
-    <StyledFlag src={flag} alt={name} />
+    <StyledFlag noBorder={noBorder} src={flag} alt={name} />
     {quiz && <StyledParagraph>{name}</StyledParagraph>}
   </StyledWrapper>
 );

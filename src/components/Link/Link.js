@@ -3,9 +3,15 @@ import { Link } from 'react-router-dom';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme, primary }) => (primary ? theme.primary : '#fff')};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: ${({ theme }) => theme.fontSize.s};
+  transition: transform 0.3s;
+  z-index: 990000;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.m};
@@ -19,12 +25,11 @@ const StyledLink = styled(Link)`
     font-size: ${({ theme }) => theme.fontSize.l};
   }
 
-  @media (min-width: 1200px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
 
-  :hover {
-    color: ${({ theme }) => theme.secondary};
+    /* font-size: 1.3rem; */
+    /* color: ${({ theme }) => theme.primary}; */
   }
 `;
 

@@ -19,10 +19,11 @@ class HomePage extends Component {
   render() {
     const { filteredCountries } = this.state;
     const { countries } = this.props;
+    const isQuiz = false;
 
     return (
       <>
-        <Header searchCountryFn={(e) => this.findCountry(e)} />
+        <Header searchCountryFn={(e) => this.findCountry(e)} isQuiz={isQuiz} />
         <CardWrapper countries={filteredCountries.length ? filteredCountries : countries} />
       </>
     );

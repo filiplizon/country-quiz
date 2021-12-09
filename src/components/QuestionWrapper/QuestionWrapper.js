@@ -1,74 +1,28 @@
+// import React from 'react';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
-import Input from 'components/Input/Input';
-import Button from 'components/Button/Button';
+// import Input from 'components/Input/Input';
+// import Button from 'components/Button/Button';
 import PointBox from 'components/PointBox/PointBox';
+import AnswerBox from 'components/AnswerBox/AnswerBox';
+import Stopwatch from 'components/Stopwatch/Stopwatch';
 
 const StyledWrapper = styled.div`
-  height: 45vh;
+  height: 25vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-
+  font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.primary};
 
-  @media (min-width: 768px) {
-    height: 40vh;
-    font-size: ${({ theme }) => theme.fontSize.l};
+  @media (min-width: 1100px) {
   }
-
-  @media (min-width: 1024px) {
-    font-size: 4rem;
-  }
-
-  @media (min-width: 1024px) and (orientation: landscape) {
-    margin: 65px 0 10px;
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
-  @media (min-width: 1200px) {
-    height: 50vh;
-    margin: 0;
-  }
-`;
-
-const StyledMessage = styled(Paragraph)`
-  opacity: ${({ hidden }) => hidden && 0};
-  color: ${({ isAnswerCorrect }) => (isAnswerCorrect ? '#3BC14A' : 'red')};
-  font-weight: ${({ theme }) => theme.fontWeight.light};
-  font-size: 1.3rem;
-
-  @media (min-width: 360px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (min-width: 500px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.xl};
-  }
-
-  @media (min-width: 800px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (min-width: 1024px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-  @media (min-width: 1200px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-`;
-
-const StyledInput = styled(Input)`
-  margin-left: 0;
 `;
 
 const QuestionWrapper = ({
@@ -78,18 +32,22 @@ const QuestionWrapper = ({
   counter,
   quizLength,
   points,
-  isAnswerCorrect,
-  isChecked,
-  setAnswer,
-  answer,
-  checkAnswer,
-  changeQuestion,
-  setQuizQuestions,
+  // isAnswerCorrect,
+  // isChecked,
+  // setAnswer,
+  // answer,
+  // checkAnswer,
+  // changeQuestion,
+  // setQuizQuestions,
+  setCurrentQuestion,
+  // setAnswers,
+  currentQuestion,
+  start,
 }) => {
   useEffect(() => {
-    setQuizQuestions(level);
+    setCurrentQuestion(countriesForQuiz[counter], quizType);
+    // setAnswers(currentQuestion);
   }, []);
-
   return (
     <>
       <PointBox>
@@ -100,6 +58,9 @@ const QuestionWrapper = ({
         <Paragraph>
           Points: {points} / {quizLength}
         </Paragraph>
+        <Paragraph>
+          Time: <Stopwatch start={start} />
+        </Paragraph>
       </PointBox>
       <StyledWrapper>
         <Paragraph>
@@ -108,50 +69,15 @@ const QuestionWrapper = ({
             : 'What is capital of this country?'}
         </Paragraph>
         {quizType === 'capitals' ? (
-          <Flag
-            flag={countriesForQuiz[counter].flag}
-            name={countriesForQuiz[counter].name}
-            quiz="true"
-          />
+          <Flag flag={currentQuestion.flag} name={currentQuestion.name} quiz="true" />
         ) : (
-          <Flag flag={countriesForQuiz[counter].flag} />
+          <Flag flag={currentQuestion.flag} />
         )}
-        <StyledInput
-          value={answer}
-          placeholder={quizType === 'flags' ? 'Country' : 'Capital'}
-          onChange={(e) => {
-            setAnswer(e.target.value);
-          }}
-          onKeyPress={(e) => {
-            e.key === 'Enter' && answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
-            isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
-          }}
-        />
-        {isChecked && (
-          <StyledMessage isAnswerCorrect={isAnswerCorrect}>
-            {isAnswerCorrect
-              ? 'Good!'
-              : `You're wrong. It's ${
-                  quizType === 'flags'
-                    ? countriesForQuiz[counter].name
-                    : countriesForQuiz[counter].capital
-                }.`}
-          </StyledMessage>
-        )}
-        <Button
-          secondary
-          onClick={() => {
-            answer !== '' && !isChecked && checkAnswer(answer); // eslint-disable-line
-            isChecked && counter < 10 && changeQuestion(); // eslint-disable-line
-          }}
-        >
-          {isChecked ? 'Next' : 'Check'}
-        </Button>
+        <AnswerBox />
       </StyledWrapper>
     </>
   );
 };
-
 const mapStateToProps = (state) => {
   const {
     level,
@@ -163,6 +89,8 @@ const mapStateToProps = (state) => {
     answer,
     isChecked,
     isAnswerCorrect,
+    currentQuestion,
+    start,
   } = state;
   return {
     level,
@@ -174,6 +102,8 @@ const mapStateToProps = (state) => {
     answer,
     isChecked,
     isAnswerCorrect,
+    currentQuestion,
+    start,
   };
 };
 
@@ -182,6 +112,9 @@ const mapDispatchToProps = (dispatch) => ({
   checkAnswer: (answer, correctAnswer) => dispatch(actions.checkAnswer(answer, correctAnswer)),
   changeQuestion: () => dispatch(actions.changeQuestion()),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
+  setCurrentQuestion: (question, quizType) =>
+    dispatch(actions.setCurrentQuestion(question, quizType)),
+  setAnswers: () => dispatch(actions.setAnswers()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionWrapper);

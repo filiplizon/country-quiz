@@ -1,50 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
 import Link from 'components/Link/Link';
-import bqQuiz from 'assets/images/bgQuiz.png';
+import Header from 'components/Header/Header';
+import Modal from 'components/Modal/Modal';
 import illustration from 'assets/images/illustration.png';
+import map from 'assets/images/world2.svg';
 import { VscArrowLeft as ArrowIcon } from 'react-icons/vsc';
+// import AnswerBox from 'components/AnswerBox/AnswerBox';
 
 const StyledWrapper = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: 0.6fr 0.25fr;
+  grid-template-rows: 1fr;
   justify-items: center;
   align-content: center;
-
-  @media (max-height: 500px) and (orientation: portrait) {
-    grid-template-rows: 1.6fr 0.25fr;
-  }
-
-  @media (min-width: 768px) {
-    grid-template-rows: 0.6fr 0.35fr;
-  }
-
-  ::after {
-    @media (min-width: 1200px) {
-      position: absolute;
-      right: 0;
-      top: 0;
-      content: '';
-      width: 90vw;
-      height: 100vh;
-      clip-path: polygon(100% 0, 37% 100%, 100% 100%);
-      background-image: url(${bqQuiz});
-      background-position: 50% 35%;
-    }
-  }
 `;
 
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 20%;
+  left: 3vw;
+  color: ${({ theme }) => theme.primary};
+  z-index: 1000;
 `;
 
 const StyledArrowIcon = styled(ArrowIcon)`
@@ -53,78 +36,123 @@ const StyledArrowIcon = styled(ArrowIcon)`
 `;
 
 const InnerWrapper = styled.div`
-  width: 90vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: ${({ start }) => (start ? '0' : '20vh')};
+  z-index: 1;
+  height: ${({ start }) => (start ? '100vh' : '85vh')};
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1100px) {
     position: absolute;
-    top: 20%;
-    left: -5%;
+    top: ${({ start }) => (start ? '-5%' : '0')};
+    left: 18%;
+    width: 35%;
+    height: 80%;
   }
 `;
 
 const StyledIllustration = styled.div`
-  width: 100%;
-  height: 50vh;
+  width: 50%;
+  height: 20%;
   position: absolute;
-  bottom: 0;
+  bottom: -10px;
   background-image: url(${illustration});
   background-position: 45% 50%;
   background-size: cover;
+  opacity: ${({ start }) => (start ? '0.3' : '1')};
   transition: opacity 0.2s;
-  z-index: -1;
-
-  &.fade-out {
-    opacity: 0.3;
-  }
+  display: ${({ start }) => (start ? 'none' : 'block')};
 
   @media (min-width: 1024px) and (orientation: landscape) {
     width: 55%;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1100px) {
     height: 47vh;
     width: 32%;
     left: 0%;
+    display: block;
   }
 `;
 
-const QuizTemplate = ({ children, level, quizType, resetLevel, resetType }) => (
-  <StyledWrapper>
-    {!quizType && (
+const StyledMap = styled.img`
+  display: ${({ start }) => (start ? 'none' : 'block')};
+  position: absolute;
+  top: 20vh;
+  z-index: 100;
+
+  @media (min-width: 760px) {
+    width: 80%;
+  }
+
+  @media (min-width: 1100px) {
+    width: 50%;
+    bottom: 0;
+    top: unset;
+    right: 0;
+    z-index: -1;
+    display: block;
+  }
+`;
+
+const QuizTemplate = ({
+  quizType,
+  resetLevel,
+  resetType,
+  children,
+  level,
+  formType,
+  start,
+  isUserLoggedIn,
+  // countriesForQuiz,
+}) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  return (
+    <StyledWrapper>
+      {/* {!quizType && (
       <StyledLink to="/">
         <StyledArrowIcon /> home
       </StyledLink>
-    )}
+    )} */}
 
-    {quizType && level === '' && (
-      <StyledLink onClick={() => resetType()} to="/quiz">
-        <StyledArrowIcon /> go back
-      </StyledLink>
-    )}
+      {quizType && level === '' && (
+        <StyledLink onClick={() => resetType()} to="/">
+          <StyledArrowIcon /> go back
+        </StyledLink>
+      )}
 
-    {level && (
-      <StyledLink onClick={() => resetLevel()} to="/quiz">
-        <StyledArrowIcon /> go back
-      </StyledLink>
-    )}
-
-    <InnerWrapper>{children}</InnerWrapper>
-    {level ? <StyledIllustration className="fade-out" /> : <StyledIllustration />}
-  </StyledWrapper>
-);
+      {level && (
+        <StyledLink onClick={() => resetLevel()} to="/">
+          <StyledArrowIcon /> go back
+        </StyledLink>
+      )}
+      <Modal
+        isUserLoggedIn={isUserLoggedIn}
+        isModalOpen={isModalOpen}
+        setModalOpenFn={setModalOpen}
+        formType={formType}
+      />
+      <Header isQuiz="true" setModalOpenFn={setModalOpen} />
+      <StyledMap src={map} start={start} />
+      <InnerWrapper start={start}>{children}</InnerWrapper>
+      <StyledIllustration start={start} />
+    </StyledWrapper>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   resetLevel: () => dispatch(actions.resetLevel()),
   resetType: () => dispatch(actions.resetType()),
+  startQuiz: () => dispatch(actions.startQuiz()),
 });
 
 const mapStateToProps = (state) => {
-  const { level, quizType } = state;
-  return { level, quizType };
+  const { level, quizType, formType, start, isUserLoggedIn } = state;
+  return { level, quizType, formType, start, isUserLoggedIn };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);

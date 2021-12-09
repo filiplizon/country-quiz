@@ -1,5 +1,5 @@
 import types from 'actions/types';
-import { isAnswerCorrect } from 'operations/operations';
+// import { isAnswerCorrect } from 'operations/operations';
 import _ from 'lodash';
 
 const initialState = {
@@ -96,7 +96,15 @@ const initialState = {
   start: false,
   isAnswerCorrect: false,
   isChecked: false,
-  answer: '',
+  formType: '',
+  correctAnswer: '',
+  answers: [],
+  currentQuestion: {},
+  currentAnswer: '',
+  time: 0,
+  isPasswordCorrect: false,
+  user: {},
+  isUserLoggedIn: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -138,26 +146,23 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         countriesForQuiz: _.sampleSize(state.countriesByLevel[action.level], 10),
       };
-    case types.SET_ANSWER:
-      return {
-        ...state,
-        answer: action.answer,
-      };
 
     case types.CHECK_ANSWER:
       return {
         ...state,
-        isAnswerCorrect: isAnswerCorrect(state),
+        isAnswerCorrect: action.answer === action.correctAnswer,
         isChecked: !state.isChecked,
-        points: isAnswerCorrect(state) ? state.points + 1 : state.points,
+        points: action.answer === action.correctAnswer ? state.points + 1 : state.points,
       };
+
     case types.CHANGE_QUESTION:
       return {
         ...state,
-        answer: '',
         isChecked: !state.isChecked,
         counter: state.counter + 1,
         isAnswerCorrect: false,
+        currentQuestion: state.countriesForQuiz[state.counter],
+        currentAnswer: '',
       };
     case types.RESET_LEVEL:
       return {
@@ -167,6 +172,7 @@ const rootReducer = (state = initialState, action) => {
         points: initialState.points,
         answer: initialState.answer,
         isChecked: initialState.isChecked,
+        countriesForQuiz: initialState.countriesForQuiz,
       };
 
     case types.RESET_TYPE:
@@ -194,6 +200,73 @@ const rootReducer = (state = initialState, action) => {
                 : state.bestScore[action.quizType][action.level],
           },
         },
+        start: initialState.start,
+      };
+
+    case types.SET_FORM_TYPE:
+      return {
+        ...state,
+        formType: action.formType,
+      };
+
+    case types.SET_CURRENT_ANSWER:
+      return {
+        ...state,
+        currentAnswer: action.answer,
+      };
+    case types.SET_CURRENT_QUESTION:
+      return {
+        ...state,
+        currentQuestion: action.question,
+        correctAnswer: action.quizType === 'flags' ? action.question.name : action.question.capital,
+      };
+
+    case types.SET_ANSWERS:
+      return {
+        ...state,
+        answers: [
+          state.currentQuestion,
+          ..._.sampleSize(
+            state.countries.filter(
+              (country) =>
+                country.region === state.currentQuestion.region &&
+                country !== state.currentQuestion &&
+                country.capital !== '',
+            ),
+            3,
+          ),
+        ].sort(() => 0.5 - Math.random()),
+      };
+
+    case types.START_QUIZ:
+      return {
+        ...state,
+        start: !initialState.start,
+      };
+
+    case types.SET_TIME:
+      return {
+        ...state,
+        time: action.time,
+      };
+
+    case types.REGISTER_USER:
+      return {
+        ...state,
+        isUserRegistered: action.action,
+      };
+
+    case types.CHECK_PASSWORD:
+      return {
+        ...state,
+        isPasswordCorrect: action.isCorrect,
+      };
+
+    case types.SET_CURRENT_USER:
+      return {
+        ...state,
+        user: action.user,
+        isUserLoggedIn: false,
       };
 
     default:

@@ -8,6 +8,7 @@ const StyledLogo = styled.img`
 const StyledWrapper = styled.div`
   height: 15vh;
   cursor: pointer;
+  z-index: 10000;
 `;
 
 const Logo = ({ src, alt, onClick }) => (

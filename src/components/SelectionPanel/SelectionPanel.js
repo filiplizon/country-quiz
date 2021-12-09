@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
-import { grow } from 'helpers/animations';
+
 import Heading from 'components/Heading/Heading';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
@@ -14,6 +14,7 @@ const StyledHeading = styled(Heading)`
   font-size: ${({ theme }) => theme.fontSize.l};
   color: ${({ theme }) => theme.secondary};
   margin-bottom: 10px;
+  /* margin-top: 40px; */
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.xl};
@@ -24,12 +25,12 @@ const StyledHeading = styled(Heading)`
   }
 
   @media (min-width: 1024px) and (orientation: landscape) {
-    font-size: 4rem;
+    font-size: 3.5rem;
   }
 `;
 
 const StyledParagraph = styled(Paragraph)`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.l};
@@ -40,7 +41,7 @@ const StyledParagraph = styled(Paragraph)`
   }
 
   @media (min-width: 1024px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.l};
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 
@@ -55,8 +56,8 @@ const InnerWrapper = styled.div`
     width: 90%;
   }
 
-  @media (min-width: 1200px) {
-    width: 60%;
+  @media (min-width: 1100px) {
+    width: 85%;
   }
 `;
 
@@ -72,9 +73,14 @@ const StyledIcon = styled.div`
     font-size: ${({ theme }) => theme.fontSize.l};
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }
+`;
+
+const StyledStartButton = styled(Button)`
+  margin-top: 20px;
+  visibility: ${({ level }) => (level ? 'unset' : 'hidden')};
 `;
 
 const SelectionPanel = ({
@@ -85,106 +91,135 @@ const SelectionPanel = ({
   quizLength,
   bestScore,
   setCountriesLevel,
-}) => (
-  <>
-    {quizType && (
-      <PointBox>
-        <Paragraph>Your best scores:</Paragraph>
-        {quizType === 'flags' ? (
+  level,
+  startQuiz,
+  levels,
+  user,
+}) => {
+  const [isActive, setActive] = useState(null);
+
+  return (
+    <>
+      {quizType && (
+        <PointBox>
+          <Paragraph>Your best scores:</Paragraph>
+          {quizType === 'flags' ? (
+            <>
+              <Paragraph>
+                easy: {bestScore.flags.easy} / {quizLength}
+              </Paragraph>
+              <Paragraph>
+                medium: {bestScore.flags.medium} / {quizLength}
+              </Paragraph>
+              <Paragraph>
+                hard: {bestScore.flags.hard} / {quizLength}
+              </Paragraph>
+            </>
+          ) : (
+            <>
+              <Paragraph>
+                easy: {bestScore.capitals.easy} / {quizLength}
+              </Paragraph>
+              <Paragraph>
+                medium: {bestScore.capitals.medium} / {quizLength}
+              </Paragraph>
+              <Paragraph>
+                hard: {bestScore.capitals.hard} / {quizLength}
+              </Paragraph>
+            </>
+          )}
+        </PointBox>
+      )}
+      <InnerWrapper column>
+        <StyledHeading>
+          {Object.keys(user).length !== 0 ? `Hi ${user.login}!` : 'Welcome to the quiz!'}
+        </StyledHeading>
+        <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
+        {quizType ? (
           <>
-            <Paragraph>
-              easy: {bestScore.flags.easy} / {quizLength}
-            </Paragraph>
-            <Paragraph>
-              medium: {bestScore.flags.medium} / {quizLength}
-            </Paragraph>
-            <Paragraph>
-              hard: {bestScore.flags.hard} / {quizLength}
-            </Paragraph>
+            <InnerWrapper>
+              {Object.keys(levels).map((el, i) => (
+                <Button
+                  key={i} // eslint-disable-line
+                  secondary
+                  level={level}
+                  onClick={() => {
+                    chooseLevel(el);
+                    setActive(i);
+                  }}
+                  className={isActive === i ? 'active' : null}
+                >
+                  {el.charAt(0).toUpperCase() + el.slice(1)}
+                </Button>
+              ))}
+            </InnerWrapper>
+            <StyledStartButton
+              level={level}
+              secondary
+              onClick={() => {
+                setCountriesLevel();
+                setQuizQuestions(level);
+                startQuiz();
+              }}
+            >
+              Start
+            </StyledStartButton>
           </>
         ) : (
-          <>
-            <Paragraph>
-              easy: {bestScore.capitals.easy} / {quizLength}
-            </Paragraph>
-            <Paragraph>
-              medium: {bestScore.capitals.medium} / {quizLength}
-            </Paragraph>
-            <Paragraph>
-              hard: {bestScore.capitals.hard} / {quizLength}
-            </Paragraph>
-          </>
+          <InnerWrapper>
+            <Button secondary onClick={() => chooseType('flags')}>
+              Flags
+              <StyledIcon>
+                <FlagIcon />
+              </StyledIcon>
+            </Button>
+            <Button secondary onClick={() => chooseType('capitals')}>
+              Capitals
+              <StyledIcon>
+                <CapitolIcon />
+              </StyledIcon>
+            </Button>
+          </InnerWrapper>
         )}
-      </PointBox>
-    )}
-    <InnerWrapper column onClick={() => setCountriesLevel()}>
-      <StyledHeading>Welcome to the quiz!</StyledHeading>
-      <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
-      {quizType ? (
-        <InnerWrapper>
-          <Button
-            animation={grow}
-            secondary
-            onClick={() => {
-              chooseLevel('easy');
-              setQuizQuestions('easy');
-            }}
-          >
-            Easy
-          </Button>
-          <Button
-            animation={grow}
-            animationDelay=".5s"
-            secondary
-            onClick={() => {
-              chooseLevel('medium');
-              setQuizQuestions('medium');
-            }}
-          >
-            Medium
-          </Button>
-          <Button
-            animation={grow}
-            animationDelay="1s"
-            secondary
-            onClick={() => {
-              chooseLevel('hard');
-              setQuizQuestions('hard');
-            }}
-          >
-            Hard
-          </Button>
-        </InnerWrapper>
-      ) : (
-        <InnerWrapper>
-          <Button secondary onClick={() => chooseType('flags')}>
-            Flags
-            <StyledIcon>
-              <FlagIcon />
-            </StyledIcon>
-          </Button>
-          <Button secondary onClick={() => chooseType('capitals')}>
-            Capitals
-            <StyledIcon>
-              <CapitolIcon />
-            </StyledIcon>
-          </Button>
-        </InnerWrapper>
-      )}
-    </InnerWrapper>
-  </>
-);
+      </InnerWrapper>
+    </>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   chooseType: (quizType) => dispatch(actions.chooseType(quizType)),
   chooseLevel: (level) => dispatch(actions.chooseLevel(level)),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
+  startQuiz: () => dispatch(actions.startQuiz()),
+  setCurrentQuestion: (question) => dispatch(actions.setCurrentQuestion(question)),
 });
 
 const mapStateToProps = (state) => {
-  const { quizType, countries, countriesByLevel, quizLength, bestScore } = state;
-  return { quizType, countries, countriesByLevel, quizLength, bestScore };
+  const {
+    quizType,
+    countries,
+    countriesByLevel,
+    quizLength,
+    bestScore,
+    level,
+    levels,
+    countriesForQuiz,
+    counter,
+    user,
+  } = state;
+  return {
+    quizType,
+    countries,
+    countriesByLevel,
+    quizLength,
+    bestScore,
+    level,
+    levels,
+    countriesForQuiz,
+    counter,
+    user,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectionPanel);

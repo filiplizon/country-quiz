@@ -8,48 +8,45 @@ import actions from 'actions/actions';
 
 const StyledWrapper = styled.div`
   width: 100%;
-  height: ${({ row }) => (row ? '' : '60%')};
+  height: ${({ row }) => (row ? '' : '50%')};
   display: flex;
   flex-direction: ${({ row }) => (row ? 'row' : 'column')};
   align-items: center;
   justify-content: space-around;
+  margin-top: 10px;
 
-  @media (min-width: 1200px) {
-    width: ${({ row }) => (row ? '' : '40%')};
+  @media (min-width: 1100px) {
+    width: ${({ row }) => (row ? '' : '90%')};
   }
 `;
 
 const StyledImage = styled.img`
-  width: 160px;
   height: 160px;
 
   @media (min-width: 360px) {
-    width: 215px;
     height: 215px;
   }
 
   @media (min-width: 768px) {
-    width: 300px;
     height: 300px;
   }
 
   @media (min-width: 1024px) {
-    width: 350px;
     height: 350px;
   }
 
   @media (min-width: 1200px) {
-    width: 200px;
     height: 200px;
   }
 `;
 
 const StyledParagraph = styled(Paragraph)`
-  margin-bottom: 20px;
-  line-height: 1.5;
+  margin-bottom: 5px;
+  width: 90%;
+  text-align: center;
 
   @media (min-width: 360px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.l};
@@ -61,6 +58,7 @@ const StyledParagraph = styled(Paragraph)`
 
   @media (min-width: 1024px) and (orientation: landscape) {
     font-size: ${({ theme }) => theme.fontSize.m};
+    width: 100%;
   }
 `;
 
@@ -70,9 +68,14 @@ const Summary = ({
   resetLevel,
   resetType,
   level,
-  setNextLevel,
   setBestScore,
   quizType,
+  time,
+  setCountriesLevel,
+  setQuizQuestions,
+  startQuiz,
+  setNextLevel,
+  levels,
 }) => {
   useEffect(() => {
     setBestScore(points, level, quizType);
@@ -81,68 +84,59 @@ const Summary = ({
     <StyledWrapper>
       <StyledImage src={illustration} alt="" />
       <StyledParagraph>
-        You answered correctly to {points} / {quizLength} questions.
+        You answered correctly to{' '}
+        <b>
+          {points} / {quizLength}
+        </b>{' '}
+        questions.
       </StyledParagraph>
-      {level !== 'hard' ? (
-        <StyledWrapper row>
+      <StyledParagraph>
+        Your time: <b>{`${time.minutes}:${time.seconds}:${time.miliseconds}`}</b>
+      </StyledParagraph>
+
+      <StyledWrapper row>
+        <Button
+          secondary
+          onClick={() => {
+            resetLevel(level);
+            setCountriesLevel();
+            setQuizQuestions(level);
+            startQuiz();
+          }}
+        >
+          Try again
+        </Button>
+        {level !== 'hard' ? (
           <Button
+            onClick={() => {
+              resetLevel();
+              setNextLevel(level);
+              setQuizQuestions(levels[level].next);
+              startQuiz();
+            }}
             secondary
+          >
+            Next level
+          </Button>
+        ) : (
+          <Button
             onClick={() => {
               resetLevel();
               resetType();
             }}
-          >
-            Quiz menu
-          </Button>
-          {points >= 5 ? (
-            <Button
-              onClick={() => {
-                resetLevel();
-                setNextLevel(level);
-              }}
-              secondary
-            >
-              Next level
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                resetLevel(level);
-              }}
-              secondary
-            >
-              Try again
-            </Button>
-          )}
-        </StyledWrapper>
-      ) : (
-        <StyledWrapper row>
-          <Button
-            secondary
-            onClick={() => {
-              resetLevel();
-              resetType();
-            }}
-          >
-            Quiz menu
-          </Button>
-          <Button
-            onClick={() => {
-              resetLevel(level);
-            }}
             secondary
           >
-            Try again
+            Finish game
           </Button>
-        </StyledWrapper>
-      )}
+        )}
+      </StyledWrapper>
     </StyledWrapper>
   );
 };
 
 const mapStateToProps = (state) => {
-  const { points, quizLength, level, levels, quizType } = state;
-  return { points, quizLength, level, levels, quizType };
+  const { points, quizLength, level, levels, quizType, time } = state;
+  return { points, quizLength, level, levels, quizType, time };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -150,6 +144,9 @@ const mapDispatchToProps = (dispatch) => ({
   resetType: () => dispatch(actions.resetType()),
   setNextLevel: (level) => dispatch(actions.setNextLevel(level)),
   setBestScore: (score, level, quizType) => dispatch(actions.setBestScore(score, level, quizType)),
+  setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
+  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
+  startQuiz: () => dispatch(actions.startQuiz()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

@@ -35,8 +35,9 @@ const checkAnswer = (answer, correctAnswer) => ({
   correctAnswer,
 });
 
-const changeQuestion = () => ({
+const changeQuestion = (counter) => ({
   type: types.CHANGE_QUESTION,
+  counter,
 });
 
 const resetLevel = (level) => ({
@@ -60,6 +61,47 @@ const setBestScore = (score, level, quizType) => ({
   quizType,
 });
 
+const setFormType = (formType) => ({
+  type: types.SET_FORM_TYPE,
+  formType,
+});
+
+const setCurrentAnswer = (answer) => ({
+  type: types.SET_CURRENT_ANSWER,
+  answer,
+});
+
+const setAnswers = () => ({
+  type: types.SET_ANSWERS,
+});
+const setCurrentQuestion = (question, quizType) => ({
+  type: types.SET_CURRENT_QUESTION,
+  question,
+  quizType,
+});
+
+const startQuiz = () => ({
+  type: types.START_QUIZ,
+});
+
+const setTime = (time) => ({
+  type: types.SET_TIME,
+  time,
+});
+
+const registerUser = (action) => ({
+  type: types.REGISTER_USER,
+  action,
+});
+const checkPassword = (isCorrect) => ({
+  type: types.CHECK_PASSWORD,
+  isCorrect,
+});
+const setUser = (user) => ({
+  type: types.SET_CURRENT_USER,
+  user,
+});
+
 export default {
   fetch,
   chooseType,
@@ -73,4 +115,14 @@ export default {
   resetType,
   setNextLevel,
   setBestScore,
+  setFormType,
+
+  setAnswers,
+  startQuiz,
+  setCurrentQuestion,
+  setCurrentAnswer,
+  setTime,
+  registerUser,
+  checkPassword,
+  setUser,
 };

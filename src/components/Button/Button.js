@@ -1,19 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, onClick, secondary, animation, animationDelay }) => (
+const Button = ({ children, onClick, secondary, animation, animationDelay, className, level }) => (
   <StyledButton
     animation={animation}
     animationDelay={animationDelay}
     secondary={secondary}
     onClick={onClick}
+    className={className}
+    level={level}
   >
     {children}
   </StyledButton>
 );
 
 const StyledButton = styled.button`
-  width: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +22,7 @@ const StyledButton = styled.button`
   background-color: ${({ theme, secondary }) => (secondary ? theme.secondary : theme.primary)};
   color: white;
   border: none;
-  border-radius: 15px;
-  padding: 10px 0;
+  padding: 5px 20px;
   transition: transform 0.2s ease;
   cursor: pointer;
   outline-color: ${({ theme }) => theme.secondary};
@@ -30,16 +30,20 @@ const StyledButton = styled.button`
   animation: ${({ animation }) => animation} 0.3s both ${({ animationDelay }) => animationDelay};
 
   :hover {
-    transform: scale(1.05);
+    background-color: ${({ theme }) => theme.primary};
+  }
+
+  &.active {
+    background-color: ${({ theme, level }) => (level ? theme.primary : theme.secondary)};
   }
 
   @media (min-width: 500px) and (orientation: landscape) {
-    width: 70px;
-    padding: 5px 0;
+    /* width: 70px; */
+    /* padding: 5px 0; */
   }
 
   @media (min-width: 768px) {
-    width: 130px;
+    /* width: 130px; */
     font-size: ${({ theme }) => theme.fontSize.m};
   }
 
@@ -47,14 +51,9 @@ const StyledButton = styled.button`
     font-size: ${({ theme }) => theme.fontSize.s};
   }
 
-  @media (min-width: 1024px) {
-    width: 180px;
-    font-size: ${({ theme }) => theme.fontSize.xl};
-  }
-
-  @media (min-width: 1200px) {
-    width: 130px;
-    font-size: ${({ theme }) => theme.fontSize.m};
+  @media (min-width: 1100px) {
+    /* width: 130px; */
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 `;
 
