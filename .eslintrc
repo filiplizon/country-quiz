@@ -18,7 +18,14 @@
         "custom": "ignore"
       }
     ],
-    "react/state-in-constructor": [1, "never"]
+    "react/state-in-constructor": [1, "never"],
+
+    "no-param-reassign": [
+      2,
+      {
+        "props": false
+      }
+    ]
   },
   "env": {
     "jest": true
