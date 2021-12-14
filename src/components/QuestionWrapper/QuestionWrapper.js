@@ -1,12 +1,9 @@
-// import React from 'react';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
-// import Input from 'components/Input/Input';
-// import Button from 'components/Button/Button';
 import PointBox from 'components/PointBox/PointBox';
 import AnswerBox from 'components/AnswerBox/AnswerBox';
 import Stopwatch from 'components/Stopwatch/Stopwatch';
@@ -20,9 +17,6 @@ const StyledWrapper = styled.div`
   font-size: ${({ theme }) => theme.fontSize.m};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   color: ${({ theme }) => theme.primary};
-
-  @media (min-width: 1100px) {
-  }
 `;
 
 const QuestionWrapper = ({
@@ -32,21 +26,12 @@ const QuestionWrapper = ({
   counter,
   quizLength,
   points,
-  // isAnswerCorrect,
-  // isChecked,
-  // setAnswer,
-  // answer,
-  // checkAnswer,
-  // changeQuestion,
-  // setQuizQuestions,
   setCurrentQuestion,
-  // setAnswers,
   currentQuestion,
   start,
 }) => {
   useEffect(() => {
     setCurrentQuestion(countriesForQuiz[counter], quizType);
-    // setAnswers(currentQuestion);
   }, []);
   return (
     <>

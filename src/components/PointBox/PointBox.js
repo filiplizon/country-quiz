@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-// import { grow } from 'helpers/animations';
 
 const StyledPointBox = styled.div`
   position: fixed;

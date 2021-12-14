@@ -18,6 +18,7 @@ const StyledWrapper = styled.div`
   grid-template-rows: 1fr;
   justify-items: center;
   align-content: center;
+  overflow: hidden;
 `;
 
 const StyledLink = styled(Link)`
@@ -99,43 +100,21 @@ const StyledMap = styled.img`
   }
 `;
 
-const QuizTemplate = ({
-  quizType,
-  resetLevel,
-  resetType,
-  children,
-  level,
-  formType,
-  start,
-  isUserLoggedIn,
-  // countriesForQuiz,
-}) => {
+const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formType, start }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   return (
     <StyledWrapper>
-      {/* {!quizType && (
-      <StyledLink to="/">
-        <StyledArrowIcon /> home
-      </StyledLink>
-    )} */}
-
       {quizType && level === '' && (
         <StyledLink onClick={() => resetType()} to="/">
           <StyledArrowIcon /> go back
         </StyledLink>
       )}
-
       {level && (
         <StyledLink onClick={() => resetLevel()} to="/">
           <StyledArrowIcon /> go back
         </StyledLink>
       )}
-      <Modal
-        isUserLoggedIn={isUserLoggedIn}
-        isModalOpen={isModalOpen}
-        setModalOpenFn={setModalOpen}
-        formType={formType}
-      />
+      <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
       <Header isQuiz="true" setModalOpenFn={setModalOpen} />
       <StyledMap src={map} start={start} />
       <InnerWrapper start={start}>{children}</InnerWrapper>
@@ -151,8 +130,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { level, quizType, formType, start, isUserLoggedIn } = state;
-  return { level, quizType, formType, start, isUserLoggedIn };
+  const { level, quizType, formType, start } = state;
+  return { level, quizType, formType, start };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);
