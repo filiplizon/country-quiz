@@ -6,22 +6,27 @@ import { connect } from 'react-redux';
 import IconButton from 'components/IconButton/IconButton';
 import { ImUser as ProfilIcon } from 'react-icons/im';
 import { GoInfo as InfoIcon } from 'react-icons/go';
+import { FaMedal as RankingIcon } from 'react-icons/fa';
 
-const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, start, level }) => (
+const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, start, resetForm }) => (
   <StyledMenuWrapper isMenuOpen={isMenuOpen}>
     <StyledMenu>
-      {!start && level === '' && (
-        <StyledIconButton isVisible>
+      {!start && (
+        <StyledMenuItem>
           <Link to="/info">
-            <InfoIcon />
+            <span>Country information</span>
+            <StyledIconButton isVisible>
+              <InfoIcon />
+            </StyledIconButton>
           </Link>
-        </StyledIconButton>
+        </StyledMenuItem>
       )}
-      {Object.keys(user).length === 0 ? (
+      {Object.keys(user).length < 1 ? (
         <>
           <StyledMenuItem
             onClick={() => {
               setMenuOpen(!isMenuOpen);
+              resetForm(true);
               setModalOpenFn(true);
               setFormType('registration');
             }}
@@ -31,6 +36,7 @@ const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, star
           <StyledMenuItem
             onClick={() => {
               setMenuOpen(!isMenuOpen);
+              resetForm('ok');
               setModalOpenFn(true);
               setFormType('login');
             }}
@@ -39,9 +45,24 @@ const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, star
           </StyledMenuItem>
         </>
       ) : (
-        <StyledIconButton isVisible>
-          <ProfilIcon />
-        </StyledIconButton>
+        <>
+          <StyledMenuItem>
+            <Link to="/">
+              <span>Rankings</span>
+              <StyledIconButton isVisible>
+                <RankingIcon />
+              </StyledIconButton>
+            </Link>
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <Link to="/">
+              <span>Profile</span>
+              <StyledIconButton isVisible>
+                <ProfilIcon />
+              </StyledIconButton>
+            </Link>
+          </StyledMenuItem>
+        </>
       )}
     </StyledMenu>
   </StyledMenuWrapper>
@@ -89,13 +110,17 @@ const StyledMenu = styled.ul`
 `;
 
 const StyledMenuItem = styled.li`
-  padding: 10px 20px;
+  padding: 5px;
   list-style-type: none;
   position: relative;
   transition: transform 0.3s;
 
-  :hover {
-    transform: translateY(-5px);
+  ${Link} {
+    display: flex;
+    align-items: center;
+    :hover {
+      transform: translateY(0);
+    }
   }
 
   @media (min-width: 1100px) {
@@ -103,40 +128,25 @@ const StyledMenuItem = styled.li`
 
     ${Link} {
       color: ${({ theme }) => theme.primary};
-    }
 
-    &:nth-of-type(1)::after,
-    &:nth-of-type(2)::after {
-      content: '';
-      height: 50%;
-      width: 1px;
-      background-color: #dad8d8;
-      position: relative;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
+      & span {
+        display: none;
+      }
     }
   }
 `;
 
 const StyledIconButton = styled(IconButton)`
   transition: transform 0.2s;
+  height: unset;
 
   &:hover {
     transform: scale(1.1);
   }
 
-  ${Link} {
-    display: flex;
-
-    font-size: ${({ theme }) => theme.fontSize.l};
-    &:hover {
-      transform: translateY(0);
-    }
-  }
-
   @media (min-width: 1100px) {
-    margin: 0 20px;
+    margin: 0 10px;
+    height: 40px;
   }
 `;
 
@@ -147,6 +157,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   setFormType: (formType) => dispatch(actions.setFormType(formType)),
+  resetForm: (isFormReset) => dispatch(actions.resetForm(isFormReset)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
