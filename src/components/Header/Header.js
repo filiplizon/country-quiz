@@ -10,29 +10,19 @@ import { IoMenuSharp as MenuIcon, IoCloseOutline as CloseIcon } from 'react-icon
 
 import Menu from 'components/Menu/Menu';
 
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
-};
-
 const Header = ({ searchCountryFn, isQuiz, setModalOpenFn }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   return (
-    <StyledHeader>
-      <Logo src={LogoImage} alt="CountryInfo" onClick={() => scrollToTop()} />
+    <StyledHeader isQuiz={isQuiz}>
+      <StyledLink primary to="/">
+        <Logo src={LogoImage} alt="CountryInfo" />
+      </StyledLink>
       {!isQuiz && (
         <StyledInputContainer>
           <Input className="Input" placeholder="Search" onChange={(e) => searchCountryFn(e)} />
           <SearchIcon />
         </StyledInputContainer>
-      )}
-      {!isQuiz && (
-        <Link primary to="/">
-          QUIZ
-        </Link>
       )}
       {isQuiz && (
         <StyledIconButton isVisible onClick={() => setMenuOpen(!isMenuOpen)}>
@@ -51,7 +41,7 @@ const StyledHeader = styled.header`
   height: 15vh;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ isQuiz }) => (isQuiz ? 'space-between' : 'flex-start')};
   align-items: center;
   padding-right: 10px;
   background-color: white;
@@ -67,6 +57,12 @@ const StyledHeader = styled.header`
   }
 `;
 
+const StyledLink = styled(Link)`
+  &:hover {
+    transform: translateX(0);
+  }
+`;
+
 const StyledIconButton = styled(IconButton)`
   @media (min-width: 1100px) {
     display: none;
@@ -77,9 +73,13 @@ const StyledInputContainer = styled.div`
   width: 50%;
   display: flex;
   align-items: center;
+  position: absolute;
+  left: 57%;
+  transform: translateX(-50%);
 
   @media (min-width: 1100px) {
-    width: 25%;
+    width: 20%;
+    left: 50%;
   }
 `;
 
