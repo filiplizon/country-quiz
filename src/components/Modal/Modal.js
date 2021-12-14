@@ -1,15 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
+import actions from 'actions/actions';
+import { connect } from 'react-redux';
 import Form from 'components/Form/Form';
 import IconButton from 'components/IconButton/IconButton';
 import { GrFormClose as CloseIcon } from 'react-icons/gr';
 
-const Modal = ({ isModalOpen, setModalOpenFn, formType, isUserLoggedIn }) => (
-  <StyledWrapper isUserLoggedIn={isUserLoggedIn} isModalOpen={isModalOpen}>
-    <StyledIconButton onClick={() => setModalOpenFn(!isModalOpen)} isVisible color="white">
+const Modal = ({ isModalOpen, setModalOpenFn, formType, resetForm }) => (
+  <StyledWrapper isModalOpen={isModalOpen}>
+    <StyledIconButton
+      onClick={() => {
+        setModalOpenFn(!isModalOpen);
+        resetForm(true);
+      }}
+      isVisible
+      color="white"
+    >
       <CloseIcon />
     </StyledIconButton>
-    <Form setModalOpenFn={setModalOpenFn} formType={formType} />
+    <Form isModalOpen={isModalOpen} setModalOpenFn={setModalOpenFn} formType={formType} />
   </StyledWrapper>
 );
 
@@ -49,4 +58,8 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-export default Modal;
+const mapDispatchToProps = (dispatch) => ({
+  resetForm: () => dispatch(actions.resetForm()),
+});
+
+export default connect(null, mapDispatchToProps)(Modal);
