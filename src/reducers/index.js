@@ -104,7 +104,7 @@ const initialState = {
   time: 0,
   isPasswordCorrect: false,
   user: {},
-  isUserLoggedIn: false,
+  isFormReset: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -173,6 +173,7 @@ const rootReducer = (state = initialState, action) => {
         answer: initialState.answer,
         isChecked: initialState.isChecked,
         countriesForQuiz: initialState.countriesForQuiz,
+        start: initialState.start,
       };
 
     case types.RESET_TYPE:
@@ -200,7 +201,6 @@ const rootReducer = (state = initialState, action) => {
                 : state.bestScore[action.quizType][action.level],
           },
         },
-        start: initialState.start,
       };
 
     case types.SET_FORM_TYPE:
@@ -262,11 +262,36 @@ const rootReducer = (state = initialState, action) => {
         isPasswordCorrect: action.isCorrect,
       };
 
-    case types.SET_CURRENT_USER:
+    case types.SET_USER:
       return {
         ...state,
         user: action.user,
-        isUserLoggedIn: false,
+      };
+
+    case types.SAVE_GAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          games: [
+            ...state.user.games,
+            {
+              type: state.quizType,
+              level: state.level,
+              points: state.points,
+              time: state.time,
+              date: action.date,
+              id: action.id,
+            },
+          ],
+        },
+        start: initialState.start,
+      };
+
+    case types.RESET_FORM:
+      return {
+        ...state,
+        isFormReset: action.isFormReset,
       };
 
     default:

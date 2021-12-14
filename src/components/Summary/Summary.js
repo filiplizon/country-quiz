@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { db } from 'firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import illustration from 'assets/images/Location.svg';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
@@ -76,10 +78,19 @@ const Summary = ({
   startQuiz,
   setNextLevel,
   levels,
+  user,
 }) => {
+  const saveDataToDB = async () => {
+    const docRef = doc(db, 'users', user.id);
+    const { ...currentUser } = user;
+    await setDoc(docRef, currentUser);
+  };
+
   useEffect(() => {
     setBestScore(points, level, quizType);
+    saveDataToDB();
   }, []);
+
   return (
     <StyledWrapper>
       <StyledImage src={illustration} alt="" />
@@ -135,8 +146,8 @@ const Summary = ({
 };
 
 const mapStateToProps = (state) => {
-  const { points, quizLength, level, levels, quizType, time } = state;
-  return { points, quizLength, level, levels, quizType, time };
+  const { points, quizLength, level, levels, quizType, time, user } = state;
+  return { points, quizLength, level, levels, quizType, time, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -147,6 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
   setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   startQuiz: () => dispatch(actions.startQuiz()),
+  saveGame: () => dispatch(actions.saveGame()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

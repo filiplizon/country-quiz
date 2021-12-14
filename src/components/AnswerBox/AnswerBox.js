@@ -1,10 +1,8 @@
-// import React from 'react';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
-// import _ from 'lodash';
-
+/* eslint-disable no-unused-expressions */
 const AnswerBox = ({
   answers,
   quizType,
@@ -20,6 +18,8 @@ const AnswerBox = ({
   setCurrentQuestion,
   countriesForQuiz,
   currentQuestion,
+  saveGame,
+  user,
 }) => {
   const [isActive, setActive] = useState(false);
   useEffect(() => {
@@ -27,7 +27,6 @@ const AnswerBox = ({
     setActive(false);
   }, [currentQuestion]);
 
-  // const showCorrectAnswer = () => {};
   return (
     <>
       <StyledAnswerBox>
@@ -42,7 +41,7 @@ const AnswerBox = ({
                   : `${isChecked && correctAnswer === answer.name && 'correct'}`
               }
               onClick={() => {
-                !isChecked && setActive(i); // eslint-disable-line
+                !isChecked && setActive(i);
                 setCurrentAnswer(answer.name);
               }}
               key={`${answer.name}-${answer.alpha3Code}`}
@@ -59,7 +58,7 @@ const AnswerBox = ({
                   : `${isChecked && correctAnswer === answer.capital && 'correct'}`
               }
               onClick={() => {
-                !isChecked && setActive(i); // eslint-disable-line
+                !isChecked && setActive(i);
                 setCurrentAnswer(answer.capital);
               }}
               key={`${answer.capital}-${answer.alpha3Code}`}
@@ -69,15 +68,33 @@ const AnswerBox = ({
           ),
         )}
       </StyledAnswerBox>
-      <StyledButton
-        onClick={() => {
-          currentAnswer && !isChecked && checkAnswer(currentAnswer, correctAnswer); // eslint-disable-line
-          isChecked && changeQuestion(counter + 1); // eslint-disable-line
-          isChecked && counter !== 9 && setCurrentQuestion(countriesForQuiz[counter + 1], quizType); // eslint-disable-line
-        }}
-      >
-        {isChecked ? `${counter === 9 ? 'Finish' : 'Next'}` : 'Check'}
-      </StyledButton>
+      {isChecked && counter === 9 ? (
+        <StyledButton
+          onClick={() => {
+            isChecked && changeQuestion(counter + 1);
+            const today = new Date();
+            const date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+            const id = `${user.id}${today.getDate()}${
+              today.getMonth() + 1
+            }${today.getFullYear()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`;
+            saveGame(date, id);
+          }}
+        >
+          Finish{' '}
+        </StyledButton>
+      ) : (
+        <StyledButton
+          onClick={() => {
+            currentAnswer && !isChecked && checkAnswer(currentAnswer, correctAnswer);
+            isChecked && changeQuestion(counter + 1);
+            isChecked &&
+              counter !== 9 &&
+              setCurrentQuestion(countriesForQuiz[counter + 1], quizType);
+          }}
+        >
+          {isChecked ? 'Next' : 'Check'}
+        </StyledButton>
+      )}
     </>
   );
 };
@@ -157,6 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
   setAnswers: () => dispatch(actions.setAnswers()),
   setCurrentQuestion: (question, quizType) =>
     dispatch(actions.setCurrentQuestion(question, quizType)),
+  saveGame: (date, id) => dispatch(actions.saveGame(date, id)),
 });
 
 const mapStateToProps = (state) => {
@@ -170,6 +188,7 @@ const mapStateToProps = (state) => {
     countriesForQuiz,
     counter,
     currentQuestion,
+    user,
   } = state;
   return {
     answers,
@@ -181,6 +200,7 @@ const mapStateToProps = (state) => {
     countriesForQuiz,
     counter,
     currentQuestion,
+    user,
   };
 };
 

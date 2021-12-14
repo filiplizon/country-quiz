@@ -98,8 +98,19 @@ const checkPassword = (isCorrect) => ({
   isCorrect,
 });
 const setUser = (user) => ({
-  type: types.SET_CURRENT_USER,
+  type: types.SET_USER,
   user,
+});
+
+const saveGame = (date, id) => ({
+  type: types.SAVE_GAME,
+  date,
+  id,
+});
+
+const resetForm = (isFormReset) => ({
+  type: types.RESET_FORM,
+  isFormReset,
 });
 
 export default {
@@ -125,4 +136,6 @@ export default {
   registerUser,
   checkPassword,
   setUser,
+  saveGame,
+  resetForm,
 };
