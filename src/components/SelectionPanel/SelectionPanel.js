@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
-
 import Heading from 'components/Heading/Heading';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
@@ -14,7 +13,6 @@ const StyledHeading = styled(Heading)`
   font-size: ${({ theme }) => theme.fontSize.l};
   color: ${({ theme }) => theme.secondary};
   margin-bottom: 10px;
-  /* margin-top: 40px; */
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.xl};
@@ -80,7 +78,7 @@ const StyledIcon = styled.div`
 
 const StyledStartButton = styled(Button)`
   margin-top: 20px;
-  visibility: ${({ level }) => (level ? 'unset' : 'hidden')};
+  display: ${({ level }) => (level ? 'block' : 'none')};
 `;
 
 const SelectionPanel = ({
@@ -100,7 +98,7 @@ const SelectionPanel = ({
 
   return (
     <>
-      {quizType && (
+      {quizType && Object.keys(user).length !== 0 && (
         <PointBox>
           <Paragraph>Your best scores:</Paragraph>
           {quizType === 'flags' ? (
@@ -132,7 +130,7 @@ const SelectionPanel = ({
       )}
       <InnerWrapper column>
         <StyledHeading>
-          {Object.keys(user).length !== 0 ? `Hi ${user.login}!` : 'Welcome to the quiz!'}
+          {Object.keys(user).length > 1 ? `Hi ${user.name}!` : 'Welcome to the quiz!'}
         </StyledHeading>
         <StyledParagraph>Choose {quizType ? 'level' : 'type'} of the quiz:</StyledParagraph>
         {quizType ? (
