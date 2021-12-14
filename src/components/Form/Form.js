@@ -3,68 +3,79 @@ import styled from 'styled-components';
 import actions from 'actions/actions';
 import { connect } from 'react-redux';
 import { db } from 'firebase';
-import { onSnapshot, collection, addDoc } from 'firebase/firestore';
+import { onSnapshot, collection, doc, setDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'components/Link/Link';
 import Input from 'components/Input/Input';
 import Paragraph from 'components/Paragraph/Paragraph';
-
-const Form = ({
-  formType,
-  setFormType,
-  setUser,
-  isPasswordCorrect,
-  checkPassword,
-  setModalOpenFn,
-}) => {
-  const [login, setLogin] = useState('');
+/* eslint-disable no-unused-expressions */
+const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [repeatedPassword, setRepeatedPassword] = useState('');
-  const [, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [errorText, setErrorText] = useState('');
   const collectionRef = collection(db, 'users');
   const auth = getAuth();
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+    setName('');
+    setErrorText('');
+  };
+
   useEffect(() => {
     onSnapshot(collectionRef, (snapshot) => {
-      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setUsers(snapshot.docs.map((docc) => ({ ...docc.data(), id: docc.id })));
     });
-  }, []);
+    isFormReset && resetForm();
+    isFormReset === 'ok' && resetForm();
+  }, [isFormReset]);
 
-  const handlePasswordCheck = () => {
-    checkPassword(password === repeatedPassword);
-  };
-
-  const addNewUser = async () => {
-    const payload = { login, password };
-    handlePasswordCheck();
-    isPasswordCorrect && // eslint-disable-line
-      createUserWithEmailAndPassword(auth, login, password)
-        .then((userCredential) => {
-          const userID = userCredential.user.uid;
-          addDoc(collectionRef, payload);
-          setUser({ login, password, id: userID });
-          setModalOpenFn(false);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          console.log(errorCode);
-          const errorMessage = error.message;
-          console.log(errorMessage);
-        });
-  };
-
-  const signIn = () => {
-    signInWithEmailAndPassword(auth, login, password)
+  const registerUser = async () => {
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userID = userCredential.user.uid;
-        setUser({ login, password, id: userID });
+        const newDocRef = doc(collection(db, 'users'));
+        setDoc(newDocRef, {
+          email,
+          password,
+          authID: userID,
+          name,
+          id: newDocRef.id,
+          games: [],
+        });
+        onSnapshot(collectionRef, (snapshot) => {
+          const currentUser = snapshot.docs
+            .map((docc) => ({ ...docc.data(), id: docc.id }))
+            .find((el) => el.email === email);
+          setUser(currentUser);
+        });
         setModalOpenFn(false);
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        errorCode === 'auth/weak-password' &&
+          setErrorText('Password should be at least 6 characters');
+        errorCode === 'auth/email-already-in-use' && setErrorText('Email already in use');
+        errorCode === 'auth/invalid-email' && setErrorText('Invalid mail');
+      });
+  };
+
+  const signIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const userID = userCredential.user.uid;
+        const currentUser = users.find((usere) => usere.authID === userID);
+        setUser(currentUser);
+        setModalOpenFn(false);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        errorCode === 'auth/invalid-email' && setErrorText('Invalid mail');
+        errorCode === 'auth/user-not-found' && setErrorText('User not found');
+        errorCode === 'auth/wrong-password' && setErrorText('Wrong password');
       });
   };
 
@@ -74,10 +85,16 @@ const Form = ({
         <>
           <InputWrapper>
             <Input
-              onChange={(e) => setLogin(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               formInput
-              placeholder="Login"
-              value={login}
+              placeholder="Name"
+              value={name}
+            />
+            <Input
+              onChange={(e) => setEmail(e.target.value)}
+              formInput
+              placeholder="Email"
+              value={email}
             />
             <Input
               onChange={(e) => setPassword(e.target.value)}
@@ -86,34 +103,32 @@ const Form = ({
               type="password"
               value={password}
             />
-            <Input
-              onChange={(e) => setRepeatedPassword(e.target.value)}
-              formInput
-              placeholder="Repeat password"
-              type="password"
-              value={repeatedPassword}
-            />
           </InputWrapper>
+          <StyledError errorText={errorText}>{errorText}</StyledError>
           <StyledParagraph>
             Already a member?{' '}
-            <Link onClick={() => setFormType('login')} to="/">
+            <Link
+              onClick={() => {
+                setFormType('login');
+                resetForm();
+              }}
+              to="/"
+            >
               SIGN IN
             </Link>
           </StyledParagraph>
-          <StyledLinkContainer>
-            <Link onClick={addNewUser} to="/">
-              SIGN UP
-            </Link>
+          <StyledLinkContainer onClick={registerUser}>
+            <Link to="/">SIGN UP</Link>
           </StyledLinkContainer>
         </>
       ) : (
         <>
           <InputWrapper>
             <Input
-              value={login}
+              value={email}
               formInput
-              onChange={(e) => setLogin(e.target.value)}
-              placeholder="Login"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
             />
             <Input
               value={password}
@@ -123,16 +138,21 @@ const Form = ({
               type="password"
             />
           </InputWrapper>
+          <StyledError errorText={errorText}>{errorText}</StyledError>
           <StyledParagraph>
             Not a member yet?{' '}
-            <Link onClick={() => setFormType('registration')} to="/">
+            <Link
+              onClick={() => {
+                setFormType('registration');
+                resetForm();
+              }}
+              to="/"
+            >
               SIGN UP
             </Link>
           </StyledParagraph>
-          <StyledLinkContainer>
-            <Link onClick={() => signIn()} to="/">
-              SIGN IN
-            </Link>
+          <StyledLinkContainer onClick={signIn}>
+            <Link to="/">SIGN IN</Link>
           </StyledLinkContainer>
         </>
       )}
@@ -158,7 +178,7 @@ const StyledWrapper = styled.div`
 
 const InputWrapper = styled.div`
   width: 70%;
-  height: 70%;
+  height: 55%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -175,13 +195,20 @@ const StyledParagraph = styled(Paragraph)`
 
   @media (min-width: 1100px) {
     font-size: 1.3rem;
-    color: #e0e0e0;
+    color: ${({ color }) => (color ? '#ff444f' : '#e0e0e0')};
 
     ${Link} {
       font-size: 1.3rem;
       color: #fff;
     }
   }
+`;
+
+const StyledError = styled(Paragraph)`
+  color: ${({ theme }) => theme.primary};
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: ${({ errorText }) => (errorText ? 'block' : 'none')};
 `;
 
 const StyledLinkContainer = styled.div`
@@ -194,6 +221,13 @@ const StyledLinkContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.secondary};
+  cursor: pointer;
+
+  &:hover {
+    ${Link} {
+      transform: translateY(-5px);
+    }
+  }
 
   @media (min-width: 1100px) {
     background-color: #fff;
@@ -206,14 +240,12 @@ const StyledLinkContainer = styled.div`
 `;
 
 const mapStateToProps = (state) => {
-  const { isPasswordCorrect, isUserLoggedIn } = state;
-  return { isPasswordCorrect, isUserLoggedIn };
+  const { isFormReset, user } = state;
+  return { isFormReset, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setFormType: (formType) => dispatch(actions.setFormType(formType)),
-  registerUser: (action) => dispatch(actions.registerUser(action)),
-  checkPassword: (isCorrect) => dispatch(actions.checkPassword(isCorrect)),
   setUser: (user) => dispatch(actions.setUser(user)),
 });
 
