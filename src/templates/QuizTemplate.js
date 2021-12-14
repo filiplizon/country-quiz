@@ -8,6 +8,7 @@ import Modal from 'components/Modal/Modal';
 import illustration from 'assets/images/illustration.png';
 import map from 'assets/images/world2.svg';
 import { VscArrowLeft as ArrowIcon } from 'react-icons/vsc';
+import SidePanel from 'components/SidePanel/SidePanel';
 // import AnswerBox from 'components/AnswerBox/AnswerBox';
 
 const StyledWrapper = styled.div`
@@ -115,6 +116,7 @@ const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formTy
         </StyledLink>
       )}
       <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
+      <SidePanel />
       <Header isQuiz="true" setModalOpenFn={setModalOpen} />
       <StyledMap src={map} start={start} />
       <InnerWrapper start={start}>{children}</InnerWrapper>
