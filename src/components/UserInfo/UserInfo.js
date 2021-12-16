@@ -1,20 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { getAuth, signOut } from 'firebase/auth';
+import actions from 'actions/actions';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Heading from 'components/Heading/Heading';
+import Link from 'components/Link/Link';
 
-const UserInfo = () => (
-  <StyledUserInfo>
-    <StyledName>Name</StyledName>
-    <StyledParagraph>Signed in: </StyledParagraph>
-    <StyledParagraph>Games played: </StyledParagraph>
-    <StyledParagraph>Average score: </StyledParagraph>
-  </StyledUserInfo>
-);
+const UserInfo = ({ user, setUser, setSidePanelOpenFn }) => {
+  const auth = getAuth();
+  const logOut = () => {
+    signOut(auth)
+      .then(() => {
+        setUser({});
+        setSidePanelOpenFn(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
+  return (
+    <StyledUserInfo>
+      <StyledName>{user.name}</StyledName>
+      <StyledParagraph>
+        Signed in: <span>{user.signedIn}</span>{' '}
+      </StyledParagraph>
+      <StyledParagraph>
+        Games played: <span>{user.gamesPlayed}</span>
+      </StyledParagraph>
+      <StyledParagraph>
+        Average score: <span>{user.averageScore}</span>
+      </StyledParagraph>
+
+      <StyledLink onClick={logOut} to="/">
+        SIGN OUT
+      </StyledLink>
+    </StyledUserInfo>
+  );
+};
 const StyledUserInfo = styled.div`
+  height: 35%;
   color: #fff;
-  margin: 30px 0 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
 `;
 
 const StyledName = styled(Heading)`
@@ -26,6 +57,45 @@ const StyledName = styled(Heading)`
 `;
 const StyledParagraph = styled(Paragraph)`
   margin-bottom: 10px;
+
+  & span {
+    font-weight: bold;
+  }
 `;
 
-export default UserInfo;
+const StyledLink = styled(Link)`
+  margin-top: 10px;
+  align-self: center;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+    transform: translateX(-100%);
+    transition: 0.2s transform;
+  }
+
+  &:hover {
+    transform: translateY(0);
+
+    &::after {
+      transform: translateX(0);
+    }
+  }
+`;
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(actions.setUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
