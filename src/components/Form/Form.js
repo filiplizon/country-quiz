@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import actions from 'actions/actions';
@@ -5,10 +6,11 @@ import { connect } from 'react-redux';
 import { db } from 'firebase';
 import { onSnapshot, collection, doc, setDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import sha256 from 'crypto-js/sha256';
 import Link from 'components/Link/Link';
 import Input from 'components/Input/Input';
 import Paragraph from 'components/Paragraph/Paragraph';
-/* eslint-disable no-unused-expressions */
+
 const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,6 +27,12 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     setErrorText('');
   };
 
+  const hashPassword = (p) => {
+    const hashedPassword = sha256(p).toString();
+    console.log(hashedPassword);
+    return hashedPassword;
+  };
+
   useEffect(() => {
     onSnapshot(collectionRef, (snapshot) => {
       setUsers(snapshot.docs.map((docc) => ({ ...docc.data(), id: docc.id })));
@@ -33,18 +41,55 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     isFormReset === 'ok' && resetForm();
   }, [isFormReset]);
 
-  const registerUser = async () => {
+  const registerUser = async (e) => {
+    e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userID = userCredential.user.uid;
         const newDocRef = doc(collection(db, 'users'));
+        const today = new Date();
+        const date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+        const hash = hashPassword(password);
         setDoc(newDocRef, {
           email,
-          password,
+          password: hash,
           authID: userID,
           name,
           id: newDocRef.id,
           games: [],
+          signedIn: date,
+          gamesPlayed: 0,
+          averageScore: '',
+          bestScore: {
+            flags: {
+              easy: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+              medium: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+              hard: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+            },
+            capitals: {
+              easy: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+              medium: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+              hard: {
+                points: 0,
+                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+              },
+            },
+          },
         });
         onSnapshot(collectionRef, (snapshot) => {
           const currentUser = snapshot.docs
@@ -63,7 +108,8 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
       });
   };
 
-  const signIn = () => {
+  const signIn = (e) => {
+    e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userID = userCredential.user.uid;
@@ -160,7 +206,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
   );
 };
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.form`
   margin-top: 60vh;
   height: 25%;
   width: 100%;
