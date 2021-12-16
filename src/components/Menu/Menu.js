@@ -8,7 +8,16 @@ import { ImUser as ProfilIcon } from 'react-icons/im';
 import { GoInfo as InfoIcon } from 'react-icons/go';
 import { FaMedal as RankingIcon } from 'react-icons/fa';
 
-const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, start, resetForm }) => (
+const Menu = ({
+  isMenuOpen,
+  setModalOpenFn,
+  setFormType,
+  setMenuOpen,
+  user,
+  start,
+  resetForm,
+  setSidePanelOpenFn,
+}) => (
   <StyledMenuWrapper isMenuOpen={isMenuOpen}>
     <StyledMenu>
       {!start && (
@@ -21,7 +30,7 @@ const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, star
           </Link>
         </StyledMenuItem>
       )}
-      {Object.keys(user).length < 1 ? (
+      {Object.keys(user).length < 1 && !start ? (
         <>
           <StyledMenuItem
             onClick={() => {
@@ -45,24 +54,26 @@ const Menu = ({ isMenuOpen, setModalOpenFn, setFormType, setMenuOpen, user, star
           </StyledMenuItem>
         </>
       ) : (
-        <>
-          <StyledMenuItem>
-            <Link to="/">
-              <span>Rankings</span>
-              <StyledIconButton isVisible>
-                <RankingIcon />
-              </StyledIconButton>
-            </Link>
-          </StyledMenuItem>
-          <StyledMenuItem>
-            <Link to="/">
-              <span>Profile</span>
-              <StyledIconButton isVisible>
-                <ProfilIcon />
-              </StyledIconButton>
-            </Link>
-          </StyledMenuItem>
-        </>
+        !start && (
+          <>
+            <StyledMenuItem>
+              <Link to="/">
+                <span>Rankings</span>
+                <StyledIconButton isVisible>
+                  <RankingIcon />
+                </StyledIconButton>
+              </Link>
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <Link to="/" onClick={setSidePanelOpenFn}>
+                <span>Profile</span>
+                <StyledIconButton isVisible>
+                  <ProfilIcon />
+                </StyledIconButton>
+              </Link>
+            </StyledMenuItem>
+          </>
+        )
       )}
     </StyledMenu>
   </StyledMenuWrapper>
@@ -118,9 +129,6 @@ const StyledMenuItem = styled.li`
   ${Link} {
     display: flex;
     align-items: center;
-    :hover {
-      transform: translateY(0);
-    }
   }
 
   @media (min-width: 1100px) {
@@ -137,12 +145,8 @@ const StyledMenuItem = styled.li`
 `;
 
 const StyledIconButton = styled(IconButton)`
-  transition: transform 0.2s;
+  transition: transform 0.3s;
   height: unset;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 
   @media (min-width: 1100px) {
     margin: 0 10px;

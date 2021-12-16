@@ -9,7 +9,6 @@ import illustration from 'assets/images/illustration.png';
 import map from 'assets/images/world2.svg';
 import { VscArrowLeft as ArrowIcon } from 'react-icons/vsc';
 import SidePanel from 'components/SidePanel/SidePanel';
-// import AnswerBox from 'components/AnswerBox/AnswerBox';
 
 const StyledWrapper = styled.div`
   width: 100%;
@@ -103,6 +102,7 @@ const StyledMap = styled.img`
 
 const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formType, start }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isSidePanelOpen, setSidePanelOpen] = useState(false);
   return (
     <StyledWrapper>
       {quizType && level === '' && (
@@ -116,8 +116,8 @@ const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formTy
         </StyledLink>
       )}
       <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
-      <SidePanel />
-      <Header isQuiz="true" setModalOpenFn={setModalOpen} />
+      <SidePanel isSidePanelOpen={isSidePanelOpen} setSidePanelOpenFn={setSidePanelOpen} />
+      <Header isQuiz="true" setSidePanelOpenFn={setSidePanelOpen} setModalOpenFn={setModalOpen} />
       <StyledMap src={map} start={start} />
       <InnerWrapper start={start}>{children}</InnerWrapper>
       <StyledIllustration start={start} />

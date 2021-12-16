@@ -10,7 +10,7 @@ import { IoMenuSharp as MenuIcon, IoCloseOutline as CloseIcon } from 'react-icon
 
 import Menu from 'components/Menu/Menu';
 
-const Header = ({ searchCountryFn, isQuiz, setModalOpenFn }) => {
+const Header = ({ searchCountryFn, isQuiz, setModalOpenFn, setSidePanelOpenFn }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -30,7 +30,12 @@ const Header = ({ searchCountryFn, isQuiz, setModalOpenFn }) => {
         </StyledIconButton>
       )}
       {isQuiz && (
-        <Menu setMenuOpen={setMenuOpen} setModalOpenFn={setModalOpenFn} isMenuOpen={isMenuOpen} />
+        <Menu
+          setMenuOpen={setMenuOpen}
+          setModalOpenFn={setModalOpenFn}
+          setSidePanelOpenFn={setSidePanelOpenFn}
+          isMenuOpen={isMenuOpen}
+        />
       )}
     </StyledHeader>
   );
