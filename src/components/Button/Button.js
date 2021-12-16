@@ -28,6 +28,7 @@ const StyledButton = styled.button`
   outline-color: ${({ theme }) => theme.secondary};
   z-index: 2;
   animation: ${({ animation }) => animation} 0.3s both ${({ animationDelay }) => animationDelay};
+  box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
 
   :hover {
     background-color: ${({ theme }) => theme.primary};

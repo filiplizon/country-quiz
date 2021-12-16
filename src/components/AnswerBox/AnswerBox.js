@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
+import Button from 'components/Button/Button';
 /* eslint-disable no-unused-expressions */
 const AnswerBox = ({
   answers,
@@ -111,13 +112,14 @@ const StyledAnswerBox = styled.div`
   }
 `;
 
-const StyledAnswer = styled.button`
+const StyledAnswer = styled(Button)`
   height: 50%;
   width: 50%;
   border: 1px solid #fff;
   background-color: ${({ theme }) => theme.secondary};
   color: #fff;
   cursor: pointer;
+  font-weight: bold;
   font-size: ${({ theme }) => theme.fontSize.s};
 
   &:hover {
@@ -140,7 +142,7 @@ const StyledAnswer = styled.button`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   width: 100%;
   height: 10vh;
   position: absolute;

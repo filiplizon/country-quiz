@@ -42,7 +42,8 @@ const StyledWrapper = styled.div`
     background-color: ${({ theme }) => theme.secondary};
     transform: translate(-50%, -50%);
     opacity: ${({ isModalOpen }) => (isModalOpen ? 1 : 0)};
-    border: ${({ theme }) => `1px solid ${theme.secondary}`};
+    /* border: ${({ theme }) => `1px solid ${theme.secondary}`}; */
+    box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
   }
 `;
 
