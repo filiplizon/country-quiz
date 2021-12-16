@@ -102,7 +102,10 @@ const Summary = ({
         questions.
       </StyledParagraph>
       <StyledParagraph>
-        Your time: <b>{`${time.minutes}:${time.seconds}:${time.miliseconds}`}</b>
+        Your time:{' '}
+        <b>{`${time.minutes < 9 ? `0${time.minutes}` : time.minutes}:${
+          time.seconds < 9 ? `0${time.seconds}` : time.seconds
+        }:${time.miliseconds < 9 ? `0${time.miliseconds}` : time.miliseconds}`}</b>
       </StyledParagraph>
 
       <StyledWrapper row>

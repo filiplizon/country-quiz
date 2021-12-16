@@ -1,5 +1,5 @@
 import types from 'actions/types';
-// import { isAnswerCorrect } from 'operations/operations';
+import { checkIfScoreIsBest } from 'operations/operations';
 import _ from 'lodash';
 
 const initialState = {
@@ -247,7 +247,12 @@ const rootReducer = (state = initialState, action) => {
     case types.SET_TIME:
       return {
         ...state,
-        time: action.time,
+        time: {
+          total: action.time,
+          minutes: `0${Math.floor((action.time / 60000) % 60)}`.slice(-2) * 1,
+          seconds: `0${Math.floor((action.time / 1000) % 60)}`.slice(-2) * 1,
+          miliseconds: `0${(action.time / 10) % 100}`.slice(-2) * 1,
+        },
       };
 
     case types.REGISTER_USER:
@@ -284,8 +289,18 @@ const rootReducer = (state = initialState, action) => {
               id: action.id,
             },
           ],
+          gamesPlayed: state.user.games.length + 1,
+          bestScore: {
+            ...state.user.bestScore,
+            [state.quizType]: {
+              ...state.user.bestScore[state.quizType],
+              [state.level]: checkIfScoreIsBest(state),
+            },
+          },
         },
         start: initialState.start,
+
+        // averageScore: state.user.games.length === 0 && 0,
       };
 
     case types.RESET_FORM:
