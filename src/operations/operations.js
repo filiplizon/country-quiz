@@ -65,3 +65,27 @@ export const checkIfScoreIsBest = (state) => {
     time: isBetterScore,
   };
 };
+
+export const countAverageScore = (state) => {
+  const currentGamePoints = state.points;
+  const allPoints = [...state.user.games.map((game) => game.points), currentGamePoints];
+  const averagePoints = Math.round(allPoints.reduce((a, b) => a + b, 0) / allPoints.length);
+
+  const currentTotalTime = state.time.total;
+  const allTotalTimes = [...state.user.games.map((game) => game.time.total), currentTotalTime];
+  const averageTotalTime = Math.round(
+    allTotalTimes.reduce((a, b) => a + b, 0) / allTotalTimes.length,
+  );
+
+  const averageTime = {
+    total: averageTotalTime,
+    minutes: `0${Math.floor((averageTotalTime / 60000) % 60)}`.slice(-2),
+    seconds: `0${Math.floor((averageTotalTime / 1000) % 60)}`.slice(-2),
+    miliseconds: `0${(averageTotalTime / 10) % 100}`.slice(-2),
+  };
+
+  return {
+    points: averagePoints,
+    time: averageTime,
+  };
+};

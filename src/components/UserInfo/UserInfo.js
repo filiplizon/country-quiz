@@ -7,7 +7,7 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Heading from 'components/Heading/Heading';
 import Link from 'components/Link/Link';
 
-const UserInfo = ({ user, setUser, setSidePanelOpenFn }) => {
+const UserInfo = ({ user, setUser, setSidePanelOpenFn, quizLength }) => {
   const auth = getAuth();
   const logOut = () => {
     signOut(auth)
@@ -30,7 +30,12 @@ const UserInfo = ({ user, setUser, setSidePanelOpenFn }) => {
         Games played: <span>{user.gamesPlayed}</span>
       </StyledParagraph>
       <StyledParagraph>
-        Average score: <span>{user.averageScore}</span>
+        Average score:{' '}
+        <span>
+          {user.gamesPlayed > 0
+            ? `${user.averageScore.points}/${quizLength} - ${user.averageScore.time.minutes}:${user.averageScore.time.seconds}:${user.averageScore.time.miliseconds}`
+            : `0/${quizLength} - 00:00:00`}
+        </span>
       </StyledParagraph>
 
       <StyledLink onClick={logOut} to="/">
@@ -88,9 +93,10 @@ const StyledLink = styled(Link)`
 `;
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { user, quizLength } = state;
   return {
     user,
+    quizLength,
   };
 };
 

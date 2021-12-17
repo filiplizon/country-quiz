@@ -59,7 +59,10 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
           games: [],
           signedIn: date,
           gamesPlayed: 0,
-          averageScore: '',
+          averageScore: {
+            points: 0,
+            time: '00:00:00',
+          },
           bestScore: {
             flags: {
               easy: {

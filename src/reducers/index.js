@@ -1,5 +1,5 @@
 import types from 'actions/types';
-import { checkIfScoreIsBest } from 'operations/operations';
+import { checkIfScoreIsBest, countAverageScore } from 'operations/operations';
 import _ from 'lodash';
 
 const initialState = {
@@ -188,21 +188,6 @@ const rootReducer = (state = initialState, action) => {
         level: state.levels[action.level].next,
       };
 
-    case types.SET_BEST_SCORE:
-      return {
-        ...state,
-        bestScore: {
-          ...state.bestScore,
-          [action.quizType]: {
-            ...state.bestScore[action.quizType],
-            [action.level]:
-              action.score > state.bestScore[action.quizType][action.level]
-                ? action.score
-                : state.bestScore[action.quizType][action.level],
-          },
-        },
-      };
-
     case types.SET_FORM_TYPE:
       return {
         ...state,
@@ -297,10 +282,9 @@ const rootReducer = (state = initialState, action) => {
               [state.level]: checkIfScoreIsBest(state),
             },
           },
+          averageScore: countAverageScore(state),
         },
         start: initialState.start,
-
-        // averageScore: state.user.games.length === 0 && 0,
       };
 
     case types.RESET_FORM:
