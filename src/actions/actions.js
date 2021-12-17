@@ -54,13 +54,6 @@ const setNextLevel = (level) => ({
   level,
 });
 
-const setBestScore = (score, level, quizType) => ({
-  type: types.SET_BEST_SCORE,
-  score,
-  level,
-  quizType,
-});
-
 const setFormType = (formType) => ({
   type: types.SET_FORM_TYPE,
   formType,
@@ -125,9 +118,7 @@ export default {
   resetLevel,
   resetType,
   setNextLevel,
-  setBestScore,
   setFormType,
-
   setAnswers,
   startQuiz,
   setCurrentQuestion,
