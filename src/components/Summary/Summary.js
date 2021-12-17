@@ -70,8 +70,6 @@ const Summary = ({
   resetLevel,
   resetType,
   level,
-  setBestScore,
-  quizType,
   time,
   setCountriesLevel,
   setQuizQuestions,
@@ -87,7 +85,6 @@ const Summary = ({
   };
 
   useEffect(() => {
-    setBestScore(points, level, quizType);
     saveDataToDB();
   }, []);
 
@@ -103,9 +100,9 @@ const Summary = ({
       </StyledParagraph>
       <StyledParagraph>
         Your time:{' '}
-        <b>{`${time.minutes < 9 ? `0${time.minutes}` : time.minutes}:${
-          time.seconds < 9 ? `0${time.seconds}` : time.seconds
-        }:${time.miliseconds < 9 ? `0${time.miliseconds}` : time.miliseconds}`}</b>
+        <b>{`${time.minutes < 10 ? `0${time.minutes}` : time.minutes}:${
+          time.seconds < 10 ? `0${time.seconds}` : time.seconds
+        }:${time.miliseconds < 10 ? `0${time.miliseconds}` : time.miliseconds}`}</b>
       </StyledParagraph>
 
       <StyledWrapper row>
@@ -157,7 +154,6 @@ const mapDispatchToProps = (dispatch) => ({
   resetLevel: (level) => dispatch(actions.resetLevel(level)),
   resetType: () => dispatch(actions.resetType()),
   setNextLevel: (level) => dispatch(actions.setNextLevel(level)),
-  setBestScore: (score, level, quizType) => dispatch(actions.setBestScore(score, level, quizType)),
   setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   startQuiz: () => dispatch(actions.startQuiz()),
