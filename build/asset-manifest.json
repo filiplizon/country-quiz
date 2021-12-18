@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/static/js/main.222a57ed.chunk.js",
-    "main.js.map": "/static/js/main.222a57ed.chunk.js.map",
+    "main.js": "/static/js/main.23dd1ec0.chunk.js",
+    "main.js.map": "/static/js/main.23dd1ec0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.9363b9ef.js",
     "runtime-main.js.map": "/static/js/runtime-main.9363b9ef.js.map",
-    "static/js/2.deceb3a4.chunk.js": "/static/js/2.deceb3a4.chunk.js",
-    "static/js/2.deceb3a4.chunk.js.map": "/static/js/2.deceb3a4.chunk.js.map",
+    "static/js/2.b24e2208.chunk.js": "/static/js/2.b24e2208.chunk.js",
+    "static/js/2.b24e2208.chunk.js.map": "/static/js/2.b24e2208.chunk.js.map",
     "index.html": "/index.html",
-    "static/js/2.deceb3a4.chunk.js.LICENSE.txt": "/static/js/2.deceb3a4.chunk.js.LICENSE.txt",
+    "static/js/2.b24e2208.chunk.js.LICENSE.txt": "/static/js/2.b24e2208.chunk.js.LICENSE.txt",
     "static/media/Location.dd8c7afc.svg": "/static/media/Location.dd8c7afc.svg",
-    "static/media/bgQuiz.a506a389.png": "/static/media/bgQuiz.a506a389.png",
     "static/media/illustration.79db61ac.png": "/static/media/illustration.79db61ac.png",
-    "static/media/logo.7c42f9aa.png": "/static/media/logo.7c42f9aa.png"
+    "static/media/logo.b28d0949.png": "/static/media/logo.b28d0949.png",
+    "static/media/world2.410d6dc7.svg": "/static/media/world2.410d6dc7.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.9363b9ef.js",
-    "static/js/2.deceb3a4.chunk.js",
-    "static/js/main.222a57ed.chunk.js"
+    "static/js/2.b24e2208.chunk.js",
+    "static/js/main.23dd1ec0.chunk.js"
   ]
 }
