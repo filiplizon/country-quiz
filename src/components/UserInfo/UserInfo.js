@@ -39,7 +39,7 @@ const UserInfo = ({ user, setUser, setSidePanelOpenFn, quizLength }) => {
       </StyledParagraph>
 
       <StyledLink onClick={logOut} to="/">
-        SIGN OUT
+        sign out
       </StyledLink>
     </StyledUserInfo>
   );
@@ -72,6 +72,7 @@ const StyledLink = styled(Link)`
   margin-top: 10px;
   align-self: center;
   overflow: hidden;
+  font-weight: 400;
 
   &::after {
     content: '';
