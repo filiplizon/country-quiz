@@ -264,7 +264,6 @@ const rootReducer = (state = initialState, action) => {
         user: {
           ...state.user,
           games: [
-            ...state.user.games,
             {
               type: state.quizType,
               level: state.level,
@@ -273,6 +272,7 @@ const rootReducer = (state = initialState, action) => {
               date: action.date,
               id: action.id,
             },
+            ...state.user.games,
           ],
           gamesPlayed: state.user.games.length + 1,
           bestScore: {

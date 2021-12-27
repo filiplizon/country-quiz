@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import UserProfile from 'components/UserProfile/UserProfile';
-import Button from 'components/Button/Button';
 import IconButton from 'components/IconButton/IconButton';
 import { AiFillCloseCircle as CloseIcon } from 'react-icons/ai';
 
@@ -11,7 +10,6 @@ const SidePanel = ({ isSidePanelOpen, setSidePanelOpenFn }) => (
       <CloseIcon />
     </StyledIconButton>
     <UserProfile setSidePanelOpenFn={setSidePanelOpenFn} />
-    <StyledButton>History</StyledButton>
   </StyledSidePanel>
 );
 
@@ -37,24 +35,6 @@ const StyledIconButton = styled(IconButton)`
   right: 20px;
   position: fixed;
   font-size: ${({ theme }) => theme.fontSize.xl};
-`;
-
-const StyledButton = styled(Button)`
-  padding: 0;
-  position: relative;
-  width: 100%;
-  bottom: 0;
-  background-color: ${({ theme }) => theme.secondary};
-  height: 10%;
-  font-size: ${({ theme }) => theme.fontSize.m};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.primary};
-  }
-
-  @media (min-width: 1100px) {
-    color: #fff;
-  }
 `;
 
 export default SidePanel;

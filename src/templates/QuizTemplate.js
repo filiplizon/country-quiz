@@ -116,7 +116,10 @@ const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formTy
         </StyledLink>
       )}
       <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
-      <SidePanel isSidePanelOpen={isSidePanelOpen} setSidePanelOpenFn={setSidePanelOpen} />
+      <SidePanel
+        isSidePanelOpen={!start && isSidePanelOpen}
+        setSidePanelOpenFn={setSidePanelOpen}
+      />
       <Header isQuiz="true" setSidePanelOpenFn={setSidePanelOpen} setModalOpenFn={setModalOpen} />
       <StyledMap src={map} start={start} />
       <InnerWrapper start={start}>{children}</InnerWrapper>
