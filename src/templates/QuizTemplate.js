@@ -103,6 +103,7 @@ const StyledMap = styled.img`
 const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formType, start }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidePanelOpen, setSidePanelOpen] = useState(false);
+  const [panelType, setPanelType] = useState(null);
   return (
     <StyledWrapper>
       {quizType && level === '' && (
@@ -119,8 +120,14 @@ const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formTy
       <SidePanel
         isSidePanelOpen={!start && isSidePanelOpen}
         setSidePanelOpenFn={setSidePanelOpen}
+        panelType={panelType}
       />
-      <Header isQuiz="true" setSidePanelOpenFn={setSidePanelOpen} setModalOpenFn={setModalOpen} />
+      <Header
+        isQuiz="true"
+        setPanelTypeFn={setPanelType}
+        setSidePanelOpenFn={setSidePanelOpen}
+        setModalOpenFn={setModalOpen}
+      />
       <StyledMap src={map} start={start} />
       <InnerWrapper start={start}>{children}</InnerWrapper>
       <StyledIllustration start={start} />

@@ -17,6 +17,7 @@ const Menu = ({
   start,
   resetForm,
   setSidePanelOpenFn,
+  setPanelTypeFn,
 }) => (
   <StyledMenuWrapper isMenuOpen={isMenuOpen}>
     <StyledMenu>
@@ -57,7 +58,13 @@ const Menu = ({
         !start && (
           <>
             <StyledMenuItem>
-              <Link to="/">
+              <Link
+                to="/"
+                onClick={() => {
+                  setPanelTypeFn('rankings');
+                  setSidePanelOpenFn(true);
+                }}
+              >
                 <span>Rankings</span>
                 <StyledIconButton isVisible>
                   <RankingIcon />
@@ -65,7 +72,13 @@ const Menu = ({
               </Link>
             </StyledMenuItem>
             <StyledMenuItem>
-              <Link to="/" onClick={setSidePanelOpenFn}>
+              <Link
+                to="/"
+                onClick={() => {
+                  setPanelTypeFn('profile');
+                  setSidePanelOpenFn(true);
+                }}
+              >
                 <span>Profile</span>
                 <StyledIconButton isVisible>
                   <ProfilIcon />
