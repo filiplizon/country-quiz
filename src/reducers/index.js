@@ -265,6 +265,7 @@ const rootReducer = (state = initialState, action) => {
           ...state.user,
           games: [
             {
+              user: state.user.name,
               type: state.quizType,
               level: state.level,
               points: state.points,

@@ -2,32 +2,119 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { db } from 'firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import ReactPaginate from 'react-paginate';
 import Heading from 'components/Heading/Heading';
 import Button from 'components/Button/Button';
 
 const Rankings = () => {
   const types = ['flags', 'capitals'];
   const levels = ['easy', 'medium', 'hard'];
-  const [, setType] = useState(null);
-  const [, setLevel] = useState(null);
-
-  const [allUsers, setAllUsers] = useState([]);
+  const [type, setType] = useState('flags');
+  const [level, setLevel] = useState('easy');
   const [isActiveType, setActiveType] = useState(0);
   const [isActiveLevel, setActiveLevel] = useState(0);
-
+  const [games, setGames] = useState([]);
   const users = [];
+
+  function Items({ currentItems }) {
+    return (
+      <>
+        {currentItems &&
+          currentItems.map((item, i) => (
+            <StyledGameDetailsRow>
+              <StyledGameDetail>{i + 1}</StyledGameDetail>
+              <StyledGameDetail>{item.user}</StyledGameDetail>
+              <StyledGameDetail>{item.points}</StyledGameDetail>
+              <StyledGameDetail>
+                {item.time.minutes < 10 ? `0${item.time.minutes}` : item.time.minutes}:
+                {item.time.seconds < 10 ? `0${item.time.seconds}` : item.time.seconds}:
+                {item.time.miliseconds < 10 ? `0${item.time.miliseconds}` : item.time.miliseconds}
+              </StyledGameDetail>
+              <StyledGameDetail>{item.date}</StyledGameDetail>
+            </StyledGameDetailsRow>
+          ))}
+      </>
+    );
+  }
+  function PaginatedItems({ itemsPerPage }) {
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+
+    useEffect(() => {
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(games.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(games.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage]);
+
+    const handlePageClick = (event) => {
+      const newOffset = (event.selected * itemsPerPage) % games.length;
+      setItemOffset(newOffset);
+    };
+
+    return (
+      <>
+        <Items currentItems={currentItems} />
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+        />
+      </>
+    );
+  }
+
+  function sortByPoints(a, b) {
+    return b.points - a.points;
+  }
+
+  function sortByTime(a, b) {
+    const isMorePoints = a.points >= b.points;
+    return isMorePoints && a.time.total - b.time.total;
+  }
+
   useEffect(() => {
     const getUsers = async () => {
       const q = query(collection(db, 'users'), where('gamesPlayed', '>', 0));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         users.push(doc.data());
-        setAllUsers(users);
-        console.log(allUsers);
       });
+      const allGames = users.map((user) => user.games).flat(1);
+      const flagsGames = allGames.filter((game) => game.type === 'flags');
+      const capitalsGames = allGames.filter((game) => game.type === 'capitals');
+      const flagsGamesByLevel = {
+        easy: flagsGames.filter((game) => game.level === 'easy'),
+        medium: flagsGames.filter((game) => game.level === 'medium'),
+        hard: flagsGames.filter((game) => game.level === 'hard'),
+      };
+      const capitalsGamesByLevel = {
+        easy: capitalsGames.filter((game) => game.level === 'easy'),
+        medium: capitalsGames.filter((game) => game.level === 'medium'),
+        hard: capitalsGames.filter((game) => game.level === 'hard'),
+      };
+      const sortedGames = {
+        flags: {
+          easy: flagsGamesByLevel.easy.sort(sortByPoints).sort(sortByTime),
+          medium: flagsGamesByLevel.medium.sort(sortByPoints).sort(sortByTime),
+          hard: flagsGamesByLevel.hard.sort(sortByPoints).sort(sortByTime),
+        },
+        capitals: {
+          easy: capitalsGamesByLevel.easy.sort(sortByPoints).sort(sortByTime),
+          medium: capitalsGamesByLevel.medium.sort(sortByPoints).sort(sortByTime),
+          hard: capitalsGamesByLevel.hard.sort(sortByPoints).sort(sortByTime),
+        },
+      };
+      const sortedByType = sortedGames[type];
+      const sortedByLevel = sortedByType[level];
+      setGames(sortedByLevel);
     };
     getUsers();
-  }, []);
+  }, [type, level]);
 
   return (
     <StyledRankingsWrapper>
@@ -60,30 +147,13 @@ const Rankings = () => {
       </StyledButtonContainer>
       <StyledRankings>
         <StyledGameDetailsTitles>
+          <StyledGameDetailsTitle>Position</StyledGameDetailsTitle>
           <StyledGameDetailsTitle>User</StyledGameDetailsTitle>
           <StyledGameDetailsTitle>Points</StyledGameDetailsTitle>
           <StyledGameDetailsTitle>Time</StyledGameDetailsTitle>
           <StyledGameDetailsTitle>Date</StyledGameDetailsTitle>
         </StyledGameDetailsTitles>
-
-        <StyledGameDetailsRow>
-          <StyledGameDetail>imie</StyledGameDetail>
-          <StyledGameDetail>4</StyledGameDetail>
-          <StyledGameDetail>00:09:85</StyledGameDetail>
-          <StyledGameDetail>11.02.1998</StyledGameDetail>
-        </StyledGameDetailsRow>
-        <StyledGameDetailsRow>
-          <StyledGameDetail>imie</StyledGameDetail>
-          <StyledGameDetail>4</StyledGameDetail>
-          <StyledGameDetail>00:09:85</StyledGameDetail>
-          <StyledGameDetail>11.02.1998</StyledGameDetail>
-        </StyledGameDetailsRow>
-        <StyledGameDetailsRow>
-          <StyledGameDetail>imie</StyledGameDetail>
-          <StyledGameDetail>4</StyledGameDetail>
-          <StyledGameDetail>00:09:85</StyledGameDetail>
-          <StyledGameDetail>11.02.1998</StyledGameDetail>
-        </StyledGameDetailsRow>
+        <PaginatedItems itemsPerPage={7} />
       </StyledRankings>
     </StyledRankingsWrapper>
   );
@@ -131,12 +201,46 @@ const StyledButton = styled(Button)`
 const StyledRankings = styled.div`
   height: 73%;
   background-color: #fff;
+  position: relative;
+
+  & ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    height: 25%;
+    padding: 0 20%;
+    width: 100%;
+    justify-content: space-around;
+    font-size: 1.3rem;
+    align-items: center;
+    position: absolute;
+    bottom: 15px;
+
+    @media (min-width: 1100px) {
+      bottom: 10px;
+    }
+
+    & li {
+      cursor: pointer;
+
+      &:hover,
+      &.selected {
+        font-weight: bold;
+        color: ${({ theme }) => theme.secondary};
+      }
+      &.disabled:hover {
+        font-weight: unset;
+        cursor: unset;
+        color: #000;
+      }
+    }
+  }
 `;
 
 const StyledGameDetailsTitles = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   justify-items: center;
   padding: 5px 0;
@@ -155,13 +259,13 @@ const StyledGameDetailsTitle = styled.button`
 const StyledGameDetailsRow = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
   height: 10%;
 
-  &:nth-child(odd) {
+  &:nth-child(even) {
     background-color: #eee;
   }
 `;
