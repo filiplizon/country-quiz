@@ -100,7 +100,17 @@ const StyledMap = styled.img`
   }
 `;
 
-const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formType, start }) => {
+const QuizTemplate = ({
+  quizType,
+  resetLevel,
+  resetType,
+  children,
+  level,
+  formType,
+  start,
+  setPlayerToDisplay,
+  user,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidePanelOpen, setSidePanelOpen] = useState(false);
   const [panelType, setPanelType] = useState(null);
@@ -121,6 +131,9 @@ const QuizTemplate = ({ quizType, resetLevel, resetType, children, level, formTy
         isSidePanelOpen={!start && isSidePanelOpen}
         setSidePanelOpenFn={setSidePanelOpen}
         panelType={panelType}
+        setPanelTypeFn={setPanelType}
+        setPlayerToDisplayFn={setPlayerToDisplay}
+        user={user}
       />
       <Header
         isQuiz="true"
@@ -139,11 +152,12 @@ const mapDispatchToProps = (dispatch) => ({
   resetLevel: () => dispatch(actions.resetLevel()),
   resetType: () => dispatch(actions.resetType()),
   startQuiz: () => dispatch(actions.startQuiz()),
+  setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
 });
 
 const mapStateToProps = (state) => {
-  const { level, quizType, formType, start } = state;
-  return { level, quizType, formType, start };
+  const { level, quizType, formType, start, user } = state;
+  return { level, quizType, formType, start, user };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);

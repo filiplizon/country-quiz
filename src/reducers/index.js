@@ -105,6 +105,7 @@ const initialState = {
   isPasswordCorrect: false,
   user: {},
   isFormReset: false,
+  playerToDisplay: {},
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -227,6 +228,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         start: !initialState.start,
+        playerToDisplay: state.user,
       };
 
     case types.SET_TIME:
@@ -292,6 +294,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isFormReset: action.isFormReset,
+      };
+
+    case types.SET_PLAYER_TO_DISPLAY:
+      return {
+        ...state,
+        playerToDisplay: action.playerToDisplay,
       };
 
     default:

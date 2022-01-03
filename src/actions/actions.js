@@ -106,6 +106,11 @@ const resetForm = (isFormReset) => ({
   isFormReset,
 });
 
+const setPlayerToDisplay = (playerToDisplay) => ({
+  type: types.SET_PLAYER_TO_DISPLAY,
+  playerToDisplay,
+});
+
 export default {
   fetch,
   chooseType,
@@ -129,4 +134,5 @@ export default {
   setUser,
   saveGame,
   resetForm,
+  setPlayerToDisplay,
 };

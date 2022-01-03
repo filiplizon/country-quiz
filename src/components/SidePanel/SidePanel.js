@@ -5,13 +5,26 @@ import IconButton from 'components/IconButton/IconButton';
 import { AiFillCloseCircle as CloseIcon } from 'react-icons/ai';
 import Rankings from 'components/Rankings/Rankings';
 
-const SidePanel = ({ isSidePanelOpen, setSidePanelOpenFn, panelType }) => (
+const SidePanel = ({
+  isSidePanelOpen,
+  setSidePanelOpenFn,
+  panelType,
+  setPanelTypeFn,
+  setPlayerToDisplayFn,
+  user,
+}) => (
   <StyledSidePanel isSidePanelOpen={isSidePanelOpen}>
-    <StyledIconButton onClick={() => setSidePanelOpenFn(false)} isVisible>
+    <StyledIconButton
+      onClick={() => {
+        setSidePanelOpenFn(false);
+        setPlayerToDisplayFn(user);
+      }}
+      isVisible
+    >
       <CloseIcon />
     </StyledIconButton>
     {panelType === 'rankings' ? (
-      <Rankings />
+      <Rankings setPanelTypeFn={setPanelTypeFn} />
     ) : (
       <UserProfile setSidePanelOpenFn={setSidePanelOpenFn} />
     )}

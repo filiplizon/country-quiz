@@ -4,7 +4,7 @@ import Heading from 'components/Heading/Heading';
 import { connect } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
-const GamesHistory = ({ user }) => {
+const GamesHistory = ({ playerToDisplay }) => {
   function Items({ currentItems }) {
     return (
       <>
@@ -32,12 +32,12 @@ const GamesHistory = ({ user }) => {
 
     useEffect(() => {
       const endOffset = itemOffset + itemsPerPage;
-      setCurrentItems(user.games.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(user.games.length / itemsPerPage));
+      setCurrentItems(playerToDisplay.games.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(playerToDisplay.games.length / itemsPerPage));
     }, [itemOffset, itemsPerPage]);
 
     const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % user.games.length;
+      const newOffset = (event.selected * itemsPerPage) % playerToDisplay.games.length;
       setItemOffset(newOffset);
     };
 
@@ -60,7 +60,7 @@ const GamesHistory = ({ user }) => {
   const detailTypes = ['Date', 'Type', 'Level', 'Points', 'Time'];
 
   return (
-    Object.keys(user).length > 0 && (
+    Object.keys(playerToDisplay).length > 0 && (
       <StyledGamesHistory>
         <StyledNameWrapper>
           <StyledName>History</StyledName>
@@ -172,9 +172,9 @@ const StyledGameDetail = styled.div`
 `;
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { playerToDisplay } = state;
   return {
-    user,
+    playerToDisplay,
   };
 };
 

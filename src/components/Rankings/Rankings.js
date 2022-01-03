@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { db } from 'firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import ReactPaginate from 'react-paginate';
+import { connect } from 'react-redux';
+import actions from 'actions/actions';
 import Heading from 'components/Heading/Heading';
 import Button from 'components/Button/Button';
 
-const Rankings = () => {
+const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
   const types = ['flags', 'capitals'];
   const levels = ['easy', 'medium', 'hard'];
   const [type, setType] = useState('flags');
@@ -14,6 +16,7 @@ const Rankings = () => {
   const [isActiveType, setActiveType] = useState(0);
   const [isActiveLevel, setActiveLevel] = useState(0);
   const [games, setGames] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const users = [];
 
   function Items({ currentItems }) {
@@ -23,7 +26,15 @@ const Rankings = () => {
           currentItems.map((item, i) => (
             <StyledGameDetailsRow>
               <StyledGameDetail>{i + 1}</StyledGameDetail>
-              <StyledGameDetail>{item.user}</StyledGameDetail>
+              <StyledGameDetail
+                className="user"
+                onClick={() => {
+                  setPanelTypeFn('profile');
+                  setPlayerToDisplay(allUsers.find((user) => user.name === item.user));
+                }}
+              >
+                {item.user}
+              </StyledGameDetail>
               <StyledGameDetail>{item.points}</StyledGameDetail>
               <StyledGameDetail>
                 {item.time.minutes < 10 ? `0${item.time.minutes}` : item.time.minutes}:
@@ -36,6 +47,7 @@ const Rankings = () => {
       </>
     );
   }
+
   function PaginatedItems({ itemsPerPage }) {
     const [currentItems, setCurrentItems] = useState(null);
     const [pageCount, setPageCount] = useState(0);
@@ -81,9 +93,12 @@ const Rankings = () => {
     const getUsers = async () => {
       const q = query(collection(db, 'users'), where('gamesPlayed', '>', 0));
       const querySnapshot = await getDocs(q);
+
       querySnapshot.forEach((doc) => {
         users.push(doc.data());
       });
+      setAllUsers(users);
+      console.log(users);
       const allGames = users.map((user) => user.games).flat(1);
       const flagsGames = allGames.filter((game) => game.type === 'flags');
       const capitalsGames = allGames.filter((game) => game.type === 'capitals');
@@ -112,6 +127,7 @@ const Rankings = () => {
       const sortedByType = sortedGames[type];
       const sortedByLevel = sortedByType[level];
       setGames(sortedByLevel);
+      console.log(users);
     };
     getUsers();
   }, [type, level]);
@@ -272,7 +288,25 @@ const StyledGameDetailsRow = styled.div`
 
 const StyledGameDetail = styled.div`
   font-size: 1.3rem;
-  padding: 10px 0;
+  padding: 10px;
+
+  &.user {
+    cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme.secondary};
+      font-weight: bold;
+    }
+  }
 `;
 
-export default Rankings;
+const mapStateToProps = (state) => {
+  const { isFormReset, user } = state;
+  return { isFormReset, user };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Rankings);

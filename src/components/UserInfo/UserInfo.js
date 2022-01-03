@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
@@ -7,7 +7,14 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Heading from 'components/Heading/Heading';
 import Link from 'components/Link/Link';
 
-const UserInfo = ({ user, setUser, setSidePanelOpenFn, quizLength }) => {
+const UserInfo = ({
+  user,
+  setUser,
+  setSidePanelOpenFn,
+  quizLength,
+  playerToDisplay,
+  setPlayerToDisplay,
+}) => {
   const auth = getAuth();
   const logOut = () => {
     signOut(auth)
@@ -20,27 +27,32 @@ const UserInfo = ({ user, setUser, setSidePanelOpenFn, quizLength }) => {
       });
   };
 
+  useEffect(() => {
+    Object.keys(playerToDisplay).length > 0 ? playerToDisplay : setPlayerToDisplay(user); // eslint-disable-line
+  }, []);
+
   return (
     <StyledUserInfo>
-      <StyledName>{user.name}</StyledName>
+      <StyledName>{playerToDisplay.name}</StyledName>
       <StyledParagraph>
-        Signed in: <span>{user.signedIn}</span>{' '}
+        Signed in: <span>{playerToDisplay.signedIn}</span>
       </StyledParagraph>
       <StyledParagraph>
-        Games played: <span>{user.gamesPlayed}</span>
+        Games played: <span>{playerToDisplay.gamesPlayed}</span>
       </StyledParagraph>
       <StyledParagraph>
         Average score:{' '}
         <span>
-          {user.gamesPlayed > 0
-            ? `${user.averageScore.points}/${quizLength} - ${user.averageScore.time.minutes}:${user.averageScore.time.seconds}:${user.averageScore.time.miliseconds}`
+          {playerToDisplay.gamesPlayed > 0
+            ? `${playerToDisplay.averageScore.points}/${quizLength} - ${playerToDisplay.averageScore.time.minutes}:${playerToDisplay.averageScore.time.seconds}:${playerToDisplay.averageScore.time.miliseconds}`
             : `0/${quizLength} - 00:00:00`}
         </span>
       </StyledParagraph>
-
-      <StyledLink onClick={logOut} to="/">
-        sign out
-      </StyledLink>
+      {playerToDisplay === user && (
+        <StyledLink onClick={logOut} to="/">
+          sign out
+        </StyledLink>
+      )}
     </StyledUserInfo>
   );
 };
@@ -94,15 +106,17 @@ const StyledLink = styled(Link)`
 `;
 
 const mapStateToProps = (state) => {
-  const { user, quizLength } = state;
+  const { user, quizLength, playerToDisplay } = state;
   return {
     user,
     quizLength,
+    playerToDisplay,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(actions.setUser(user)),
+  setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

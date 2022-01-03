@@ -20,6 +20,7 @@ const CHECK_PASSWORD = 'CHECK_PASSWORD';
 const SET_USER = 'SET_USER';
 const SAVE_GAME = 'SAVE_GAME';
 const RESET_FORM = 'RESET_FORM';
+const SET_PLAYER_TO_DISPLAY = 'SET_PLAYER_TO_DISPLAY';
 
 export default {
   FETCH_COUNTRIES,
@@ -44,4 +45,5 @@ export default {
   SET_USER,
   SAVE_GAME,
   RESET_FORM,
+  SET_PLAYER_TO_DISPLAY,
 };

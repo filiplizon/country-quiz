@@ -5,12 +5,12 @@ import Heading from 'components/Heading/Heading';
 import Button from 'components/Button/Button';
 import Paragraph from 'components/Paragraph/Paragraph';
 
-const BestScores = ({ user, quizLength }) => {
+const BestScores = ({ playerToDisplay, quizLength }) => {
   const [type, setType] = useState('Flags');
   const types = ['Flags', 'Capitals'];
   const [isActive, setActive] = useState(0);
   return (
-    Object.keys(user).length > 0 && (
+    Object.keys(playerToDisplay).length > 0 && (
       <StyledBestScores>
         <StyledNameWrapper>
           <StyledName>Best score</StyledName>
@@ -32,91 +32,91 @@ const BestScores = ({ user, quizLength }) => {
           {type === 'Flags' ? (
             <>
               <StyledParagraph>
-                Easy: {user.bestScore.flags.easy.points} / {quizLength} -{' '}
-                {user.bestScore.flags.easy.time.minutes < 10
-                  ? `0${user.bestScore.flags.easy.time.minutes}`
-                  : user.bestScore.flags.easy.time.minutes}
+                Easy: {playerToDisplay.bestScore.flags.easy.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.flags.easy.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.flags.easy.time.minutes}`
+                  : playerToDisplay.bestScore.flags.easy.time.minutes}
                 :
-                {user.bestScore.flags.easy.time.seconds < 10
-                  ? `0${user.bestScore.flags.easy.time.seconds}`
-                  : user.bestScore.flags.easy.time.seconds}
+                {playerToDisplay.bestScore.flags.easy.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.easy.time.seconds}`
+                  : playerToDisplay.bestScore.flags.easy.time.seconds}
                 :
-                {user.bestScore.flags.easy.time.miliseconds < 10
-                  ? `0${user.bestScore.flags.easy.time.miliseconds}`
-                  : user.bestScore.flags.easy.time.miliseconds}
+                {playerToDisplay.bestScore.flags.easy.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.easy.time.miliseconds}`
+                  : playerToDisplay.bestScore.flags.easy.time.miliseconds}
               </StyledParagraph>
               <StyledParagraph>
-                Medium: {user.bestScore.flags.medium.points} / {quizLength} -{' '}
-                {user.bestScore.flags.medium.time.minutes < 10
-                  ? `0${user.bestScore.flags.medium.time.minutes}`
-                  : user.bestScore.flags.medium.time.minutes}
+                Medium: {playerToDisplay.bestScore.flags.medium.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.flags.medium.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.flags.medium.time.minutes}`
+                  : playerToDisplay.bestScore.flags.medium.time.minutes}
                 :
-                {user.bestScore.flags.medium.time.seconds < 10
-                  ? `0${user.bestScore.flags.medium.time.seconds}`
-                  : user.bestScore.flags.medium.time.seconds}
+                {playerToDisplay.bestScore.flags.medium.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.medium.time.seconds}`
+                  : playerToDisplay.bestScore.flags.medium.time.seconds}
                 :
-                {user.bestScore.flags.medium.time.miliseconds < 10
-                  ? `0${user.bestScore.flags.medium.time.miliseconds}`
-                  : user.bestScore.flags.medium.time.miliseconds}
+                {playerToDisplay.bestScore.flags.medium.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.medium.time.miliseconds}`
+                  : playerToDisplay.bestScore.flags.medium.time.miliseconds}
               </StyledParagraph>
               <StyledParagraph>
-                Hard: {user.bestScore.flags.hard.points} / {quizLength} -{' '}
-                {user.bestScore.flags.hard.time.minutes < 10
-                  ? `0${user.bestScore.flags.hard.time.minutes}`
-                  : user.bestScore.flags.hard.time.minutes}
+                Hard: {playerToDisplay.bestScore.flags.hard.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.flags.hard.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.flags.hard.time.minutes}`
+                  : playerToDisplay.bestScore.flags.hard.time.minutes}
                 :
-                {user.bestScore.flags.hard.time.seconds < 10
-                  ? `0${user.bestScore.flags.hard.time.seconds}`
-                  : user.bestScore.flags.hard.time.seconds}
+                {playerToDisplay.bestScore.flags.hard.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.hard.time.seconds}`
+                  : playerToDisplay.bestScore.flags.hard.time.seconds}
                 :
-                {user.bestScore.flags.hard.time.miliseconds < 10
-                  ? `0${user.bestScore.flags.hard.time.miliseconds}`
-                  : user.bestScore.flags.hard.time.miliseconds}
+                {playerToDisplay.bestScore.flags.hard.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.flags.hard.time.miliseconds}`
+                  : playerToDisplay.bestScore.flags.hard.time.miliseconds}
               </StyledParagraph>
             </>
           ) : (
             <>
               <StyledParagraph>
-                Easy: {user.bestScore.capitals.easy.points} / {quizLength} -{' '}
-                {user.bestScore.capitals.easy.time.minutes < 10
-                  ? `0${user.bestScore.capitals.easy.time.minutes}`
-                  : user.bestScore.capitals.easy.time.minutes}
+                Easy: {playerToDisplay.bestScore.capitals.easy.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.capitals.easy.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.capitals.easy.time.minutes}`
+                  : playerToDisplay.bestScore.capitals.easy.time.minutes}
                 :
-                {user.bestScore.capitals.easy.time.seconds < 10
-                  ? `0${user.bestScore.capitals.easy.time.seconds}`
-                  : user.bestScore.capitals.easy.time.seconds}
+                {playerToDisplay.bestScore.capitals.easy.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.easy.time.seconds}`
+                  : playerToDisplay.bestScore.capitals.easy.time.seconds}
                 :
-                {user.bestScore.capitals.easy.time.miliseconds < 10
-                  ? `0${user.bestScore.capitals.easy.time.miliseconds}`
-                  : user.bestScore.capitals.easy.time.miliseconds}
+                {playerToDisplay.bestScore.capitals.easy.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.easy.time.miliseconds}`
+                  : playerToDisplay.bestScore.capitals.easy.time.miliseconds}
               </StyledParagraph>
               <StyledParagraph>
-                Medium: {user.bestScore.capitals.medium.points} / {quizLength} -{' '}
-                {user.bestScore.capitals.medium.time.minutes < 10
-                  ? `0${user.bestScore.capitals.medium.time.minutes}`
-                  : user.bestScore.capitals.medium.time.minutes}
+                Medium: {playerToDisplay.bestScore.capitals.medium.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.capitals.medium.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.capitals.medium.time.minutes}`
+                  : playerToDisplay.bestScore.capitals.medium.time.minutes}
                 :
-                {user.bestScore.capitals.medium.time.seconds < 10
-                  ? `0${user.bestScore.capitals.medium.time.seconds}`
-                  : user.bestScore.capitals.medium.time.seconds}
+                {playerToDisplay.bestScore.capitals.medium.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.medium.time.seconds}`
+                  : playerToDisplay.bestScore.capitals.medium.time.seconds}
                 :
-                {user.bestScore.capitals.medium.time.miliseconds < 10
-                  ? `0${user.bestScore.capitals.medium.time.miliseconds}`
-                  : user.bestScore.capitals.medium.time.miliseconds}
+                {playerToDisplay.bestScore.capitals.medium.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.medium.time.miliseconds}`
+                  : playerToDisplay.bestScore.capitals.medium.time.miliseconds}
               </StyledParagraph>
               <StyledParagraph>
-                Hard: {user.bestScore.capitals.hard.points} / {quizLength} -{' '}
-                {user.bestScore.capitals.hard.time.minutes < 10
-                  ? `0${user.bestScore.capitals.hard.time.minutes}`
-                  : user.bestScore.capitals.hard.time.minutes}
+                Hard: {playerToDisplay.bestScore.capitals.hard.points} / {quizLength} -{' '}
+                {playerToDisplay.bestScore.capitals.hard.time.minutes < 10
+                  ? `0${playerToDisplay.bestScore.capitals.hard.time.minutes}`
+                  : playerToDisplay.bestScore.capitals.hard.time.minutes}
                 :
-                {user.bestScore.capitals.hard.time.seconds < 10
-                  ? `0${user.bestScore.capitals.hard.time.seconds}`
-                  : user.bestScore.capitals.hard.time.seconds}
+                {playerToDisplay.bestScore.capitals.hard.time.seconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.hard.time.seconds}`
+                  : playerToDisplay.bestScore.capitals.hard.time.seconds}
                 :
-                {user.bestScore.capitals.hard.time.miliseconds < 10
-                  ? `0${user.bestScore.capitals.hard.time.miliseconds}`
-                  : user.bestScore.capitals.hard.time.miliseconds}
+                {playerToDisplay.bestScore.capitals.hard.time.miliseconds < 10
+                  ? `0${playerToDisplay.bestScore.capitals.hard.time.miliseconds}`
+                  : playerToDisplay.bestScore.capitals.hard.time.miliseconds}
               </StyledParagraph>
             </>
           )}
@@ -202,9 +202,9 @@ const StyledParagraph = styled(Paragraph)`
 `;
 
 const mapStateToProps = (state) => {
-  const { user, quizLength } = state;
+  const { playerToDisplay, quizLength } = state;
   return {
-    user,
+    playerToDisplay,
     quizLength,
   };
 };

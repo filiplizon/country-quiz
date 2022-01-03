@@ -18,6 +18,7 @@ const Menu = ({
   resetForm,
   setSidePanelOpenFn,
   setPanelTypeFn,
+  setPlayerToDisplay,
 }) => (
   <StyledMenuWrapper isMenuOpen={isMenuOpen}>
     <StyledMenu>
@@ -63,6 +64,7 @@ const Menu = ({
                 onClick={() => {
                   setPanelTypeFn('rankings');
                   setSidePanelOpenFn(true);
+                  setPlayerToDisplay(user);
                 }}
               >
                 <span>Rankings</span>
@@ -77,6 +79,7 @@ const Menu = ({
                 onClick={() => {
                   setPanelTypeFn('profile');
                   setSidePanelOpenFn(true);
+                  setPlayerToDisplay(user);
                 }}
               >
                 <span>Profile</span>
@@ -175,6 +178,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   setFormType: (formType) => dispatch(actions.setFormType(formType)),
   resetForm: (isFormReset) => dispatch(actions.resetForm(isFormReset)),
+  setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
