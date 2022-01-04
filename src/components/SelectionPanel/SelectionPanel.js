@@ -90,6 +90,7 @@ const SelectionPanel = ({
   startQuiz,
   levels,
   user,
+  setSidePanelOpen,
 }) => {
   const [isActive, setActive] = useState(null);
 
@@ -124,6 +125,7 @@ const SelectionPanel = ({
               setCountriesLevel();
               setQuizQuestions(level);
               startQuiz();
+              setSidePanelOpen(false);
             }}
           >
             Start

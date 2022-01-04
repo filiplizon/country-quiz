@@ -21,6 +21,7 @@ const Summary = ({
   setNextLevel,
   levels,
   user,
+  setSidePanelOpen,
 }) => {
   const saveDataToDB = async () => {
     const docRef = doc(db, 'users', user.id);
@@ -57,6 +58,7 @@ const Summary = ({
             setCountriesLevel();
             setQuizQuestions(level);
             startQuiz();
+            setSidePanelOpen(false);
           }}
         >
           Try again
@@ -68,6 +70,7 @@ const Summary = ({
               setNextLevel(level);
               setQuizQuestions(levels[level].next);
               startQuiz();
+              setSidePanelOpen(false);
             }}
             secondary
           >
