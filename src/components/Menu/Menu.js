@@ -23,7 +23,7 @@ const Menu = ({
   <StyledMenuWrapper isMenuOpen={isMenuOpen}>
     <StyledMenu>
       {!start && (
-        <StyledMenuItem>
+        <StyledMenuItem onClick={() => setMenuOpen(!isMenuOpen)}>
           <Link to="/info">
             <span>Country information</span>
             <StyledIconButton isVisible>
@@ -65,6 +65,7 @@ const Menu = ({
                   setPanelTypeFn('rankings');
                   setSidePanelOpenFn(true);
                   setPlayerToDisplay(user);
+                  setMenuOpen(!isMenuOpen);
                 }}
               >
                 <span>Rankings</span>
@@ -80,6 +81,7 @@ const Menu = ({
                   setPanelTypeFn('profile');
                   setSidePanelOpenFn(true);
                   setPlayerToDisplay(user);
+                  setMenuOpen(!isMenuOpen);
                 }}
               >
                 <span>Profile</span>
@@ -105,7 +107,6 @@ const StyledMenuWrapper = styled.div`
   height: 20vh;
   width: 100%;
   z-index: 991000;
-
   transform: ${({ isMenuOpen }) => (isMenuOpen ? 'translateX(0)' : 'translateX(100%)')};
   background-color: ${({ theme }) => theme.secondary};
   transition: transform 0.5s;
@@ -127,7 +128,7 @@ const StyledMenu = styled.ul`
   align-items: center;
   justify-content: space-around;
   margin: 0;
-  padding: 25px;
+  padding: 15px;
   height: 100%;
 
   @media (min-width: 1100px) {
