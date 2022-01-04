@@ -138,6 +138,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
               formInput
               placeholder="Name"
               value={name}
+              maxLength="12"
             />
             <Input
               onChange={(e) => setEmail(e.target.value)}

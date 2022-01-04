@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Input = ({ onChange, onKeyPress, placeholder, value, formInput, type }) => (
+const Input = ({ onChange, onKeyPress, placeholder, value, formInput, type, maxLength }) => (
   <StyledInput
     value={value}
     placeholder={placeholder}
@@ -9,6 +9,7 @@ const Input = ({ onChange, onKeyPress, placeholder, value, formInput, type }) =>
     onChange={onChange}
     onKeyPress={onKeyPress}
     formInput={formInput}
+    maxLength={maxLength}
   />
 );
 
