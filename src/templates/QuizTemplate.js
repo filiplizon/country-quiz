@@ -10,6 +10,57 @@ import map from 'assets/images/world2.svg';
 import { VscArrowLeft as ArrowIcon } from 'react-icons/vsc';
 import SidePanel from 'components/SidePanel/SidePanel';
 
+const QuizTemplate = ({
+  quizType,
+  resetLevel,
+  resetType,
+  children,
+  level,
+  formType,
+  start,
+  setPlayerToDisplay,
+  user,
+  counter,
+}) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isSidePanelOpen, setSidePanelOpen] = useState(false);
+  const [panelType, setPanelType] = useState(null);
+  return (
+    <StyledWrapper>
+      {quizType && level === '' && (
+        <StyledLink onClick={() => resetType()} to="/">
+          <StyledArrowIcon /> go back
+        </StyledLink>
+      )}
+      {level && (
+        <StyledLink onClick={() => resetLevel()} to="/">
+          <StyledArrowIcon /> go back
+        </StyledLink>
+      )}
+      <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
+      <SidePanel
+        isSidePanelOpen={!start && isSidePanelOpen}
+        setSidePanelOpenFn={setSidePanelOpen}
+        panelType={panelType}
+        setPanelTypeFn={setPanelType}
+        setPlayerToDisplayFn={setPlayerToDisplay}
+        user={user}
+      />
+      <Header
+        isQuiz="true"
+        setPanelTypeFn={setPanelType}
+        setSidePanelOpenFn={setSidePanelOpen}
+        setModalOpenFn={setModalOpen}
+      />
+      <StyledMap src={map} start={start} counter={counter} />
+      <InnerWrapper start={start} counter={counter}>
+        {children}
+      </InnerWrapper>
+      <StyledIllustration start={start} />
+    </StyledWrapper>
+  );
+};
+
 const StyledWrapper = styled.div`
   width: 100%;
   height: 100vh;
@@ -43,7 +94,7 @@ const InnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: ${({ start }) => (start ? '0' : '20vh')};
+  top: ${({ start, counter }) => (start ? '0' : `${counter === 10 ? '10vh' : '20vh'}`)};
   z-index: 1;
   height: ${({ start }) => (start ? '100vh' : '85vh')};
 
@@ -64,8 +115,6 @@ const StyledIllustration = styled.div`
   background-image: url(${illustration});
   background-position: 45% 50%;
   background-size: cover;
-  opacity: ${({ start }) => (start ? '0.3' : '1')};
-  transition: opacity 0.2s;
   display: ${({ start }) => (start ? 'none' : 'block')};
 
   @media (min-width: 1024px) and (orientation: landscape) {
@@ -81,7 +130,7 @@ const StyledIllustration = styled.div`
 `;
 
 const StyledMap = styled.img`
-  display: ${({ start }) => (start ? 'none' : 'block')};
+  display: ${({ start, counter }) => (start || counter === 10 ? 'none' : 'block')};
   position: absolute;
   top: 20vh;
   z-index: 100;
@@ -100,54 +149,6 @@ const StyledMap = styled.img`
   }
 `;
 
-const QuizTemplate = ({
-  quizType,
-  resetLevel,
-  resetType,
-  children,
-  level,
-  formType,
-  start,
-  setPlayerToDisplay,
-  user,
-}) => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [isSidePanelOpen, setSidePanelOpen] = useState(false);
-  const [panelType, setPanelType] = useState(null);
-  return (
-    <StyledWrapper>
-      {quizType && level === '' && (
-        <StyledLink onClick={() => resetType()} to="/">
-          <StyledArrowIcon /> go back
-        </StyledLink>
-      )}
-      {level && (
-        <StyledLink onClick={() => resetLevel()} to="/">
-          <StyledArrowIcon /> go back
-        </StyledLink>
-      )}
-      <Modal isModalOpen={isModalOpen} setModalOpenFn={setModalOpen} formType={formType} />
-      <SidePanel
-        isSidePanelOpen={!start && isSidePanelOpen}
-        setSidePanelOpenFn={setSidePanelOpen}
-        panelType={panelType}
-        setPanelTypeFn={setPanelType}
-        setPlayerToDisplayFn={setPlayerToDisplay}
-        user={user}
-      />
-      <Header
-        isQuiz="true"
-        setPanelTypeFn={setPanelType}
-        setSidePanelOpenFn={setSidePanelOpen}
-        setModalOpenFn={setModalOpen}
-      />
-      <StyledMap src={map} start={start} />
-      <InnerWrapper start={start}>{children}</InnerWrapper>
-      <StyledIllustration start={start} />
-    </StyledWrapper>
-  );
-};
-
 const mapDispatchToProps = (dispatch) => ({
   resetLevel: () => dispatch(actions.resetLevel()),
   resetType: () => dispatch(actions.resetType()),
@@ -156,8 +157,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  const { level, quizType, formType, start, user } = state;
-  return { level, quizType, formType, start, user };
+  const { level, quizType, formType, start, user, counter } = state;
+  return { level, quizType, formType, start, user, counter };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizTemplate);

@@ -8,62 +8,6 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
 import actions from 'actions/actions';
 
-const StyledWrapper = styled.div`
-  width: 100%;
-  height: ${({ row }) => (row ? '' : '50%')};
-  display: flex;
-  flex-direction: ${({ row }) => (row ? 'row' : 'column')};
-  align-items: center;
-  justify-content: space-around;
-  margin-top: 10px;
-
-  @media (min-width: 1100px) {
-    width: ${({ row }) => (row ? '' : '90%')};
-  }
-`;
-
-const StyledImage = styled.img`
-  height: 160px;
-
-  @media (min-width: 360px) {
-    height: 215px;
-  }
-
-  @media (min-width: 768px) {
-    height: 300px;
-  }
-
-  @media (min-width: 1024px) {
-    height: 350px;
-  }
-
-  @media (min-width: 1200px) {
-    height: 200px;
-  }
-`;
-
-const StyledParagraph = styled(Paragraph)`
-  margin-bottom: 5px;
-  width: 90%;
-  text-align: center;
-
-  @media (min-width: 360px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
-  @media (min-width: 1024px) {
-    font-size: ${({ theme }) => theme.fontSize.xxl};
-  }
-
-  @media (min-width: 1024px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-    width: 100%;
-  }
-`;
-
 const Summary = ({
   points,
   quizLength,
@@ -144,6 +88,62 @@ const Summary = ({
     </StyledWrapper>
   );
 };
+
+const StyledWrapper = styled.div`
+  width: 100%;
+  height: ${({ row }) => (row ? '' : '50%')};
+  display: flex;
+  flex-direction: ${({ row }) => (row ? 'row' : 'column')};
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10px;
+
+  @media (min-width: 1100px) {
+    width: ${({ row }) => (row ? '' : '90%')};
+  }
+`;
+
+const StyledImage = styled.img`
+  height: 160px;
+
+  @media (min-width: 360px) {
+    height: 215px;
+  }
+
+  @media (min-width: 768px) {
+    height: 300px;
+  }
+
+  @media (min-width: 1024px) {
+    height: 350px;
+  }
+
+  @media (min-width: 1200px) {
+    height: 200px;
+  }
+`;
+
+const StyledParagraph = styled(Paragraph)`
+  margin-bottom: 5px;
+  width: 90%;
+  text-align: center;
+
+  @media (min-width: 360px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (min-width: 1024px) {
+    font-size: ${({ theme }) => theme.fontSize.xxl};
+  }
+
+  @media (min-width: 1024px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+    width: 100%;
+  }
+`;
 
 const mapStateToProps = (state) => {
   const { points, quizLength, level, levels, quizType, time, user } = state;
