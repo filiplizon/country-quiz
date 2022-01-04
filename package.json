@@ -1,6 +1,6 @@
 {
     "homepage": "https://country-quiz-leezon.netlify.app/",
-    "name": "countryinfo",
+    "name": "countryquiz",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
