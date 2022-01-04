@@ -52,7 +52,7 @@ const UserInfo = ({
             : `0/${quizLength} - 00:00:00`}
         </span>
       </StyledParagraph>
-      {playerToDisplay === user && (
+      {playerToDisplay.id === user.id && (
         <StyledLink onClick={logOut} to="/">
           sign out
         </StyledLink>
