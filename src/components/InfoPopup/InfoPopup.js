@@ -37,7 +37,12 @@ const InfoPopup = ({ currentCountry, isPopupOpen, stateChanger }) => (
         </StyledPararaph>
       </InnerWrapper>
     </StyledPopup>
-    <StyledButtonWrapper onClick={() => stateChanger(!isPopupOpen)}>
+    <StyledButtonWrapper
+      onClick={() => {
+        stateChanger(!isPopupOpen);
+        document.body.style.overflow = 'unset';
+      }}
+    >
       <Link primary isvisible alignend to="/info">
         Close
       </Link>
@@ -90,6 +95,7 @@ const InnerWrapper = styled.div`
   justify-content: space-around;
   background-color: ${({ theme, color }) => color && theme.primary};
   color: white;
+  padding: 10px 0;
 `;
 
 const StyledCountryName = styled.h2`

@@ -76,6 +76,7 @@ const Card = ({ onClick, country, setPopUpVisibilityFn, setCurrentCountryFn, isP
           console.log(country);
           setCurrentCountryFn(country);
           setPopUpVisibilityFn(!isPopupOpen);
+          document.body.style.overflow = 'hidden';
         }
       }}
     >
