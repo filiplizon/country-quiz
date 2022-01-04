@@ -14,6 +14,8 @@ const UserInfo = ({
   quizLength,
   playerToDisplay,
   setPlayerToDisplay,
+  resetLevel,
+  resetType,
 }) => {
   const auth = getAuth();
   const logOut = () => {
@@ -21,6 +23,8 @@ const UserInfo = ({
       .then(() => {
         setUser({});
         setSidePanelOpenFn(false);
+        resetLevel();
+        resetType();
       })
       .catch((error) => {
         console.log(error);
@@ -117,6 +121,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(actions.setUser(user)),
   setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
+  resetLevel: () => dispatch(actions.resetLevel()),
+  resetType: () => dispatch(actions.resetType()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
