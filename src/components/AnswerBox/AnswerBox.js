@@ -123,6 +123,7 @@ const StyledAnswer = styled(Button)`
   cursor: pointer;
   font-weight: bold;
   font-size: ${({ theme }) => theme.fontSize.s};
+  box-shadow: none;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary};
@@ -155,6 +156,10 @@ const StyledButton = styled(Button)`
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 600;
   cursor: pointer;
+
+  &:hover {
+    background-color: #fff;
+  }
 
   @media (min-width: 1100px) {
     width: 30%;
