@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LazyLoad from 'react-lazy-load';
 import Card from 'components/Card/Card';
-import InfoPopup from 'components/InfoPopup/InfoPopup';
-import IconButton from 'components/IconButton/IconButton';
-import { BsArrowUp as ArrowIcon } from 'react-icons/bs';
+
+const CardWrapper = ({ countries, setCurrentCountryFn, setPopUpVisibilityFn, isPopupOpen }) => (
+  <StyledCardWrapper>
+    {countries.length
+      ? countries.map((country) => (
+          <LazyLoad key={country.alpha3Code} offsetVertical={300}>
+            <Card
+              setCurrentCountryFn={setCurrentCountryFn}
+              setPopUpVisibilityFn={setPopUpVisibilityFn}
+              country={country}
+              isPopupOpen={isPopupOpen}
+            />
+          </LazyLoad>
+        ))
+      : null}
+  </StyledCardWrapper>
+);
 
 const StyledCardWrapper = styled.ul`
   width: 100%;
@@ -24,49 +38,5 @@ const StyledCardWrapper = styled.ul`
     grid-row-gap: 20px;
   }
 `;
-
-const StyledIconButton = styled(IconButton)`
-  position: fixed;
-  bottom: 3vh;
-  right: 3vw;
-`;
-
-const CardWrapper = ({ countries }) => {
-  const [currentCountry, setCurrentCountry] = useState('');
-  const [isPopupOpen, setPopUpVisibility] = useState(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-  return (
-    <StyledCardWrapper>
-      <InfoPopup
-        currentCountry={currentCountry}
-        isPopupOpen={isPopupOpen}
-        stateChanger={setPopUpVisibility}
-      />
-      {countries.length
-        ? countries.map((country) => (
-            <LazyLoad key={country.alpha3Code} offsetVertical={300}>
-              <Card
-                setCurrentCountryFn={setCurrentCountry}
-                setPopUpVisibilityFn={setPopUpVisibility}
-                country={country}
-                isPopupOpen={isPopupOpen}
-              />
-            </LazyLoad>
-          ))
-        : null}
-      {!isPopupOpen && (
-        <StyledIconButton isVisible onClick={scrollToTop}>
-          <ArrowIcon />
-        </StyledIconButton>
-      )}
-    </StyledCardWrapper>
-  );
-};
 
 export default CardWrapper;

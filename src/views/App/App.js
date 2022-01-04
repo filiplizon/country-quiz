@@ -4,8 +4,7 @@ import { Provider } from 'react-redux';
 import store from 'store';
 import MainTemplate from 'templates/MainTemplate';
 import Quiz from 'components/Quiz/Quiz';
-import HomePage from 'components/HomePage/HomePage';
-// import InfoPopup from 'components/InfoPopup/InfoPopup';
+import CountryInformation from 'components/CountryInformation/CountryInformation';
 
 const App = () => (
   <Provider store={store}>
@@ -13,7 +12,7 @@ const App = () => (
       <MainTemplate>
         <Switch>
           <Route exact path="/" component={Quiz} />
-          <Route exact path="/info" component={HomePage} />
+          <Route exact path="/info" component={CountryInformation} />
         </Switch>
       </MainTemplate>
     </BrowserRouter>

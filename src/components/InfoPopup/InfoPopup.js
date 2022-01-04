@@ -4,7 +4,7 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
 import Link from 'components/Link/Link';
 
-const InfoPopup = ({ currentCountry, isPopupOpen, stateChanger }) => (
+const InfoPopup = ({ currentCountry, isPopupOpen, setPopUpVisibilityFn }) => (
   <StyledPopupWrapper isPopupOpen={isPopupOpen}>
     <StyledPopup>
       <InnerWrapper>
@@ -39,7 +39,7 @@ const InfoPopup = ({ currentCountry, isPopupOpen, stateChanger }) => (
     </StyledPopup>
     <StyledButtonWrapper
       onClick={() => {
-        stateChanger(!isPopupOpen);
+        setPopUpVisibilityFn(!isPopupOpen);
         document.body.style.overflow = 'unset';
       }}
     >
@@ -62,7 +62,7 @@ const StyledPopupWrapper = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 999;
-  transform: ${({ isPopupOpen }) => (isPopupOpen ? 'translateY(0)' : 'translateY(100%)')};
+  transform: ${({ isPopupOpen }) => (isPopupOpen ? 'translateY(0)' : 'translateY(120%)')};
   transition: transform 0.5s;
 
   @media (min-width: 1100px) {

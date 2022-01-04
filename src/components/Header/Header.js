@@ -16,6 +16,7 @@ const Header = ({
   setModalOpenFn,
   setSidePanelOpenFn,
   setPanelTypeFn,
+  setPopUpVisibilityFn,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
@@ -25,7 +26,12 @@ const Header = ({
         <Logo src={LogoImage} alt="CountryInfo" />
       </StyledLink>
       {!isQuiz && (
-        <StyledInputContainer>
+        <StyledInputContainer
+          onClick={() => {
+            setPopUpVisibilityFn(false);
+            document.body.style.overflow = 'unset';
+          }}
+        >
           <Input className="Input" placeholder="Search" onChange={(e) => searchCountryFn(e)} />
           <SearchIcon />
         </StyledInputContainer>
