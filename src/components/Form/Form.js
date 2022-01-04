@@ -48,7 +48,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         const userID = userCredential.user.uid;
         const newDocRef = doc(collection(db, 'users'));
         const today = new Date();
-        const date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+        const date = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
         const hash = hashPassword(password);
         setDoc(newDocRef, {
           email,
