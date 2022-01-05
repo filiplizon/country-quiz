@@ -23,10 +23,22 @@ const AnswerBox = ({
   user,
 }) => {
   const [isActive, setActive] = useState(false);
+
   useEffect(() => {
     setAnswers(currentQuestion);
     setActive(false);
   }, [currentQuestion]);
+
+  const saveGameWithDate = () => {
+    const today = new Date();
+    const date = `${today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()}.${
+      today.getMonth() < 10 ? `0${today.getMonth() + 1}` : today.getMonth() + 1
+    }.${today.getFullYear()}`;
+    const id = `${user.id}${today.getDate()}${
+      today.getMonth() + 1
+    }${today.getFullYear()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`;
+    saveGame(date, id);
+  };
 
   return (
     <>
@@ -73,14 +85,7 @@ const AnswerBox = ({
         <StyledButton
           onClick={() => {
             isChecked && changeQuestion(counter + 1);
-            const today = new Date();
-            const date = `${today.getDate() < 10 ? `0${today.getDate()}` : today.getDate()}.${
-              today.getMonth() < 10 ? `0${today.getMonth() + 1}` : today.getMonth() + 1
-            }.${today.getFullYear()}`;
-            const id = `${user.id}${today.getDate()}${
-              today.getMonth() + 1
-            }${today.getFullYear()}${today.getHours()}${today.getMinutes()}${today.getSeconds()}`;
-            saveGame(date, id);
+            Object.keys(user).length >= 1 && saveGameWithDate();
           }}
         >
           Finish{' '}

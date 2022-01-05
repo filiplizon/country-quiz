@@ -30,7 +30,8 @@ const Summary = ({
   };
 
   useEffect(() => {
-    saveDataToDB();
+    /* eslint-disable no-unused-expressions */
+    Object.keys(user).length >= 1 && saveDataToDB();
   }, []);
 
   return (
@@ -121,7 +122,7 @@ const StyledImage = styled.img`
     height: 350px;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1100px) {
     height: 200px;
   }
 `;
