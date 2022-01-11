@@ -46,7 +46,7 @@ const CountryInformation = ({ countries }) => {
         setPopUpVisibilityFn={setPopUpVisibility}
       />
       {!isPopupOpen && (
-        <StyledIconButton isVisible onClick={scrollToTop}>
+        <StyledIconButton onClick={scrollToTop}>
           <ArrowIcon />
         </StyledIconButton>
       )}

@@ -42,6 +42,11 @@ const StyledSidePanel = styled.div`
   transform: ${({ isSidePanelOpen }) => (isSidePanelOpen ? 'translateX(0)' : 'translateX(100%)')};
   transition: 0.3s transform;
 
+  @media (max-height: 600px) and (orientation: landscape) {
+    width: 28%;
+    box-shadow: -3px 0px 15px -8px rgba(66, 68, 90, 1);
+  }
+
   @media (min-width: 1100px) {
     width: 28%;
     box-shadow: -3px 0px 15px -8px rgba(66, 68, 90, 1);
@@ -53,6 +58,10 @@ const StyledIconButton = styled(IconButton)`
   right: 20px;
   position: fixed;
   font-size: ${({ theme }) => theme.fontSize.xl};
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    top: 5px;
+  }
 `;
 
 export default SidePanel;

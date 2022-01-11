@@ -72,12 +72,43 @@ const StyledUserInfo = styled.div`
 const StyledName = styled(Heading)`
   margin-bottom: 20px;
 
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+    margin-bottom: 5px;
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.l};
   }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
 `;
+
 const StyledParagraph = styled(Paragraph)`
   margin-bottom: 10px;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    margin-bottom: 5px;
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 
   & span {
     font-weight: bold;
@@ -89,6 +120,22 @@ const StyledLink = styled(Link)`
   align-self: center;
   overflow: hidden;
   font-weight: 400;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 
   &::after {
     content: '';

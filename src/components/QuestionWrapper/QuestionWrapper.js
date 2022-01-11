@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
@@ -6,10 +6,41 @@ import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
 import PointBox from 'components/PointBox/PointBox';
 import AnswerBox from 'components/AnswerBox/AnswerBox';
-import Stopwatch from 'components/Stopwatch/Stopwatch';
+
+const QuestionWrapper = ({
+  quizType,
+  countriesForQuiz,
+  counter,
+  setCurrentQuestion,
+  currentQuestion,
+}) => {
+  const [time, setTimeFn] = useState(0);
+
+  useEffect(() => {
+    setCurrentQuestion(countriesForQuiz[counter], quizType);
+  }, []);
+  return (
+    <>
+      <PointBox time={time} setTimeFn={setTimeFn} />
+      <StyledWrapper>
+        <StyledParagraph>
+          {quizType === 'flags'
+            ? 'Guess what country the flag is:'
+            : 'What is capital of this country?'}
+        </StyledParagraph>
+        {quizType === 'capitals' ? (
+          <Flag flag={currentQuestion.flag} name={currentQuestion.name} quiz="true" />
+        ) : (
+          <Flag flag={currentQuestion.flag} />
+        )}
+        <AnswerBox time={time} />
+      </StyledWrapper>
+    </>
+  );
+};
 
 const StyledWrapper = styled.div`
-  height: 25vh;
+  height: ${({ quizType }) => (quizType === 'capitals' ? '30vh' : '25vh')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,87 +50,37 @@ const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.primary};
 `;
 
-const QuestionWrapper = ({
-  level,
-  quizType,
-  countriesForQuiz,
-  counter,
-  quizLength,
-  points,
-  setCurrentQuestion,
-  currentQuestion,
-  start,
-}) => {
-  useEffect(() => {
-    setCurrentQuestion(countriesForQuiz[counter], quizType);
-  }, []);
-  return (
-    <>
-      <PointBox>
-        <Paragraph>Level: {level}</Paragraph>
-        <Paragraph>
-          Question: {counter + 1} / {quizLength}
-        </Paragraph>
-        <Paragraph>
-          Points: {points} / {quizLength}
-        </Paragraph>
-        <Paragraph>
-          Time: <Stopwatch start={start} />
-        </Paragraph>
-      </PointBox>
-      <StyledWrapper>
-        <Paragraph>
-          {quizType === 'flags'
-            ? 'Guess what country the flag is:'
-            : 'What is capital of this country?'}
-        </Paragraph>
-        {quizType === 'capitals' ? (
-          <Flag flag={currentQuestion.flag} name={currentQuestion.name} quiz="true" />
-        ) : (
-          <Flag flag={currentQuestion.flag} />
-        )}
-        <AnswerBox />
-      </StyledWrapper>
-    </>
-  );
-};
+const StyledParagraph = styled(Paragraph)`
+@media (min-width: 768px) {
+  font-size: ${({ theme }) => theme.fontSize.l};
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  font-size: ${({ theme }) => theme.fontSize.s};
+  margin-bottom: 10px;
+}
+
+@media (min-width: 1100px) {
+  font-size: ${({ theme }) => theme.fontSize.m};
+}
+
+@media (min-width: 1600px) {
+  font-size: ${({ theme }) => theme.fontSize.l};
+`;
+
 const mapStateToProps = (state) => {
-  const {
-    level,
-    quizLength,
-    points,
-    counter,
-    quizType,
-    countriesForQuiz,
-    answer,
-    isChecked,
-    isAnswerCorrect,
-    currentQuestion,
-    start,
-  } = state;
+  const { quizType, countriesForQuiz, currentQuestion, counter } = state;
   return {
-    level,
-    quizLength,
-    points,
-    counter,
     quizType,
     countriesForQuiz,
-    answer,
-    isChecked,
-    isAnswerCorrect,
     currentQuestion,
-    start,
+    counter,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setAnswer: (answer) => dispatch(actions.setAnswer(answer)),
-  checkAnswer: (answer, correctAnswer) => dispatch(actions.checkAnswer(answer, correctAnswer)),
-  changeQuestion: () => dispatch(actions.changeQuestion()),
-  setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   setCurrentQuestion: (question, quizType) =>
     dispatch(actions.setCurrentQuestion(question, quizType)),
-  setAnswers: () => dispatch(actions.setAnswers()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionWrapper);

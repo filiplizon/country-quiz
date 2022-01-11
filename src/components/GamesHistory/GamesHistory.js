@@ -1,63 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Heading from 'components/Heading/Heading';
 import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
+import { checkIfNumberIsLessThan10 } from 'operations/operations';
+import PaginatedItems from 'components/PaginatedItems/PaginatedItems';
+import Heading from 'components/Heading/Heading';
 
 const GamesHistory = ({ playerToDisplay }) => {
-  function Items({ currentItems }) {
-    return (
-      <>
-        {currentItems &&
-          currentItems.map((item) => (
-            <StyledGameDetailsRow>
-              <StyledGameDetail>{item.date}</StyledGameDetail>
-              <StyledGameDetail>{item.type}</StyledGameDetail>
-              <StyledGameDetail>{item.level}</StyledGameDetail>
-              <StyledGameDetail>{item.points}</StyledGameDetail>
-              <StyledGameDetail>
-                {item.time.minutes < 10 ? `0${item.time.minutes}` : item.time.minutes}:
-                {item.time.seconds < 10 ? `0${item.time.seconds}` : item.time.seconds}:
-                {item.time.miliseconds < 10 ? `0${item.time.miliseconds}` : item.time.miliseconds}
-              </StyledGameDetail>
-            </StyledGameDetailsRow>
-          ))}
-      </>
-    );
-  }
-  function PaginatedItems({ itemsPerPage }) {
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-    const [itemOffset, setItemOffset] = useState(0);
-
-    useEffect(() => {
-      const endOffset = itemOffset + itemsPerPage;
-      setCurrentItems(playerToDisplay.games.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(playerToDisplay.games.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
-
-    const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % playerToDisplay.games.length;
-      setItemOffset(newOffset);
-    };
-
-    return (
-      <>
-        <Items currentItems={currentItems} />
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-        />
-      </>
-    );
-  }
-
   const detailTypes = ['Date', 'Type', 'Level', 'Points', 'Time'];
+
+  const currentItem = (item) => (
+    <StyledGameDetailsRow key={item.id}>
+      <StyledGameDetail>{item.date}</StyledGameDetail>
+      <StyledGameDetail>{item.type}</StyledGameDetail>
+      <StyledGameDetail>{item.level}</StyledGameDetail>
+      <StyledGameDetail>{item.points}</StyledGameDetail>
+      <StyledGameDetail>
+        {checkIfNumberIsLessThan10(item.time.minutes)}:
+        {checkIfNumberIsLessThan10(item.time.seconds)}:
+        {checkIfNumberIsLessThan10(item.time.miliseconds)}
+      </StyledGameDetail>
+    </StyledGameDetailsRow>
+  );
 
   return (
     Object.keys(playerToDisplay).length > 0 && (
@@ -66,12 +29,18 @@ const GamesHistory = ({ playerToDisplay }) => {
           <StyledName>History</StyledName>
         </StyledNameWrapper>
         <StyledGameDetailsTitles>
-          {detailTypes.map((type) => (
-            <StyledGameDetailsTitle>{type}</StyledGameDetailsTitle>
+          {detailTypes.map((type, i) => (
+            <StyledGameDetailsTitle key={playerToDisplay.games[i].id + type}>
+              {type}
+            </StyledGameDetailsTitle>
           ))}
         </StyledGameDetailsTitles>
         <StyledHistoryWrapper>
-          <PaginatedItems itemsPerPage={5} />
+          <PaginatedItems
+            itemsPerPage={5}
+            itemsToPaginate={playerToDisplay.games}
+            currentItem={currentItem}
+          />
         </StyledHistoryWrapper>
       </StyledGamesHistory>
     )
@@ -79,8 +48,12 @@ const GamesHistory = ({ playerToDisplay }) => {
 };
 
 const StyledGamesHistory = styled.div`
-  height: 49%;
+  height: 50%;
   background: #fff;
+
+  @media (min-width: 1600px) {
+    height: 50%;
+  }
 `;
 
 const StyledNameWrapper = styled.div`
@@ -96,20 +69,33 @@ const StyledName = styled(Heading)`
   color: ${({ theme }) => theme.secondary};
   text-align: center;
 
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
   }
 `;
 
 const StyledHistoryWrapper = styled.div`
   background-color: #fff;
   height: 80%;
+  position: relative;
 
   & ul {
     list-style: none;
     display: flex;
     margin: 0;
-    height: 25%;
+    height: 19%;
     padding: 0 20%;
     width: 100%;
     justify-content: space-around;
@@ -118,6 +104,18 @@ const StyledHistoryWrapper = styled.div`
 
     & li {
       cursor: pointer;
+
+      @media (min-width: 768px) {
+        font-size: ${({ theme }) => theme.fontSize.m};
+      }
+
+      @media (max-height: 600px) and (orientation: landscape) {
+        font-size: ${({ theme }) => theme.fontSize.xs};
+      }
+
+      @media (min-width: 1100px) {
+        font-size: ${({ theme }) => theme.fontSize.s};
+      }
 
       &:hover,
       &.selected {
@@ -133,13 +131,24 @@ const StyledHistoryWrapper = styled.div`
   }
 `;
 
-const StyledGameDetailsTitle = styled.button`
-  margin: 0;
+const StyledGameDetailsTitle = styled.div`
   padding: 10px 0;
-  width: 100%;
-  border: none;
-  background-color: #fff;
   font-weight: bold;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.s};
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 0;
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 `;
 
 const StyledGameDetailsRow = styled.div`
@@ -158,10 +167,12 @@ const StyledGameDetailsRow = styled.div`
 
 const StyledGameDetailsTitles = styled.div`
   width: 100%;
+  height: 15%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   justify-items: center;
+  align-items: center;
   margin: 0 auto;
   box-shadow: 0px 0px 3px -1px rgba(66, 68, 90, 1);
 `;
@@ -169,6 +180,23 @@ const StyledGameDetailsTitles = styled.div`
 const StyledGameDetail = styled.div`
   font-size: 1.3rem;
   padding: 10px 0;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 0;
+  }
+
+  @media (min-width: 1100px) {
+    font-size: 1.3rem;
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 `;
 
 const mapStateToProps = (state) => {

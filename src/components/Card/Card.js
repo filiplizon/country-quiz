@@ -3,6 +3,32 @@ import styled from 'styled-components';
 import Link from 'components/Link/Link';
 import Flag from 'components/Flag/Flag';
 
+const Card = ({ onClick, country, setPopUpVisibilityFn, setCurrentCountryFn, isPopupOpen }) => (
+  <StyledWrapper onClick={onClick} key={country.id}>
+    <InnerWrapper>
+      <Flag flag={country.flag} name={country.name} />
+    </InnerWrapper>
+    <InnerWrapper color="true">
+      <StyledCountryName>{country.name}</StyledCountryName>
+    </InnerWrapper>
+    <InnerWrapper
+      onClick={() => {
+        if (isPopupOpen) {
+          setCurrentCountryFn(country);
+        } else {
+          setCurrentCountryFn(country);
+          setPopUpVisibilityFn(!isPopupOpen);
+          document.body.style.overflow = 'hidden';
+        }
+      }}
+    >
+      <Link primary="true" to={`/info/`}>
+        Show info
+      </Link>
+    </InnerWrapper>
+  </StyledWrapper>
+);
+
 const StyledWrapper = styled.li`
   height: 50vh;
   width: 95vw;
@@ -12,23 +38,24 @@ const StyledWrapper = styled.li`
   margin-bottom: 20px;
   box-shadow: ${({ theme }) => theme.boxShadow};
 
-  @media (min-width: 500px) and (orientation: landscape) {
-    width: 80vw;
-    min-height: 85vh;
+  @media (min-width: 768px) {
+    width: 30vw;
+    height: 35vh;
+    grid-template-rows: 0.8fr 0.2fr 0.2fr;
   }
 
-  @media (min-width: 768px) {
-    width: 80vw;
-    min-height: 40vh;
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 60vh;
   }
 
   @media (min-width: 1100px) {
-    width: 20vw;
+    width: 21vw;
+    height: 45vh;
   }
 `;
 
 const InnerWrapper = styled.div`
-  display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'flex')};
+  display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -43,8 +70,16 @@ const InnerWrapper = styled.div`
   &:nth-last-child(1):hover ${Link} {
     transform: translateY(-5px);
   }
-  & ${Link} {
+  ${Link} {
     z-index: 465;
+
+    @media (min-width: 768px) {
+      font-size: ${({ theme }) => theme.fontSize.s};
+    }
+
+    @media (max-height: 600px) and (orientation: landscape) {
+      font-size: ${({ theme }) => theme.fontSize.xs};
+    }
   }
 `;
 
@@ -55,36 +90,13 @@ const StyledCountryName = styled.h2`
   line-height: 2;
   text-align: center;
 
-  @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
+  @media (min-width: 768px) {
+    margin: 5px 0;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 `;
-
-const Card = ({ onClick, country, setPopUpVisibilityFn, setCurrentCountryFn, isPopupOpen }) => (
-  <StyledWrapper onClick={onClick} key={country.id}>
-    <InnerWrapper>
-      <Flag flag={country.flag} name={country.name} />
-    </InnerWrapper>
-    <InnerWrapper color="true">
-      <StyledCountryName>{country.name}</StyledCountryName>
-    </InnerWrapper>
-    <InnerWrapper
-      onClick={() => {
-        if (isPopupOpen) {
-          setCurrentCountryFn(country);
-        } else {
-          console.log(country);
-          setCurrentCountryFn(country);
-          setPopUpVisibilityFn(!isPopupOpen);
-          document.body.style.overflow = 'hidden';
-        }
-      }}
-    >
-      <Link primary to={`/info/`}>
-        Show info
-      </Link>
-    </InnerWrapper>
-  </StyledWrapper>
-);
 
 export default Card;

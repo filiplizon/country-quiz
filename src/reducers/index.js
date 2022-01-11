@@ -217,7 +217,7 @@ const rootReducer = (state = initialState, action) => {
               (country) =>
                 country.region === state.currentQuestion.region &&
                 country !== state.currentQuestion &&
-                country.capital !== '',
+                country.capital,
             ),
             3,
           ),
@@ -227,7 +227,7 @@ const rootReducer = (state = initialState, action) => {
     case types.START_QUIZ:
       return {
         ...state,
-        start: !initialState.start,
+        start: action.start ? initialState.start : !initialState.start,
         playerToDisplay: state.user,
       };
 

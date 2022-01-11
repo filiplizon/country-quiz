@@ -1,15 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, onClick, secondary, animation, animationDelay, className, level }) => (
-  <StyledButton
-    animation={animation}
-    animationDelay={animationDelay}
-    secondary={secondary}
-    onClick={onClick}
-    className={className}
-    level={level}
-  >
+const Button = ({ children, onClick, className, level }) => (
+  <StyledButton onClick={onClick} className={className} level={level}>
     {children}
   </StyledButton>
 );
@@ -19,15 +12,13 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   font-size: ${({ theme }) => theme.fontSize.s};
-  background-color: ${({ theme, secondary }) => (secondary ? theme.secondary : theme.primary)};
+  background-color: ${({ theme }) => theme.secondary};
   color: white;
   border: none;
   padding: 5px 20px;
-  transition: transform 0.2s ease;
   cursor: pointer;
   outline-color: ${({ theme }) => theme.secondary};
   z-index: 2;
-  animation: ${({ animation }) => animation} 0.3s both ${({ animationDelay }) => animationDelay};
   box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
 
   :hover {
@@ -38,23 +29,21 @@ const StyledButton = styled.button`
     background-color: ${({ theme, level }) => (level ? theme.primary : theme.secondary)};
   }
 
-  @media (min-width: 500px) and (orientation: landscape) {
-    /* width: 70px; */
-    /* padding: 5px 0; */
-  }
-
   @media (min-width: 768px) {
-    /* width: 130px; */
-    font-size: ${({ theme }) => theme.fontSize.m};
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 
-  @media (min-width: 800px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.s};
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 5px 20px;
   }
 
   @media (min-width: 1100px) {
-    /* width: 130px; */
     font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 

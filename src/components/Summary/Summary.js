@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { db } from 'firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import illustration from 'assets/images/Location.svg';
+import actions from 'actions/actions';
+import { checkIfNumberIsLessThan10 } from 'operations/operations';
 import Paragraph from 'components/Paragraph/Paragraph';
 import Button from 'components/Button/Button';
-import actions from 'actions/actions';
+import illustration from 'assets/images/Location.svg';
 
 const Summary = ({
   points,
@@ -46,11 +47,11 @@ const Summary = ({
       </StyledParagraph>
       <StyledParagraph>
         Your time:{' '}
-        <b>{`${time.minutes < 10 ? `0${time.minutes}` : time.minutes}:${
-          time.seconds < 10 ? `0${time.seconds}` : time.seconds
-        }:${time.miliseconds < 10 ? `0${time.miliseconds}` : time.miliseconds}`}</b>
+        <b>
+          {checkIfNumberIsLessThan10(time.minutes)}:{checkIfNumberIsLessThan10(time.seconds)}:
+          {checkIfNumberIsLessThan10(time.miliseconds)}
+        </b>
       </StyledParagraph>
-
       <StyledWrapper row>
         <Button
           secondary
@@ -94,16 +95,25 @@ const Summary = ({
 };
 
 const StyledWrapper = styled.div`
-  width: 100%;
+  width: 90%;
   height: ${({ row }) => (row ? '' : '50%')};
   display: flex;
   flex-direction: ${({ row }) => (row ? 'row' : 'column')};
   align-items: center;
   justify-content: space-around;
-  margin-top: 10px;
+  margin-top: ${({ row }) => (row ? '10px' : '0')};
+
+  @media (min-width: 768px) {
+    width: ${({ row }) => (row ? '55%' : '90%')};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    width: ${({ row }) => (row ? '70%' : '90%')};
+  }
 
   @media (min-width: 1100px) {
-    width: ${({ row }) => (row ? '' : '90%')};
+    width: ${({ row }) => (row ? '' : '100%')};
+    margin-top: ${({ row }) => (row ? '10px' : '50px')};
   }
 `;
 
@@ -118,12 +128,16 @@ const StyledImage = styled.img`
     height: 300px;
   }
 
-  @media (min-width: 1024px) {
-    height: 350px;
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 100px;
   }
 
   @media (min-width: 1100px) {
     height: 200px;
+  }
+
+  @media (min-width: 1600px) {
+    height: 300px;
   }
 `;
 
@@ -135,23 +149,27 @@ const StyledParagraph = styled(Paragraph)`
   @media (min-width: 360px) {
     font-size: ${({ theme }) => theme.fontSize.s};
   }
+
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.l};
   }
 
-  @media (min-width: 1024px) {
-    font-size: ${({ theme }) => theme.fontSize.xxl};
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
   }
 
-  @media (min-width: 1024px) and (orientation: landscape) {
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
     font-size: ${({ theme }) => theme.fontSize.m};
-    width: 100%;
   }
 `;
 
 const mapStateToProps = (state) => {
-  const { points, quizLength, level, levels, quizType, time, user } = state;
-  return { points, quizLength, level, levels, quizType, time, user };
+  const { points, quizLength, level, levels, time, user } = state;
+  return { points, quizLength, level, levels, time, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -161,7 +179,6 @@ const mapDispatchToProps = (dispatch) => ({
   setCountriesLevel: () => dispatch(actions.setCountriesLevel()),
   setQuizQuestions: (level) => dispatch(actions.setQuizQuestions(level)),
   startQuiz: () => dispatch(actions.startQuiz()),
-  saveGame: () => dispatch(actions.saveGame()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

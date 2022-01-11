@@ -73,8 +73,9 @@ const setCurrentQuestion = (question, quizType) => ({
   quizType,
 });
 
-const startQuiz = () => ({
+const startQuiz = (start) => ({
   type: types.START_QUIZ,
+  start,
 });
 
 const setTime = (time) => ({

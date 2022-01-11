@@ -2,6 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import Paragraph from 'components/Paragraph/Paragraph';
 
+const Flag = ({ flag, name, quiz, noBorder, className }) => (
+  <StyledWrapper className={className}>
+    <StyledFlag noBorder={noBorder} src={flag} alt={name} />
+    {quiz && <StyledParagraph>{name}</StyledParagraph>}
+  </StyledWrapper>
+);
+
 const StyledWrapper = styled.div`
   width: 140px;
   height: 100px;
@@ -11,49 +18,34 @@ const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-height: 500px) and (orientation: portrait) {
-    height: 70px;
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 50px;
+    width: auto;
   }
 `;
 
 const StyledFlag = styled.img`
   height: 100%;
-
   border: 1px solid ${({ theme, noBorder }) => (noBorder ? 'none' : `${theme.grey200}`)};
 `;
 
 const StyledParagraph = styled(Paragraph)`
+  margin-top: 10px;
   text-align: center;
-
-  @media (min-width: 360px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (min-width: 500px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
+  font-size: ${({ theme }) => theme.fontSize.m};
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.xl};
   }
 
-  @media (min-width: 800px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.m};
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    margin-top: 5px;
   }
 
-  @media (min-width: 1024px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-  @media (min-width: 1200px) {
+  @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
-
-const Flag = ({ flag, name, quiz, noBorder }) => (
-  <StyledWrapper>
-    <StyledFlag noBorder={noBorder} src={flag} alt={name} />
-    {quiz && <StyledParagraph>{name}</StyledParagraph>}
-  </StyledWrapper>
-);
 
 export default Flag;

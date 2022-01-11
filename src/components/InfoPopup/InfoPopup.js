@@ -43,7 +43,7 @@ const InfoPopup = ({ currentCountry, isPopupOpen, setPopUpVisibilityFn }) => (
         document.body.style.overflow = 'unset';
       }}
     >
-      <Link primary isvisible alignend to="/info">
+      <Link primary="true" to="/info">
         Close
       </Link>
     </StyledButtonWrapper>
@@ -65,13 +65,21 @@ const StyledPopupWrapper = styled.div`
   transform: ${({ isPopupOpen }) => (isPopupOpen ? 'translateY(0)' : 'translateY(120%)')};
   transition: transform 0.5s;
 
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 85%;
+    left: 35%;
+    right: 35%;
+    top: unset;
+    bottom: 0;
+    background-color: hsla(204, 57%, 49%, 0.96);
+  }
+
   @media (min-width: 1100px) {
     height: 85%;
     left: 35%;
     right: 35%;
     top: unset;
     bottom: 0;
-    transform: ${({ isPopupOpen }) => (isPopupOpen ? 'translateY(0)' : 'translateY(100%)')};
     background-color: hsla(204, 57%, 49%, 0.96);
   }
 `;
@@ -85,10 +93,14 @@ const StyledPopup = styled.div`
   justify-content: space-around;
   align-items: center;
   margin-bottom: 15%;
+
+  @media (min-width: 768px) {
+    height: 50%;
+  }
 `;
 
 const InnerWrapper = styled.div`
-  display: ${({ hiddenInfo }) => (hiddenInfo ? 'none' : 'flex')};
+  display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -96,6 +108,14 @@ const InnerWrapper = styled.div`
   background-color: ${({ theme, color }) => color && theme.primary};
   color: white;
   padding: 10px 0;
+
+  @media (min-width: 768px) {
+    padding: 20px 0;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    padding: 0;
+  }
 `;
 
 const StyledCountryName = styled.h2`
@@ -106,8 +126,17 @@ const StyledCountryName = styled.h2`
   text-align: center;
   color: #fff;
 
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+    margin: 5px 0;
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
   }
 `;
 
@@ -118,8 +147,25 @@ const StyledPararaph = styled(Paragraph)`
     font-weight: bold;
   }
 
+  @media (max-height: 600px) {
+    font-size: 1.3rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 5px 0;
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 
@@ -137,6 +183,12 @@ const StyledButtonWrapper = styled.div`
 
   &:hover ${Link} {
     transform: translateY(-5px);
+  }
+
+  ${Link} {
+    @media (max-height: 600px) and (orientation: landscape) {
+      font-size: ${({ theme }) => theme.fontSize.xs};
+    }
   }
 `;
 

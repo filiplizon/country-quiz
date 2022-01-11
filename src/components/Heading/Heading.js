@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledHeading = styled.h1`
+const StyledHeading = styled.h2`
   margin: 0;
   display: inline-block;
 `;

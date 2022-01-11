@@ -13,23 +13,8 @@ const StyledLink = styled(Link)`
     transform: translateY(-5px);
   }
 
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (min-width: 800px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (min-width: 1024px) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.s};
-
-    /* font-size: 1.3rem; */
-    /* color: ${({ theme }) => theme.primary}; */
   }
 `;
 

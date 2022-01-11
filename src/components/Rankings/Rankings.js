@@ -5,9 +5,10 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
+import { checkIfNumberIsLessThan10 } from 'operations/operations';
 import Heading from 'components/Heading/Heading';
 import Button from 'components/Button/Button';
-
+/* eslint-disable no-return-assign */
 const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
   const types = ['flags', 'capitals'];
   const levels = ['easy', 'medium', 'hard'];
@@ -24,7 +25,7 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
       <>
         {currentItems &&
           currentItems.map((item, i) => (
-            <StyledGameDetailsRow>
+            <StyledGameDetailsRow key={item.id}>
               <StyledGameDetail>{i + 1}</StyledGameDetail>
               <StyledGameDetail
                 className="user"
@@ -37,9 +38,9 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
               </StyledGameDetail>
               <StyledGameDetail>{item.points}</StyledGameDetail>
               <StyledGameDetail>
-                {item.time.minutes < 10 ? `0${item.time.minutes}` : item.time.minutes}:
-                {item.time.seconds < 10 ? `0${item.time.seconds}` : item.time.seconds}:
-                {item.time.miliseconds < 10 ? `0${item.time.miliseconds}` : item.time.miliseconds}
+                {checkIfNumberIsLessThan10(item.time.minutes)}:
+                {checkIfNumberIsLessThan10(item.time.seconds)}:
+                {checkIfNumberIsLessThan10(item.time.miliseconds)}
               </StyledGameDetail>
               <StyledGameDetail>{item.date}</StyledGameDetail>
             </StyledGameDetailsRow>
@@ -98,7 +99,6 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
         users.push(doc.data());
       });
       setAllUsers(users);
-      console.log(users);
       const allGames = users.map((user) => user.games).flat(1);
       const flagsGames = allGames.filter((game) => game.type === 'flags');
       const capitalsGames = allGames.filter((game) => game.type === 'capitals');
@@ -127,7 +127,6 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
       const sortedByType = sortedGames[type];
       const sortedByLevel = sortedByType[level];
       setGames(sortedByLevel);
-      console.log(users);
     };
     getUsers();
   }, [type, level]);
@@ -138,6 +137,7 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
       <StyledButtonContainer>
         {types.map((el, i) => (
           <StyledButton
+            key={el}
             className={isActiveType === i && 'active'}
             onClick={() => {
               setType(el);
@@ -151,6 +151,7 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
       <StyledButtonContainer>
         {levels.map((el, i) => (
           <StyledButton
+            key={el}
             className={isActiveLevel === i && 'active'}
             onClick={() => {
               setLevel(el);
@@ -188,6 +189,22 @@ const StyledHeading = styled(Heading)`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -199,7 +216,7 @@ const StyledButtonContainer = styled.div`
 const StyledButton = styled(Button)`
   width: 50%;
   padding: 10px 0;
-  font-size: ${({ theme }) => theme.fontSize.m};
+  font-size: ${({ theme }) => theme.fontSize.s};
   background-color: #fff;
   color: ${({ theme }) => theme.secondary};
 
@@ -209,8 +226,20 @@ const StyledButton = styled(Button)`
     color: #fff;
   }
 
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
   }
 `;
 
@@ -223,14 +252,12 @@ const StyledRankings = styled.div`
     list-style: none;
     display: flex;
     margin: 0;
-    height: 25%;
+    height: 10%;
     padding: 0 20%;
     width: 100%;
     justify-content: space-around;
     font-size: 1.3rem;
     align-items: center;
-    position: absolute;
-    bottom: 15px;
 
     @media (min-width: 1100px) {
       bottom: 10px;
@@ -238,6 +265,18 @@ const StyledRankings = styled.div`
 
     & li {
       cursor: pointer;
+
+      @media (min-width: 768px) {
+        font-size: ${({ theme }) => theme.fontSize.m};
+      }
+
+      @media (max-height: 600px) and (orientation: landscape) {
+        font-size: ${({ theme }) => theme.fontSize.xs};
+      }
+
+      @media (min-width: 1100px) {
+        font-size: ${({ theme }) => theme.fontSize.s};
+      }
 
       &:hover,
       &.selected {
@@ -255,21 +294,31 @@ const StyledRankings = styled.div`
 
 const StyledGameDetailsTitles = styled.div`
   width: 100%;
+  height: 10%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   justify-items: center;
-  padding: 5px 0;
+  align-items: center;
   box-shadow: 0px 0px 3px -1px rgba(66, 68, 90, 1);
 `;
 
-const StyledGameDetailsTitle = styled.button`
-  margin: 0;
-  padding: 10px 0;
+const StyledGameDetailsTitle = styled.div`
   width: 100%;
-  border: none;
-  background-color: #fff;
+  text-align: center;
   font-weight: bold;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 `;
 
 const StyledGameDetailsRow = styled.div`
@@ -279,7 +328,7 @@ const StyledGameDetailsRow = styled.div`
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
-  height: 10%;
+  height: calc(80% / 8);
 
   &:nth-child(even) {
     background-color: #eee;
@@ -289,6 +338,23 @@ const StyledGameDetailsRow = styled.div`
 const StyledGameDetail = styled.div`
   font-size: 1.3rem;
   padding: 10px;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+    padding: 0;
+  }
+
+  @media (min-width: 1100px) {
+    font-size: 1.3rem;
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 
   &.user {
     cursor: pointer;

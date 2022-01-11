@@ -89,3 +89,5 @@ export const countAverageScore = (state) => {
     time: averageTime,
   };
 };
+
+export const checkIfNumberIsLessThan10 = (number) => (number < 10 ? `0${number}` : number);

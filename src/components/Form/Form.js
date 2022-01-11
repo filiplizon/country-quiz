@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { db } from 'firebase';
 import { onSnapshot, collection, doc, setDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import sha256 from 'crypto-js/sha256';
 import Link from 'components/Link/Link';
 import Input from 'components/Input/Input';
 import Paragraph from 'components/Paragraph/Paragraph';
@@ -27,12 +26,6 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     setErrorText('');
   };
 
-  const hashPassword = (p) => {
-    const hashedPassword = sha256(p).toString();
-    console.log(hashedPassword);
-    return hashedPassword;
-  };
-
   useEffect(() => {
     onSnapshot(collectionRef, (snapshot) => {
       setUsers(snapshot.docs.map((docc) => ({ ...docc.data(), id: docc.id })));
@@ -49,10 +42,8 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         const newDocRef = doc(collection(db, 'users'));
         const today = new Date();
         const date = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
-        const hash = hashPassword(password);
         setDoc(newDocRef, {
           email,
-          password: hash,
           authID: userID,
           name,
           id: newDocRef.id,
@@ -133,20 +124,20 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
       {formType === 'registration' ? (
         <>
           <InputWrapper>
-            <Input
+            <StyledInput
               onChange={(e) => setName(e.target.value)}
               formInput
               placeholder="Name"
               value={name}
               maxLength="12"
             />
-            <Input
+            <StyledInput
               onChange={(e) => setEmail(e.target.value)}
               formInput
               placeholder="Email"
               value={email}
             />
-            <Input
+            <StyledInput
               onChange={(e) => setPassword(e.target.value)}
               formInput
               placeholder="Password"
@@ -163,6 +154,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
                 resetForm();
               }}
               to="/"
+              primary="true"
             >
               SIGN IN
             </Link>
@@ -174,13 +166,13 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
       ) : (
         <>
           <InputWrapper>
-            <Input
+            <StyledInput
               value={email}
               formInput
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
             />
-            <Input
+            <StyledInput
               value={password}
               formInput
               onChange={(e) => setPassword(e.target.value)}
@@ -197,6 +189,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
                 resetForm();
               }}
               to="/"
+              primary="true"
             >
               SIGN UP
             </Link>
@@ -219,10 +212,10 @@ const StyledWrapper = styled.form`
   align-items: center;
   justify-content: space-around;
 
-  @media (min-width: 1100px) {
+  @media (min-width: 768px) {
     margin-top: 0;
     padding: 30px 0;
-    height: calc(100% - 10vh);
+    height: calc(100% - 20%);
   }
 `;
 
@@ -233,17 +226,32 @@ const InputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+
+  @media (min-width: 768px) {
+    width: 70%;
+  }
+`;
+
+const StyledInput = styled(Input)`
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 `;
 
 const StyledParagraph = styled(Paragraph)`
   color: black;
-  font-size: 1.6rem;
-
-  ${Link} {
+  font-size: ${({ theme }) => theme.fontSize.xs} ${Link} {
     color: ${({ theme }) => theme.secondary};
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 768px) {
     font-size: 1.3rem;
     color: ${({ color }) => (color ? '#ff444f' : '#e0e0e0')};
 
@@ -251,6 +259,10 @@ const StyledParagraph = styled(Paragraph)`
       font-size: 1.3rem;
       color: #fff;
     }
+  }
+
+  @media (min-width: 1600px) {
+    font-size: 1.4rem;
   }
 `;
 
@@ -266,7 +278,7 @@ const StyledLinkContainer = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 10vh;
+  height: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -279,8 +291,9 @@ const StyledLinkContainer = styled.div`
     }
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 768px) {
     background-color: #fff;
+    height: 20%;
 
     ${Link} {
       font-size: 1.6rem;

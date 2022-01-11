@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Logo from 'components/Logo/Logo';
-import LogoImage from 'assets/images/logo.png';
+import Menu from 'components/Menu/Menu';
+import Link from 'components/Link/Link';
 import Input from 'components/Input/Input';
 import IconButton from 'components/IconButton/IconButton';
-import Link from 'components/Link/Link';
+import LogoImage from 'assets/images/logo.png';
 import { FiSearch as SearchIcon } from 'react-icons/fi';
 import { IoMenuSharp as MenuIcon, IoCloseOutline as CloseIcon } from 'react-icons/io5';
-
-import Menu from 'components/Menu/Menu';
+/* eslint-disable no-unused-expressions */
 
 const Header = ({
   searchCountryFn,
@@ -17,12 +17,23 @@ const Header = ({
   setSidePanelOpenFn,
   setPanelTypeFn,
   setPopUpVisibilityFn,
+  start,
+  counter,
+  resetLevel,
+  resetType,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   return (
     <StyledHeader isQuiz={isQuiz}>
-      <StyledLink primary to="/">
+      <StyledLink
+        primary="true"
+        to="/"
+        onClick={() => {
+          isQuiz && resetType();
+          isQuiz && resetLevel();
+        }}
+      >
         <Logo src={LogoImage} alt="CountryInfo" />
       </StyledLink>
       {!isQuiz && (
@@ -32,16 +43,16 @@ const Header = ({
             document.body.style.overflow = 'unset';
           }}
         >
-          <Input className="Input" placeholder="Search" onChange={(e) => searchCountryFn(e)} />
+          <Input placeholder="Search" onChange={(e) => searchCountryFn(e)} />
           <SearchIcon />
         </StyledInputContainer>
       )}
-      {isQuiz && (
-        <StyledIconButton isVisible onClick={() => setMenuOpen(!isMenuOpen)}>
+      {isQuiz && (!start || (start && counter === 10)) && (
+        <StyledIconButton onClick={() => setMenuOpen(!isMenuOpen)}>
           {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
         </StyledIconButton>
       )}
-      {isQuiz && (
+      {isQuiz && !start && (
         <Menu
           setPanelTypeFn={setPanelTypeFn}
           setMenuOpen={setMenuOpen}
@@ -66,11 +77,15 @@ const StyledHeader = styled.header`
   box-shadow: ${({ theme }) => theme.boxShadow};
   z-index: 1413;
 
-  @media (min-width: 500px) {
+  @media (min-width: 768px) {
     padding: 0 3vw;
   }
 
-  @media (min-width: 1200px) {
+  @media (max-height: 600px) and (orientation: landscape) {
+    padding: 0 3vw;
+  }
+
+  @media (min-width: 1100px) {
     grid-template-columns: 0.15fr 1fr 0.15fr;
   }
 `;
@@ -82,7 +97,10 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledIconButton = styled(IconButton)`
-  @media (min-width: 1100px) {
+  @media (min-width: 768px) {
+    height: 60px;
+    width: 60px;
+    font-size: ${({ theme }) => theme.fontSize.xl};
     display: none;
   }
 `;
@@ -95,9 +113,22 @@ const StyledInputContainer = styled.div`
   left: 57%;
   transform: translateX(-50%);
 
+  @media (min-width: 768px) {
+    width: 35%;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    width: 30%;
+    left: 50%;
+  }
+
   @media (min-width: 1100px) {
     width: 20%;
     left: 50%;
+  }
+
+  @media (min-width: 1600px) {
+    width: 15%;
   }
 `;
 

@@ -21,6 +21,9 @@ const AnswerBox = ({
   currentQuestion,
   saveGame,
   user,
+  startQuiz,
+  setTime,
+  time,
 }) => {
   const [isActive, setActive] = useState(false);
 
@@ -85,7 +88,8 @@ const AnswerBox = ({
         <StyledButton
           onClick={() => {
             isChecked && changeQuestion(counter + 1);
-            Object.keys(user).length >= 1 && saveGameWithDate();
+            setTime(time);
+            Object.keys(user).length >= 1 ? saveGameWithDate() : startQuiz(true);
           }}
         >
           Finish{' '}
@@ -113,9 +117,23 @@ const StyledAnswerBox = styled.div`
   bottom: 10vh;
   display: flex;
   flex-wrap: wrap;
+
+  @media (min-width: 768px) {
+    height: 15vh;
+    width: 600px;
+    bottom: 20vh;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 15vh;
+    width: 80%;
+    bottom: 10vh;
+  }
+
   @media (min-width: 1100px) {
     height: 15vh;
     width: 80%;
+    bottom: 10vh;
   }
 `;
 
@@ -145,8 +163,16 @@ const StyledAnswer = styled(Button)`
       (!isChecked && theme.primary)};
   }
 
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+
   @media (min-width: 1100px) {
     font-size: 1.3rem;
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 `;
 
@@ -157,13 +183,31 @@ const StyledButton = styled(Button)`
   bottom: 0;
   color: ${({ theme }) => theme.primary};
   background-color: #fff;
-  border: none;
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 600;
-  cursor: pointer;
+  border: 1px solid #fff;
 
   &:hover {
     background-color: #fff;
+  }
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+    background-color: ${({ theme }) => theme.secondary};
+    color: #fff;
+    height: 8vh;
+    border: none;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.primary};
+    }
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    width: 30%;
+    height: 5vh;
+    border: none;
+    font-size: ${({ theme }) => theme.fontSize.xs};
   }
 
   @media (min-width: 1100px) {
@@ -171,12 +215,10 @@ const StyledButton = styled(Button)`
     height: 5vh;
     border: none;
     font-size: 1.3rem;
-    background-color: ${({ theme }) => theme.secondary};
-    color: #fff;
+  }
 
-    &:hover {
-      background-color: ${({ theme }) => theme.primary};
-    }
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
   }
 `;
 
@@ -189,6 +231,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentQuestion: (question, quizType) =>
     dispatch(actions.setCurrentQuestion(question, quizType)),
   saveGame: (date, id) => dispatch(actions.saveGame(date, id)),
+  startQuiz: (start) => dispatch(actions.startQuiz(start)),
+  setTime: (time) => dispatch(actions.setTime(time)),
 });
 
 const mapStateToProps = (state) => {

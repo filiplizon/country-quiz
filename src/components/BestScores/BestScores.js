@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { checkIfNumberIsLessThan10 } from 'operations/operations';
 import Heading from 'components/Heading/Heading';
 import Button from 'components/Button/Button';
 import Paragraph from 'components/Paragraph/Paragraph';
@@ -18,6 +19,7 @@ const BestScores = ({ playerToDisplay, quizLength }) => {
         <StyledButtonContainer>
           {types.map((el, i) => (
             <StyledButton
+              key={type + playerToDisplay.games[i].id}
               className={isActive === i && 'active'}
               onClick={() => {
                 setType(el);
@@ -33,90 +35,48 @@ const BestScores = ({ playerToDisplay, quizLength }) => {
             <>
               <StyledParagraph>
                 Easy: {playerToDisplay.bestScore.flags.easy.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.flags.easy.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.flags.easy.time.minutes}`
-                  : playerToDisplay.bestScore.flags.easy.time.minutes}
-                :
-                {playerToDisplay.bestScore.flags.easy.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.easy.time.seconds}`
-                  : playerToDisplay.bestScore.flags.easy.time.seconds}
-                :
-                {playerToDisplay.bestScore.flags.easy.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.easy.time.miliseconds}`
-                  : playerToDisplay.bestScore.flags.easy.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.easy.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.easy.time.seconds)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.easy.time.miliseconds)}
               </StyledParagraph>
               <StyledParagraph>
                 Medium: {playerToDisplay.bestScore.flags.medium.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.flags.medium.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.flags.medium.time.minutes}`
-                  : playerToDisplay.bestScore.flags.medium.time.minutes}
-                :
-                {playerToDisplay.bestScore.flags.medium.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.medium.time.seconds}`
-                  : playerToDisplay.bestScore.flags.medium.time.seconds}
-                :
-                {playerToDisplay.bestScore.flags.medium.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.medium.time.miliseconds}`
-                  : playerToDisplay.bestScore.flags.medium.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.medium.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.medium.time.seconds)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.medium.time.miliseconds)}
               </StyledParagraph>
               <StyledParagraph>
                 Hard: {playerToDisplay.bestScore.flags.hard.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.flags.hard.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.flags.hard.time.minutes}`
-                  : playerToDisplay.bestScore.flags.hard.time.minutes}
-                :
-                {playerToDisplay.bestScore.flags.hard.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.hard.time.seconds}`
-                  : playerToDisplay.bestScore.flags.hard.time.seconds}
-                :
-                {playerToDisplay.bestScore.flags.hard.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.flags.hard.time.miliseconds}`
-                  : playerToDisplay.bestScore.flags.hard.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.hard.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.hard.time.seconds)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.flags.hard.time.miliseconds)}
               </StyledParagraph>
             </>
           ) : (
             <>
               <StyledParagraph>
                 Easy: {playerToDisplay.bestScore.capitals.easy.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.capitals.easy.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.capitals.easy.time.minutes}`
-                  : playerToDisplay.bestScore.capitals.easy.time.minutes}
-                :
-                {playerToDisplay.bestScore.capitals.easy.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.easy.time.seconds}`
-                  : playerToDisplay.bestScore.capitals.easy.time.seconds}
-                :
-                {playerToDisplay.bestScore.capitals.easy.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.easy.time.miliseconds}`
-                  : playerToDisplay.bestScore.capitals.easy.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.easy.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.easy.time.seconds)}:
+                {checkIfNumberIsLessThan10(
+                  playerToDisplay.bestScore.capitals.easy.time.miliseconds,
+                )}
               </StyledParagraph>
               <StyledParagraph>
                 Medium: {playerToDisplay.bestScore.capitals.medium.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.capitals.medium.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.capitals.medium.time.minutes}`
-                  : playerToDisplay.bestScore.capitals.medium.time.minutes}
-                :
-                {playerToDisplay.bestScore.capitals.medium.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.medium.time.seconds}`
-                  : playerToDisplay.bestScore.capitals.medium.time.seconds}
-                :
-                {playerToDisplay.bestScore.capitals.medium.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.medium.time.miliseconds}`
-                  : playerToDisplay.bestScore.capitals.medium.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.medium.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.medium.time.seconds)}:
+                {checkIfNumberIsLessThan10(
+                  playerToDisplay.bestScore.capitals.medium.time.miliseconds,
+                )}
               </StyledParagraph>
               <StyledParagraph>
                 Hard: {playerToDisplay.bestScore.capitals.hard.points} / {quizLength} -{' '}
-                {playerToDisplay.bestScore.capitals.hard.time.minutes < 10
-                  ? `0${playerToDisplay.bestScore.capitals.hard.time.minutes}`
-                  : playerToDisplay.bestScore.capitals.hard.time.minutes}
-                :
-                {playerToDisplay.bestScore.capitals.hard.time.seconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.hard.time.seconds}`
-                  : playerToDisplay.bestScore.capitals.hard.time.seconds}
-                :
-                {playerToDisplay.bestScore.capitals.hard.time.miliseconds < 10
-                  ? `0${playerToDisplay.bestScore.capitals.hard.time.miliseconds}`
-                  : playerToDisplay.bestScore.capitals.hard.time.miliseconds}
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.hard.time.minutes)}:
+                {checkIfNumberIsLessThan10(playerToDisplay.bestScore.capitals.hard.time.seconds)}:
+                {checkIfNumberIsLessThan10(
+                  playerToDisplay.bestScore.capitals.hard.time.miliseconds,
+                )}
               </StyledParagraph>
             </>
           )}
@@ -144,8 +104,16 @@ const StyledName = styled(Heading)`
   color: ${({ theme }) => theme.secondary};
   text-align: center;
 
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
   @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
+    font-size: ${({ theme }) => theme.fontSize.l};
   }
 `;
 
@@ -159,15 +127,27 @@ const StyledButtonContainer = styled.div`
 const StyledButton = styled(Button)`
   width: 50%;
   padding: 10px 0;
-  font-size: ${({ theme }) => theme.fontSize.m};
+  font-size: 1.8rem;
   background-color: ${({ theme }) => theme.secondary};
 
-  &.active {
-    background-color: ${({ theme }) => theme.primary};
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
   }
 
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  &.active {
+    background-color: ${({ theme }) => theme.primary};
   }
 
   &:nth-child(1) {
@@ -183,21 +163,29 @@ const StyledScoresWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  @media (min-width: 1100px) {
-    /* height: calc(75vh - 300px); */
-  }
 `;
 
 const StyledParagraph = styled(Paragraph)`
-  font-size: ${({ theme }) => theme.fontSize.l};
+  font-size: 2.5rem;
   color: ${({ theme }) => theme.secondary};
   font-weight: bold;
   padding: 15px 0;
 
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+    padding: 5px 0;
+  }
+
   @media (min-width: 1100px) {
     font-size: ${({ theme }) => theme.fontSize.m};
-    /* padding: 10px 0; */
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.l};
   }
 `;
 

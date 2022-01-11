@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import actions from 'actions/actions';
+import React, { useEffect } from 'react';
 
-const Stopwatch = ({ start, setTime }) => {
-  const [time, setTimer] = useState(0);
+const Stopwatch = ({ start, setTimeFn, time }) => {
   useEffect(() => {
     let interval;
     if (start) {
       interval = setInterval(() => {
-        setTimer((prevTime) => prevTime + 10);
-        setTime(time);
+        setTimeFn((prevTime) => prevTime + 10);
       }, 10);
     } else if (!start) {
       clearInterval(interval);
@@ -28,8 +24,4 @@ const Stopwatch = ({ start, setTime }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setTime: (time) => dispatch(actions.setTime(time)),
-});
-
-export default connect(null, mapDispatchToProps)(Stopwatch);
+export default Stopwatch;

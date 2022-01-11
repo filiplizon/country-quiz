@@ -54,8 +54,12 @@ const Quiz = ({
         setPanelTypeFn={setPanelType}
         setSidePanelOpenFn={setSidePanelOpen}
         setModalOpenFn={setModalOpen}
+        start={start}
+        counter={counter}
+        resetLevel={resetLevel}
+        resetType={resetType}
       />
-      <StyledMap src={map} start={start} counter={counter} />
+
       <InnerWrapper start={start} counter={counter}>
         {counter === 10 ? (
           <Summary setSidePanelOpen={setSidePanelOpen} />
@@ -69,6 +73,7 @@ const Quiz = ({
           </>
         )}
       </InnerWrapper>
+      <StyledMap src={map} start={start} counter={counter} />
       <StyledIllustration start={start} />
     </StyledWrapper>
   );
@@ -93,6 +98,22 @@ const StyledLink = styled(Link)`
   left: 3vw;
   color: ${({ theme }) => theme.primary};
   z-index: 1000;
+
+  @media (min-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
+
+  @media (min-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+
+  @media (min-width: 1600px) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 `;
 
 const StyledArrowIcon = styled(ArrowIcon)`
@@ -107,22 +128,30 @@ const InnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: ${({ start, counter }) => (start ? '0' : `${counter === 10 ? '10vh' : '20vh'}`)};
+  top: ${({ start, counter }) => (start ? '0' : `${counter === 10 ? '5vh' : '20vh'}`)};
   z-index: 1;
   height: ${({ start }) => (start ? '100vh' : '85vh')};
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    position: absolute;
+    top: ${({ start }) => (start ? '-5%' : '0')};
+    left: 15%;
+    width: 35%;
+    height: 80%;
+  }
 
   @media (min-width: 1100px) {
     position: absolute;
     top: ${({ start }) => (start ? '-5%' : '0')};
-    left: 18%;
+    left: 16%;
     width: 35%;
     height: 80%;
   }
 `;
 
 const StyledIllustration = styled.div`
-  width: 50%;
-  height: 20%;
+  width: 220px;
+  height: 220px;
   position: absolute;
   bottom: -10px;
   background-image: url(${illustration});
@@ -130,8 +159,16 @@ const StyledIllustration = styled.div`
   background-size: cover;
   display: ${({ start }) => (start ? 'none' : 'block')};
 
-  @media (min-width: 1024px) and (orientation: landscape) {
-    width: 55%;
+  @media (min-width: 768px) {
+    width: 32%;
+    height: 25%;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    height: 47vh;
+    width: 32%;
+    left: 0%;
+    display: block;
   }
 
   @media (min-width: 1100px) {
@@ -145,11 +182,27 @@ const StyledIllustration = styled.div`
 const StyledMap = styled.img`
   display: ${({ start, counter }) => (start || counter === 10 ? 'none' : 'block')};
   position: absolute;
-  top: 20vh;
+  top: 22vh;
   z-index: 100;
+  margin-right: 10px;
+  max-width: 90%;
+  max-height: 35%;
 
-  @media (min-width: 760px) {
-    width: 80%;
+  @media (min-width: 768px) {
+    height: 33%;
+    max-width: 500px;
+  }
+
+  @media (max-height: 600px) and (orientation: landscape) {
+    width: 50%;
+    bottom: 0;
+    top: unset;
+    right: 0;
+    z-index: -1;
+    display: block;
+    max-width: unset;
+    max-height: unset;
+    height: unset;
   }
 
   @media (min-width: 1100px) {
@@ -159,6 +212,9 @@ const StyledMap = styled.img`
     right: 0;
     z-index: -1;
     display: block;
+    max-width: unset;
+    height: unset;
+    max-height: unset;
   }
 `;
 
