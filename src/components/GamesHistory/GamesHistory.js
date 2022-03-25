@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { checkIfNumberIsLessThan10 } from 'operations/operations';
 import PaginatedItems from 'components/PaginatedItems/PaginatedItems';
 import Heading from 'components/Heading/Heading';
+import NoDataInfo from 'components/NoDataInfo/NoDataInfo';
 
 const GamesHistory = ({ playerToDisplay }) => {
   const detailTypes = ['Date', 'Type', 'Level', 'Points', 'Time'];
@@ -24,36 +25,38 @@ const GamesHistory = ({ playerToDisplay }) => {
 
   return (
     Object.keys(playerToDisplay).length > 0 && (
-      <StyledGamesHistory>
+      <StyledGamesHistory playerToDisplay={playerToDisplay}>
         <StyledNameWrapper>
           <StyledName>History</StyledName>
         </StyledNameWrapper>
-        <StyledGameDetailsTitles>
-          {detailTypes.map((type, i) => (
-            <StyledGameDetailsTitle key={playerToDisplay.games[i].id + type}>
-              {type}
-            </StyledGameDetailsTitle>
-          ))}
-        </StyledGameDetailsTitles>
-        <StyledHistoryWrapper>
-          <PaginatedItems
-            itemsPerPage={5}
-            itemsToPaginate={playerToDisplay.games}
-            currentItem={currentItem}
-          />
-        </StyledHistoryWrapper>
+        {playerToDisplay.gamesPlayed !== 0 ? (
+          <>
+            <StyledGameDetailsTitles>
+              {detailTypes.map((type) => (
+                <StyledGameDetailsTitle key={playerToDisplay.id + type}>
+                  {type}
+                </StyledGameDetailsTitle>
+              ))}
+            </StyledGameDetailsTitles>
+            <StyledHistoryWrapper>
+              <PaginatedItems
+                itemsPerPage={5}
+                itemsToPaginate={playerToDisplay.games}
+                currentItem={currentItem}
+              />
+            </StyledHistoryWrapper>
+          </>
+        ) : (
+          <NoDataInfo />
+        )}
       </StyledGamesHistory>
     )
   );
 };
 
 const StyledGamesHistory = styled.div`
-  height: 50%;
+  height: ${({ playerToDisplay }) => (playerToDisplay.gamesPlayed > 0 ? '50%' : '55%')};
   background: #fff;
-
-  @media (min-width: 1600px) {
-    height: 50%;
-  }
 `;
 
 const StyledNameWrapper = styled.div`
