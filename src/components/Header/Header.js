@@ -14,6 +14,7 @@ const Header = ({
   searchCountryFn,
   isQuiz,
   setModalOpenFn,
+  isModalOpen,
   setSidePanelOpenFn,
   setPanelTypeFn,
   setPopUpVisibilityFn,
@@ -21,6 +22,7 @@ const Header = ({
   counter,
   resetLevel,
   resetType,
+  // resetForm,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
@@ -32,6 +34,10 @@ const Header = ({
         onClick={() => {
           isQuiz && resetType();
           isQuiz && resetLevel();
+          if (isModalOpen) {
+            setModalOpenFn(false);
+            // resetForm();
+          }
         }}
       >
         <Logo src={LogoImage} alt="CountryInfo" />

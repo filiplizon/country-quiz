@@ -17,6 +17,7 @@ const Quiz = ({
   quizType,
   resetLevel,
   resetType,
+  resetFrom,
   level,
   formType,
   start,
@@ -30,12 +31,12 @@ const Quiz = ({
   const [panelType, setPanelType] = useState(null);
   return (
     <StyledWrapper>
-      {quizType && level === '' && (
+      {quizType && level === '' && !isModalOpen && (
         <StyledLink onClick={() => resetType()} to="/">
           <StyledArrowIcon /> go back
         </StyledLink>
       )}
-      {level && (
+      {level && !isModalOpen && (
         <StyledLink onClick={() => resetLevel()} to="/">
           <StyledArrowIcon /> go back
         </StyledLink>
@@ -53,11 +54,14 @@ const Quiz = ({
         isQuiz="true"
         setPanelTypeFn={setPanelType}
         setSidePanelOpenFn={setSidePanelOpen}
+        isSidePanelOpen={isSidePanelOpen}
+        isModalOpen={isModalOpen}
         setModalOpenFn={setModalOpen}
         start={start}
         counter={counter}
         resetLevel={resetLevel}
         resetType={resetType}
+        resetFrom={resetFrom}
       />
 
       <InnerWrapper start={start} counter={counter}>
@@ -221,6 +225,7 @@ const StyledMap = styled.img`
 const mapDispatchToProps = (dispatch) => ({
   resetLevel: () => dispatch(actions.resetLevel()),
   resetType: () => dispatch(actions.resetType()),
+  resetFrom: () => dispatch(actions.resetFrom()),
   startQuiz: () => dispatch(actions.startQuiz()),
   setPlayerToDisplay: (playerToDisplay) => dispatch(actions.setPlayerToDisplay(playerToDisplay)),
 });

@@ -51,10 +51,12 @@ const StyledIconButton = styled(IconButton)`
   background-color: #fff;
   top: calc(15vh + 10px);
   right: 10px;
+  display: none;
 
   @media (min-width: 768px) {
     right: 5px;
     top: 5px;
+    display: flex;
   }
 `;
 
