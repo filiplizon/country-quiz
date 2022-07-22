@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
-import Paragraph from 'components/Paragraph/Paragraph';
 import Flag from 'components/Flag/Flag';
 import PointBox from 'components/PointBox/PointBox';
 import AnswerBox from 'components/AnswerBox/AnswerBox';
+import { StyledWrapper, StyledParagraph } from './QuestionWrapper.styles';
 
 const QuestionWrapper = ({
   quizType,
@@ -38,35 +37,6 @@ const QuestionWrapper = ({
     </>
   );
 };
-
-const StyledWrapper = styled.div`
-  height: ${({ quizType }) => (quizType === 'capitals' ? '30vh' : '25vh')};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  font-size: ${({ theme }) => theme.fontSize.m};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.primary};
-`;
-
-const StyledParagraph = styled(Paragraph)`
-@media (min-width: 768px) {
-  font-size: ${({ theme }) => theme.fontSize.l};
-}
-
-@media (max-height: 600px) and (orientation: landscape) {
-  font-size: ${({ theme }) => theme.fontSize.s};
-  margin-bottom: 10px;
-}
-
-@media (min-width: 1100px) {
-  font-size: ${({ theme }) => theme.fontSize.m};
-}
-
-@media (min-width: 1600px) {
-  font-size: ${({ theme }) => theme.fontSize.l};
-`;
 
 const mapStateToProps = (state) => {
   const { quizType, countriesForQuiz, currentQuestion, counter } = state;

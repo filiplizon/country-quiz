@@ -1,14 +1,19 @@
 /* eslint-disable no-unused-expressions */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import actions from 'actions/actions';
 import { connect } from 'react-redux';
 import { db } from 'firebase';
 import { onSnapshot, collection, doc, setDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'components/Link/Link';
-import Input from 'components/Input/Input';
-import Paragraph from 'components/Paragraph/Paragraph';
+import {
+  StyledWrapper,
+  StyledInputWrapper,
+  StyledInput,
+  StyledParagraph,
+  StyledError,
+  StyledLinkContainer,
+} from './Form.styles';
 
 const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) => {
   const [name, setName] = useState('');
@@ -123,7 +128,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     <StyledWrapper>
       {formType === 'registration' ? (
         <>
-          <InputWrapper>
+          <StyledInputWrapper>
             <StyledInput
               onChange={(e) => setName(e.target.value)}
               formInput
@@ -144,7 +149,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
               type="password"
               value={password}
             />
-          </InputWrapper>
+          </StyledInputWrapper>
           <StyledError errorText={errorText}>{errorText}</StyledError>
           <StyledParagraph>
             Already a member?{' '}
@@ -165,7 +170,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         </>
       ) : (
         <>
-          <InputWrapper>
+          <StyledInputWrapper>
             <StyledInput
               value={email}
               formInput
@@ -179,7 +184,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
               placeholder="Password"
               type="password"
             />
-          </InputWrapper>
+          </StyledInputWrapper>
           <StyledError errorText={errorText}>{errorText}</StyledError>
           <StyledParagraph>
             Not a member yet?{' '}
@@ -202,105 +207,6 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     </StyledWrapper>
   );
 };
-
-const StyledWrapper = styled.form`
-  margin-top: 60vh;
-  height: 25%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-
-  @media (min-width: 768px) {
-    margin-top: 0;
-    padding: 30px 0;
-    height: calc(100% - 20%);
-  }
-`;
-
-const InputWrapper = styled.div`
-  width: 70%;
-  height: 55%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-
-  @media (min-width: 768px) {
-    width: 50%;
-  }
-
-  @media (min-width: 768px) {
-    width: 70%;
-  }
-`;
-
-const StyledInput = styled(Input)`
-  @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-  @media (min-width: 1600px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-`;
-
-const StyledParagraph = styled(Paragraph)`
-  color: black;
-  font-size: ${({ theme }) => theme.fontSize.xs} ${Link} {
-    color: ${({ theme }) => theme.secondary};
-  }
-
-  @media (min-width: 768px) {
-    font-size: 1.3rem;
-    color: ${({ color }) => (color ? '#ff444f' : '#e0e0e0')};
-
-    ${Link} {
-      font-size: 1.3rem;
-      color: #fff;
-    }
-  }
-
-  @media (min-width: 1600px) {
-    font-size: 1.4rem;
-  }
-`;
-
-const StyledError = styled(Paragraph)`
-  color: ${({ theme }) => theme.primary};
-  font-size: 1.2rem;
-  font-weight: bold;
-  display: ${({ errorText }) => (errorText ? 'block' : 'none')};
-`;
-
-const StyledLinkContainer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.secondary};
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 10%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.secondary};
-  cursor: pointer;
-
-  &:hover {
-    ${Link} {
-      transform: translateY(-5px);
-    }
-  }
-
-  @media (min-width: 768px) {
-    background-color: #fff;
-    height: 20%;
-
-    ${Link} {
-      font-size: 1.6rem;
-      color: ${({ theme }) => theme.primary};
-    }
-  }
-`;
 
 const mapStateToProps = (state) => {
   const { isFormReset, user } = state;

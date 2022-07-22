@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Header from 'components/Header/Header';
 import CardWrapper from 'components/CardWrapper/CardWrapper';
 import InfoPopup from 'components/InfoPopup/InfoPopup';
-import IconButton from 'components/IconButton/IconButton';
 import { BsArrowUp as ArrowIcon } from 'react-icons/bs';
+import { StyledIconButton } from './CountryInformation.styles';
 
 const CountryInformation = ({ countries }) => {
   const [filteredCountries, setFilteredCountries] = useState([]);
@@ -53,12 +52,6 @@ const CountryInformation = ({ countries }) => {
     </>
   );
 };
-
-const StyledIconButton = styled(IconButton)`
-  position: fixed;
-  bottom: 3vh;
-  right: 3vw;
-`;
 
 const mapStateToProps = (state) => {
   const { countries } = state;

@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { db } from 'firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
 import { checkIfNumberIsLessThan10 } from 'operations/operations';
-import Heading from 'components/Heading/Heading';
-import Button from 'components/Button/Button';
+import {
+  StyledRankingsWrapper,
+  StyledButton,
+  StyledButtonContainer,
+  StyledGameDetail,
+  StyledGameDetailsRow,
+  StyledGameDetailsTitle,
+  StyledGameDetailsTitles,
+  StyledHeading,
+  StyledRankings,
+} from './Ranking.styles';
+
 /* eslint-disable no-return-assign */
 const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
   const types = ['flags', 'capitals'];
@@ -175,196 +184,6 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
     </StyledRankingsWrapper>
   );
 };
-
-const StyledRankingsWrapper = styled.div`
-  height: 100%;
-`;
-
-const StyledHeading = styled(Heading)`
-  width: 100%;
-  height: 20%;
-  text-align: center;
-  color: #fff;
-  margin: auto 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.xl};
-  }
-
-  @media (max-height: 600px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.l};
-  }
-
-  @media (min-width: 1600px) {
-    font-size: ${({ theme }) => theme.fontSize.xl};
-  }
-`;
-
-const StyledButtonContainer = styled.div`
-  width: 100%;
-  height: 7%;
-  display: flex;
-`;
-
-const StyledButton = styled(Button)`
-  width: 50%;
-  padding: 10px 0;
-  font-size: ${({ theme }) => theme.fontSize.s};
-  background-color: #fff;
-  color: ${({ theme }) => theme.secondary};
-
-  &.active,
-  &:hover {
-    background-color: ${({ theme }) => theme.primary};
-    color: #fff;
-  }
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (max-height: 600px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
-  }
-
-  @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (min-width: 1600px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-`;
-
-const StyledRankings = styled.div`
-  height: 73%;
-  background-color: #fff;
-  position: relative;
-
-  & ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    height: 10%;
-    padding: 0 20%;
-    width: 100%;
-    justify-content: space-around;
-    font-size: 1.3rem;
-    align-items: center;
-
-    @media (min-width: 1100px) {
-      bottom: 10px;
-    }
-
-    & li {
-      cursor: pointer;
-
-      @media (min-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSize.m};
-      }
-
-      @media (max-height: 600px) and (orientation: landscape) {
-        font-size: ${({ theme }) => theme.fontSize.xs};
-      }
-
-      @media (min-width: 1100px) {
-        font-size: ${({ theme }) => theme.fontSize.s};
-      }
-
-      &:hover,
-      &.selected {
-        font-weight: bold;
-        color: ${({ theme }) => theme.secondary};
-      }
-      &.disabled:hover {
-        font-weight: unset;
-        cursor: unset;
-        color: #000;
-      }
-    }
-  }
-`;
-
-const StyledGameDetailsTitles = styled.div`
-  width: 100%;
-  height: 10%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-  box-shadow: 0px 0px 3px -1px rgba(66, 68, 90, 1);
-`;
-
-const StyledGameDetailsTitle = styled.div`
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.m};
-  }
-
-  @media (max-height: 600px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
-  }
-
-  @media (min-width: 1100px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-`;
-
-const StyledGameDetailsRow = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1fr;
-  justify-items: center;
-  align-items: center;
-  height: calc(80% / 8);
-
-  &:nth-child(even) {
-    background-color: #eee;
-  }
-`;
-
-const StyledGameDetail = styled.div`
-  font-size: 1.3rem;
-  padding: 10px;
-
-  @media (min-width: 768px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  @media (max-height: 600px) and (orientation: landscape) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
-    padding: 0;
-  }
-
-  @media (min-width: 1100px) {
-    font-size: 1.3rem;
-  }
-
-  @media (min-width: 1600px) {
-    font-size: ${({ theme }) => theme.fontSize.s};
-  }
-
-  &.user {
-    cursor: pointer;
-
-    &:hover {
-      color: ${({ theme }) => theme.secondary};
-      font-weight: bold;
-    }
-  }
-`;
 
 const mapStateToProps = (state) => {
   const { isFormReset, user } = state;
