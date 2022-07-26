@@ -33,9 +33,9 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
     return (
       <>
         {currentItems &&
-          currentItems.map((item, i) => (
+          currentItems.map((item) => (
             <StyledGameDetailsRow key={item.id}>
-              <StyledGameDetail>{i + 1}</StyledGameDetail>
+              <StyledGameDetail>{games.indexOf(item) + 1}</StyledGameDetail>
               <StyledGameDetail
                 className="user"
                 onClick={() => {
