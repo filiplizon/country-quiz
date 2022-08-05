@@ -40,45 +40,6 @@ export const StyledHistoryWrapper = styled.div`
   background-color: #fff;
   height: 80%;
   position: relative;
-
-  & ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    height: 19%;
-    padding: 0 20%;
-    width: 100%;
-    justify-content: space-around;
-    font-size: 1.3rem;
-    align-items: center;
-
-    & li {
-      cursor: pointer;
-
-      @media (min-width: 768px) {
-        font-size: ${({ theme }) => theme.fontSize.m};
-      }
-
-      @media (max-height: 600px) and (orientation: landscape) {
-        font-size: ${({ theme }) => theme.fontSize.xs};
-      }
-
-      @media (min-width: 1100px) {
-        font-size: ${({ theme }) => theme.fontSize.s};
-      }
-
-      &:hover,
-      &.selected {
-        font-weight: bold;
-        color: ${({ theme }) => theme.secondary};
-      }
-      &.disabled:hover {
-        font-weight: unset;
-        cursor: unset;
-        color: #000;
-      }
-    }
-  }
 `;
 
 export const StyledGameDetailsTitle = styled.div`

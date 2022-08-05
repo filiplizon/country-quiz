@@ -51,6 +51,7 @@ const GamesHistory = ({ playerToDisplay }) => {
                 itemsPerPage={5}
                 itemsToPaginate={playerToDisplay.games}
                 currentItem={currentItem}
+                height={'26%'}
               />
             </StyledHistoryWrapper>
           </>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { db } from 'firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import actions from 'actions/actions';
 import { checkIfNumberIsLessThan10 } from 'operations/operations';
+import PaginatedItems from 'components/PaginatedItems/PaginatedItems';
 import {
   StyledRankingsWrapper,
   StyledButton,
@@ -28,67 +28,29 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
   const [games, setGames] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const users = [];
+  const [refresh, doRefresh] = useState(0);
 
-  function Items({ currentItems }) {
-    return (
-      <>
-        {currentItems &&
-          currentItems.map((item) => (
-            <StyledGameDetailsRow key={item.id}>
-              <StyledGameDetail>{games.indexOf(item) + 1}</StyledGameDetail>
-              <StyledGameDetail
-                className="user"
-                onClick={() => {
-                  setPanelTypeFn('profile');
-                  setPlayerToDisplay(allUsers.find((user) => user.name === item.user));
-                }}
-              >
-                {item.user}
-              </StyledGameDetail>
-              <StyledGameDetail>{item.points}</StyledGameDetail>
-              <StyledGameDetail>
-                {checkIfNumberIsLessThan10(item.time.minutes)}:
-                {checkIfNumberIsLessThan10(item.time.seconds)}:
-                {checkIfNumberIsLessThan10(item.time.miliseconds)}
-              </StyledGameDetail>
-              <StyledGameDetail>{item.date}</StyledGameDetail>
-            </StyledGameDetailsRow>
-          ))}
-      </>
-    );
-  }
-
-  function PaginatedItems({ itemsPerPage }) {
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-    const [itemOffset, setItemOffset] = useState(0);
-
-    useEffect(() => {
-      const endOffset = itemOffset + itemsPerPage;
-      setCurrentItems(games.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(games.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
-
-    const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % games.length;
-      setItemOffset(newOffset);
-    };
-
-    return (
-      <>
-        <Items currentItems={currentItems} />
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-        />
-      </>
-    );
-  }
+  const currentItem = (item) => (
+    <StyledGameDetailsRow key={item.id}>
+      <StyledGameDetail>{games.indexOf(item) + 1}</StyledGameDetail>
+      <StyledGameDetail
+        className="user"
+        onClick={() => {
+          setPanelTypeFn('profile');
+          setPlayerToDisplay(allUsers.find((user) => user.name === item.user));
+        }}
+      >
+        {item.user}
+      </StyledGameDetail>
+      <StyledGameDetail>{item.points}</StyledGameDetail>
+      <StyledGameDetail>
+        {checkIfNumberIsLessThan10(item.time.minutes)}:
+        {checkIfNumberIsLessThan10(item.time.seconds)}:
+        {checkIfNumberIsLessThan10(item.time.miliseconds)}
+      </StyledGameDetail>
+      <StyledGameDetail>{item.date}</StyledGameDetail>
+    </StyledGameDetailsRow>
+  );
 
   function sortByPoints(a, b) {
     return b.points - a.points;
@@ -151,6 +113,7 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
             onClick={() => {
               setType(el);
               setActiveType(i);
+              doRefresh((prev) => prev + 1);
             }}
           >
             {el}
@@ -165,6 +128,7 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
             onClick={() => {
               setLevel(el);
               setActiveLevel(i);
+              doRefresh((prev) => prev + 1);
             }}
           >
             {el}
@@ -179,7 +143,12 @@ const Rankings = ({ setPanelTypeFn, setPlayerToDisplay }) => {
           <StyledGameDetailsTitle>Time</StyledGameDetailsTitle>
           <StyledGameDetailsTitle>Date</StyledGameDetailsTitle>
         </StyledGameDetailsTitles>
-        <PaginatedItems itemsPerPage={7} />
+        <PaginatedItems
+          itemsPerPage={7}
+          itemsToPaginate={games}
+          currentItem={currentItem}
+          refresh={refresh}
+        />
       </StyledRankings>
     </StyledRankingsWrapper>
   );
