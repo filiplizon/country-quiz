@@ -128,7 +128,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
     <StyledWrapper>
       {formType === 'registration' ? (
         <>
-          <StyledInputWrapper>
+          <StyledInputWrapper onKeyPress={(e) => e.key === 'Enter' && registerUser(e)}>
             <StyledInput
               onChange={(e) => setName(e.target.value)}
               formInput
@@ -170,7 +170,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         </>
       ) : (
         <>
-          <StyledInputWrapper>
+          <StyledInputWrapper onKeyPress={(e) => e.key === 'Enter' && signIn(e)}>
             <StyledInput
               value={email}
               formInput
