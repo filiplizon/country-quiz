@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import actions from 'actions/actions';
 import { connect } from 'react-redux';
@@ -47,6 +48,11 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         const newDocRef = doc(collection(db, 'users'));
         const today = new Date();
         const date = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`;
+        const initialScore = {
+          points: 0,
+          time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+        };
+
         setDoc(newDocRef, {
           email,
           authID: userID,
@@ -62,39 +68,35 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
           bestScore: {
             flags: {
               easy: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
               medium: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
               hard: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
             },
             capitals: {
               easy: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
               medium: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
               hard: {
-                points: 0,
-                time: { total: 9999999999999999999999999, minutes: 0, seconds: 0, miliseconds: 0 },
+                initialScore,
               },
             },
           },
         });
+
         onSnapshot(collectionRef, (snapshot) => {
           const currentUser = snapshot.docs
             .map((docc) => ({ ...docc.data(), id: docc.id }))
             .find((el) => el.email === email);
           setUser(currentUser);
+          localStorage.setItem('user', JSON.stringify(currentUser));
         });
         setModalOpenFn(false);
       })
@@ -115,6 +117,7 @@ const Form = ({ formType, setFormType, setUser, setModalOpenFn, isFormReset }) =
         const currentUser = users.find((usere) => usere.authID === userID);
         setUser(currentUser);
         setModalOpenFn(false);
+        localStorage.setItem('user', JSON.stringify(currentUser));
       })
       .catch((error) => {
         const errorCode = error.code;

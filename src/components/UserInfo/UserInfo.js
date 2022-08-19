@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
@@ -22,6 +23,7 @@ const UserInfo = ({
         setSidePanelOpenFn(false);
         resetLevel();
         resetType();
+        localStorage.clear();
       })
       .catch((error) => {
         console.log(error);
