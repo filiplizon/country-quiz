@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import IconButton from 'components/IconButton/IconButton';
 
-export const StyledWrapper = styled.div`
+export const StyledModal = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -22,6 +22,16 @@ export const StyledWrapper = styled.div`
     transform: translate(-50%, -50%);
     opacity: ${({ isModalOpen }) => (isModalOpen ? 1 : 0)};
     box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
+    z-index: 100000;
+  }
+`;
+
+export const StyledBackgroundWrapper = styled.div`
+  @media (min-width: 768px) {
+    height: 100%;
+    width: 100%;
+    background-color: ${({ isModalOpen }) => (isModalOpen ? 'rgba(255, 255,255, 0.5)' : null)};
+    display: ${({ isModalOpen }) => (isModalOpen ? 'block' : 'none')};
     z-index: 100000;
   }
 `;
