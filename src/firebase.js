@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB3tp3-SRQNcC3LXHLtWheLuquJd9ra8ps',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'countryquiz-73f93.firebaseapp.com',
   projectId: 'countryquiz-73f93',
   storageBucket: 'countryquiz-73f93.appspot.com',
