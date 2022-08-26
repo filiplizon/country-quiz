@@ -20,7 +20,6 @@ const Header = ({
   counter,
   resetLevel,
   resetType,
-  // resetForm,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
@@ -34,7 +33,6 @@ const Header = ({
           isQuiz && resetLevel();
           if (isModalOpen) {
             setModalOpenFn(false);
-            // resetForm();
           }
         }}
       >
@@ -44,7 +42,6 @@ const Header = ({
         <StyledInputContainer
           onClick={() => {
             setPopUpVisibilityFn(false);
-            document.body.style.overflow = 'unset';
           }}
         >
           <Input placeholder="Search" onChange={(e) => searchCountryFn(e)} />

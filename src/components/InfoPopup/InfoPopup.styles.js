@@ -4,7 +4,7 @@ import Link from 'components/Link/Link';
 
 export const StyledPopupWrapper = styled.div`
   height: 85vh;
-  background-color: hsla(204, 57%, 49%, 0.98);
+  background-color: hsla(204, 57%, 49%, 1);
   position: fixed;
   top: 15vh;
   left: 0;
@@ -16,6 +16,7 @@ export const StyledPopupWrapper = styled.div`
   z-index: 999;
   transform: ${({ isPopupOpen }) => (isPopupOpen ? 'translateY(0)' : 'translateY(120%)')};
   transition: transform 0.5s;
+  box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
 
   @media (max-height: 600px) and (orientation: landscape) {
     height: 85%;

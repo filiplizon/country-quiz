@@ -10,8 +10,9 @@ export const StyledModal = styled.div`
   background-color: #fff;
   z-index: 100;
   opacity: ${({ isModalOpen }) => (isModalOpen ? 1 : 0)};
-  transition: 0.2s opacity;
-  display: ${({ isModalOpen }) => (isModalOpen ? 'block' : 'none')};
+  transition: 0.3s opacity;
+  display: block;
+  visibility: ${({ isModalOpen }) => (isModalOpen ? 'visible' : 'hidden')};
 
   @media (min-width: 768px) {
     top: 50%;
@@ -20,8 +21,7 @@ export const StyledModal = styled.div`
     height: 340px;
     background-color: ${({ theme }) => theme.secondary};
     transform: translate(-50%, -50%);
-    opacity: ${({ isModalOpen }) => (isModalOpen ? 1 : 0)};
-    box-shadow: 0px 0px 4px -1px rgba(66, 68, 90, 1);
+    box-shadow: ${({ theme }) => theme.boxShadow};
     z-index: 100000;
   }
 `;

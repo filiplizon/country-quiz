@@ -18,7 +18,6 @@ const Card = ({ onClick, country, setPopUpVisibilityFn, setCurrentCountryFn, isP
         } else {
           setCurrentCountryFn(country);
           setPopUpVisibilityFn(!isPopupOpen);
-          document.body.style.overflow = 'hidden';
         }
       }}
     >
