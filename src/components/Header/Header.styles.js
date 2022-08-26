@@ -49,6 +49,7 @@ export const StyledInputContainer = styled.div`
   position: absolute;
   left: 57%;
   transform: translateX(-50%);
+  font-size: ${({ theme }) => theme.fontSize.l};
 
   @media (min-width: 768px) {
     width: 35%;

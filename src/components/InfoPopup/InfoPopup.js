@@ -46,7 +46,6 @@ const InfoPopup = ({ currentCountry, isPopupOpen, setPopUpVisibilityFn }) => (
     <StyledButtonWrapper
       onClick={() => {
         setPopUpVisibilityFn(!isPopupOpen);
-        document.body.style.overflow = 'unset';
       }}
     >
       <Link primary="true" to="/info">

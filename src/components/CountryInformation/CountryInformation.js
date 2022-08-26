@@ -44,11 +44,9 @@ const CountryInformation = ({ countries }) => {
         isPopupOpen={isPopupOpen}
         setPopUpVisibilityFn={setPopUpVisibility}
       />
-      {!isPopupOpen && (
-        <StyledIconButton onClick={scrollToTop}>
-          <ArrowIcon />
-        </StyledIconButton>
-      )}
+      <StyledIconButton onClick={scrollToTop}>
+        <ArrowIcon />
+      </StyledIconButton>
     </>
   );
 };
